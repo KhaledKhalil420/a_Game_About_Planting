@@ -14,7 +14,7 @@ public class PlayerInteract : MonoBehaviour
 
     private IHighlightable currentlyHighlightable;
 
-    private void Update()
+    private void LateUpdate()
     {
         HandleHighLight();
         Inputs();

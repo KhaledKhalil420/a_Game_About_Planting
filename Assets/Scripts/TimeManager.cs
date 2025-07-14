@@ -1,9 +1,10 @@
 using System.Collections;
 using UnityEngine;
 
-public class TimeManager : MonoBehaviour
+public class Tick : MonoBehaviour
 {
     public static float Tickspeed = 1;
+    public static float DeltaTickSpeed => Time.deltaTime * Tickspeed;
 
     private void UpdateTickSpeed(float newSpeed)
     {

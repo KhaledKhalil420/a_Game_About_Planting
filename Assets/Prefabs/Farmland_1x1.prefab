@@ -141,7 +141,7 @@ MonoBehaviour:
   _isReadyToHarvest: 0
   childHolder: {fileID: 6070021196751998865}
   source: {fileID: 2540566083392040174}
-  plantingSound: {fileID: 8300000, guid: 800157bc042cfd24b96d64af6a160b4a, type: 3}
+  plantingSound: {fileID: 8300000, guid: 5599ccfc3f21d2442a9b14b766404ff6, type: 3}
   harvestingSound: {fileID: 8300000, guid: 0bb772c08bddb874cb3d0bb9ffe23c12, type: 3}
   _renderer: {fileID: 2983093095135384833}
   drySoilColor: {r: 0.41960785, g: 0.3019608, b: 0.21960784, a: 1}

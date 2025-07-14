@@ -22,7 +22,7 @@ public class FarmlandSquare : MonoBehaviour, IInteractable
         float dt = Time.deltaTime;
         if (_seedIn != null && !_isReadyToHarvest && _waterLevel > 0)
         {
-            _growingElapsedTime += dt * _soilQualityLevel * TimeManager.Tickspeed;
+            _growingElapsedTime += dt * _soilQualityLevel * Tick.Tickspeed;
             _waterLevel -= dt / _soilQualityLevel;
             if (_growingElapsedTime >= _seedIn.GetTotalTimeToGrow()) _isReadyToHarvest = true;
         }
@@ -79,7 +79,7 @@ public class FarmlandSquare : MonoBehaviour, IInteractable
         inventory.GiveItem(reward, out bool isGiven);
         if (!isGiven)
         {
-            Destroy(reward);
+            Destroy(reward.gameObject);
             return;
         }
 

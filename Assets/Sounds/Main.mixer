@@ -33,6 +33,24 @@ AudioMixerGroupController:
   m_Mute: 0
   m_Solo: 0
   m_BypassEffects: 0
+--- !u!244 &-6291645500411265831
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: 59fe4b28b080daa44abe81f473385ce0
+  m_EffectName: Lowpass
+  m_MixLevel: 8f52c6acb1cf6d342b425cce732b2595
+  m_Parameters:
+  - m_ParameterName: Cutoff freq
+    m_GUID: 4caac9ac0f7851945887f67ec008ddf1
+  - m_ParameterName: Resonance
+    m_GUID: 2064f804f6cbb1241a6edf79964889f1
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
 --- !u!241 &24100000
 AudioMixerController:
   m_ObjectHideFlags: 0
@@ -51,6 +69,8 @@ AudioMixerController:
   m_ExposedParameters:
   - guid: 764a0550d80e7b94bb3eb7250c119fc0
     name: VolumeAmbience
+  - guid: 4caac9ac0f7851945887f67ec008ddf1
+    name: LowPassAmbience
   - guid: 31dec262ece198149a35af1141943509
     name: VolumeMaster
   - guid: e1fbe9c10d860ac4f80dc5568e4e5a8d
@@ -117,6 +137,7 @@ AudioMixerSnapshotController:
   m_FloatValues:
     e1fbe9c10d860ac4f80dc5568e4e5a8d: 22000
     31dec262ece198149a35af1141943509: -9.6
+    4caac9ac0f7851945887f67ec008ddf1: 22000
     8197bf2edd1032b458934e5846b99dfc: 1
   m_TransitionOverrides: {}
 --- !u!244 &3101570779399794131
@@ -150,6 +171,7 @@ AudioMixerGroupController:
   m_Send: 00000000000000000000000000000000
   m_Effects:
   - {fileID: -9073624502286856352}
+  - {fileID: -6291645500411265831}
   m_UserColorIndex: 0
   m_Mute: 0
   m_Solo: 0

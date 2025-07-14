@@ -17,7 +17,7 @@ MonoBehaviour:
     currentStageModel: {fileID: 919132149155446097, guid: 11318d1bb548f2e4d8cbad7c786b19f1, type: 3}
   - growingDuration: 20
     currentStageModel: {fileID: 919132149155446097, guid: 90745413ef8aa7341974fd787ae58fa4, type: 3}
-  - growingDuration: 0.5
+  - growingDuration: 1
     currentStageModel: {fileID: 919132149155446097, guid: 53a228d944b1e6a438615b167c769331, type: 3}
   reward: {fileID: 1962442201436682261, guid: f6a6275933969d04c9cc80ab9d293d0a, type: 3}
   sellingProfit: 15

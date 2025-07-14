@@ -48,8 +48,8 @@ public class PlayerManager : MonoBehaviour
     {
         instance = this;
 
-        players = GameObject.FindGameObjectsWithTag("Player").ToList();   
-
+        players = GameObject.FindGameObjectsWithTag("Player").ToList();
+        players.ForEach(player => player.transform.parent = null);
         Debug.Log(GetClosestPlayer(transform.position).name);
     }
 }

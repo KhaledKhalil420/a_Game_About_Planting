@@ -35,6 +35,7 @@ public class DayNightCycle : MonoBehaviour
     bool usingA = true;
     float currentSunYRotation = 0f;
     bool isCurrentlyDay;
+    bool _indoors = false; // control applying colors
 
     void Awake()
     {
@@ -71,7 +72,7 @@ public class DayNightCycle : MonoBehaviour
 
     void Update()
     {
-        timeOfDay += timeSpeed * timeSpeedMultiplier * TimeManager.Tickspeed * Time.deltaTime;
+        timeOfDay += timeSpeed * timeSpeedMultiplier * Tick.Tickspeed * Time.deltaTime;
         if (timeOfDay > 1f) timeOfDay -= 1f;
 
         float blend = Mathf.Clamp01(Mathf.Cos((timeOfDay + 0.25f) * Mathf.PI * 2f) * 0.5f + 0.5f);
@@ -130,8 +131,12 @@ public class DayNightCycle : MonoBehaviour
         }
 
         currentSceneColor = Color.Lerp(currentSceneColor, setting.ambientColor, Time.deltaTime * 2f);
-        RenderSettings.ambientLight = currentSceneColor;
-        RenderSettings.fogColor = currentSceneColor;
+
+        if (!_indoors)
+        {
+            RenderSettings.ambientLight = currentSceneColor;
+            RenderSettings.fogColor = currentSceneColor;
+        }
     }
 
     void UpdateAudioFade()
@@ -172,6 +177,11 @@ public class DayNightCycle : MonoBehaviour
     {
         if (skyMaterial != null)
             skyMaterial.SetFloat("_CubemapTransition", 0f);
+    }
+
+    public void SetIndoors(bool value)
+    {
+        _indoors = value;
     }
 
     [Serializable]

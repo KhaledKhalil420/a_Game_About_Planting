@@ -10,13 +10,12 @@ public class Hoe : Tool
 
     private bool _isUsing;
     private bool _canPlace;
-    private Camera _camera;
     private GameObject preview;
     private MeshRenderer previewRenderer;
 
     private void Start()
     {
-        _camera = PlayerLook.mainCamera;
+        _camera = PlayerLook.mainCamera.transform;
     }
 
     private void Update()

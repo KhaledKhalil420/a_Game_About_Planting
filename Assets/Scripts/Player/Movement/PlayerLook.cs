@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerLook : MonoBehaviour
 {
     public float Sensitivity = 50f;
-    private Vector2 rotations;  
+    internal Vector2 rotations;  
     internal Vector3 offset;
     public Transform Player;
     private CapsuleCollider playerCollider;
