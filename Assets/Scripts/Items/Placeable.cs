@@ -29,6 +29,11 @@ public class Placeable : MonoBehaviour, IInteractableAlt
                 AudioManager.instance?.PlaySound("Pickup");
                 Destroy(gameObject);
             }
+
+            else
+            {
+                Destroy(itemGO.gameObject);
+            }
         }
     }
 }

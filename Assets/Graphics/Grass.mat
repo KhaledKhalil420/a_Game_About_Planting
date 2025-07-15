@@ -14,6 +14,7 @@ Material:
   m_ValidKeywords:
   - _ALPHAPREMULTIPLY_ON
   - _ALPHATEST_ON
+  - _NORMALMAP
   - _SURFACE_TYPE_TRANSPARENT
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -32,10 +33,10 @@ Material:
     m_TexEnvs:
     - _BaseMap:
         m_Texture: {fileID: 2800000, guid: 9b500b50455b35e48a2ea96e35839e6c, type: 3}
-        m_Scale: {x: 5, y: 5}
+        m_Scale: {x: 3.5, y: 3.5}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 341057e0c6b9c564bb4be7ff44ad5cfb, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -56,7 +57,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 9b500b50455b35e48a2ea96e35839e6c, type: 3}
-        m_Scale: {x: 5, y: 5}
+        m_Scale: {x: 3.5, y: 3.5}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
@@ -113,13 +114,13 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _Metallic: 0.914
+    - _Metallic: 0.722
     - _OcclusionStrength: 1
     - _OffsetFull: 0.36
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Smoothness: 0
+    - _Smoothness: 0.529
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -130,8 +131,8 @@ Material:
     - _XRMotionVectorsPass: 1
     - _ZWrite: 0
     m_Colors:
-    - _BaseColor: {r: 0.13655885, g: 0.23584908, b: 0.10346209, a: 1}
-    - _Color: {r: 0.1365588, g: 0.23584905, b: 0.10346206, a: 1}
+    - _BaseColor: {r: 0.11897451, g: 0.16037738, b: 0.1036401, a: 1}
+    - _Color: {r: 0.118974485, g: 0.16037735, b: 0.10364007, a: 1}
     - _ColorBottom: {r: 0.35362792, g: 0.4811321, b: 0.24737452, a: 0.6039216}
     - _ColorTop: {r: 0.20000002, g: 0.29411766, b: 0.121568635, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

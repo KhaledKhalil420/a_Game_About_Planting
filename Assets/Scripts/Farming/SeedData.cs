@@ -18,4 +18,9 @@ public class SeedData : ScriptableObject
 
         return totalTime;
     }
+
+    public SeedGrowingStage GetLastSeed()
+    {
+        return seedGrowingStages[seedGrowingStages.Length - 1];
+     }
 }

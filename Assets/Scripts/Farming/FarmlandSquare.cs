@@ -7,7 +7,7 @@ public class FarmlandSquare : MonoBehaviour, IInteractable
     [SerializeField] internal SeedData _seedIn; //OMG HE SAID THE THING!!!
     [SerializeField] internal float _waterLevel = 100;
     [SerializeField] private float _growingElapsedTime = 0;
-    [SerializeField] private bool _isReadyToHarvest = false;
+    [SerializeField] internal bool _isReadyToHarvest = false;
     [SerializeField] private Transform childHolder;
     [SerializeField] private AudioSource source;
     [SerializeField] private AudioClip plantingSound, harvestingSound;
@@ -138,5 +138,25 @@ public class FarmlandSquare : MonoBehaviour, IInteractable
         _renderer.material.color = Color.Lerp(drySoilColor, wateredSoilColor, t);
     }
 
+    public void FullyGrowSoil()
+    {
+        DOTween.KillAll(this);
+
+        //Grow soil
+        _isReadyToHarvest = true;
+        _growingElapsedTime = 1555;
+
+        //Destory last model
+        if (_currentGrowingStageModel != null)
+            Destroy(_currentGrowingStageModel.gameObject);
+
+        //Get new stage and spawn it
+        _currentGrowingStageModel = Instantiate(_seedIn.GetLastSeed().currentStageModel, transform.position, Quaternion.identity, childHolder).transform;
+        _currentGrowingStageModel.localPosition = new Vector3(0, 0, 0);
+        _currentGrowingStageModel.localScale = new Vector3(1, 1, 1);
+        childHolder.localScale = new Vector3(1, 1, 1);
+
+    }
+     
     #endregion
 }
