@@ -10,6 +10,7 @@ public class PlaceableItem : Item
     private Quaternion previewRotation = Quaternion.identity;
 
     private PlayerInventory inventory;
+    public LayerMask PlaceableLayers;
 
     private void Start()
     {
@@ -22,7 +23,7 @@ public class PlaceableItem : Item
         if (!isItemPickedUp || placeableObject == null) return;
 
         Ray ray = new Ray(_camera.transform.position, _camera.transform.forward);
-        if (Physics.Raycast(ray, out RaycastHit hit, 5f, LayerMask.GetMask("Ground", "Farmland")))
+        if (Physics.Raycast(ray, out RaycastHit hit, 5f, PlaceableLayers))
         {
             if (preview == null)
             {

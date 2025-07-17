@@ -19,6 +19,8 @@ public class FarmlandSquare : MonoBehaviour, IInteractable
 
     private void Update()
     {
+        UpdateSoilWater();
+        
         float dt = Time.deltaTime;
         if (_seedIn != null && !_isReadyToHarvest && _waterLevel > 0)
         {
@@ -32,7 +34,6 @@ public class FarmlandSquare : MonoBehaviour, IInteractable
         {
             if (_seedIn != null && !_isReadyToHarvest && _waterLevel > 0)
                 UpdateGrowingStages();
-            UpdateSoilWater();
             _frameCounter = 0;
         }
     }

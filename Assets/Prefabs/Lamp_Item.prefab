@@ -109,6 +109,9 @@ MonoBehaviour:
   HeldQuantity: 1
   placeableObject: {fileID: 5329490885619692857, guid: ab6e9f679c7a4514684c3b8177a60dbb, type: 3}
   ghostMaterial: {fileID: 2100000, guid: c611588113626d0459e9ab412b6d4e82, type: 2}
+  PlaceableLayers:
+    serializedVersion: 2
+    m_Bits: 1032
 --- !u!65 &1131501857097021831
 BoxCollider:
   m_ObjectHideFlags: 0

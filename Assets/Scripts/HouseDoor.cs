@@ -1,64 +1,85 @@
 using UnityEngine;
 using UnityEngine.Audio;
+using DG.Tweening;
 
 public class HouseDoor : MonoBehaviour, IInteractable
 {
-    [SerializeField] private Transform _goingTo;
-    [SerializeField] private AudioMixerGroup _ambientMixerGroup;
-    [SerializeField] private AudioSource _source;
-    [SerializeField] private float _targetedLowPass = 22000;
-    [SerializeField] private bool _disableLight;
-    [SerializeField] private bool _disableFog;
-    private DayNightCycle dayNightCycle;
-    private Rigidbody playerRigidbody;
+    [SerializeField] Transform _goingTo;
+    [SerializeField] AudioMixerGroup _ambientMixerGroup;
+    [SerializeField] AudioSource _source;
+    [SerializeField] float _targetedLowPass = 22000;
+    [SerializeField] bool _disableLight, _disableFog, _onTrigger;
+    [SerializeField] GameObject _SpawnIn, _DisableIn;
 
-    private void Start()
+    DayNightCycle _dayNight;
+    Rigidbody _playerRb;
+
+    void Start()
     {
-        dayNightCycle = DayNightCycle.instance;
-        playerRigidbody = PlayerInventory.instance.GetComponent<Rigidbody>();
+        _dayNight = DayNightCycle.instance;
+        _playerRb = PlayerInventory.instance.GetComponent<Rigidbody>();
     }
 
     public void Interact(GameObject sender)
     {
-        //Teleport
-        if (playerRigidbody != null)
+        if (_playerRb == null) return;
+
+        CrossFader.StartFade();
+
+        DOVirtual.DelayedCall(0.15f, () =>
         {
-            playerRigidbody.linearVelocity = Vector3.zero;
-            playerRigidbody.angularVelocity = Vector3.zero;
-
-            playerRigidbody.MovePosition(_goingTo.position);
-            playerRigidbody.MoveRotation(_goingTo.rotation);
-
-            if (playerRigidbody.TryGetComponent<PlayerLook>(out var look))
-            {
-                Vector3 euler = _goingTo.rotation.eulerAngles;
-                look.rotations.y = euler.y;
-                look.rotations.x = 0f;
-            }
-        }
-        else
-        {
-            // fallback if no Rigidbody
-            playerRigidbody.transform.SetPositionAndRotation(_goingTo.position, _goingTo.rotation);
-        }
-
-        ChangeLights();
-        _source.Play();
+            TeleportPlayer();
+            ChangeLights();
+            _source.Play();
+        });
     }
 
-    private void ChangeLights()
+    void OnTriggerEnter(Collider other)
     {
-        //Dem down the Ambient sounds
+        if (!_onTrigger || !other.CompareTag("Player") || _playerRb == null) return;
+
+        TeleportPlayer();
+        
+        if(_SpawnIn != null)
+            _SpawnIn?.SetActive(true);
+
+        if(_DisableIn != null)
+            _DisableIn?.SetActive(false);
+
+
+        CrossFader.StartFade();
+        DOVirtual.DelayedCall(0.15f, () =>
+        {
+            TeleportPlayer();
+            ChangeLights();
+            _source.Play();
+        });
+    }
+
+    void TeleportPlayer()
+    {
+        _playerRb.linearVelocity = Vector3.zero;
+        _playerRb.angularVelocity = Vector3.zero;
+        _playerRb.MovePosition(_goingTo.position);
+        _playerRb.MoveRotation(_goingTo.localRotation);
+
+        PlayerLook playerLook = _playerRb.GetComponent<PlayerMovement>().playerLook;
+
+        var rot = _goingTo.localEulerAngles;
+        playerLook.rotations = new Vector2(0f, rot.y);
+    }
+
+    void ChangeLights()
+    {
         _ambientMixerGroup.audioMixer.SetFloat("LowPassAmbience", _targetedLowPass);
-
-        //bluh bluh bluh
         RenderSettings.fog = !_disableFog;
-        dayNightCycle.SetIndoors(_disableFog);
-        RenderSettings.ambientSkyColor = Color.black;
-        RenderSettings.ambientGroundColor = Color.black;
-        RenderSettings.ambientEquatorColor = Color.black;
+        _dayNight.SetIndoors(_disableFog);
 
-        //Disable MainLight
+        Color black = Color.black;
+        RenderSettings.ambientSkyColor = black;
+        RenderSettings.ambientGroundColor = black;
+        RenderSettings.ambientEquatorColor = black;
+
         RenderSettings.sun.enabled = !_disableLight;
     }
 }

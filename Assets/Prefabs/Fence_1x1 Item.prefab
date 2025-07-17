@@ -128,6 +128,9 @@ MonoBehaviour:
   HeldQuantity: 2
   placeableObject: {fileID: 7865136323051080115, guid: 4c5f466b320ec4249bd3c7d217ef6c94, type: 3}
   ghostMaterial: {fileID: 2100000, guid: c611588113626d0459e9ab412b6d4e82, type: 2}
+  PlaceableLayers:
+    serializedVersion: 2
+    m_Bits: 1032
 --- !u!54 &6197012256593410579
 Rigidbody:
   m_ObjectHideFlags: 0

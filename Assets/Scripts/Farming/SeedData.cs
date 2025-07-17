@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu, System.Serializable]
 public class SeedData : ScriptableObject
 {
     public SeedGrowingStage[] seedGrowingStages;

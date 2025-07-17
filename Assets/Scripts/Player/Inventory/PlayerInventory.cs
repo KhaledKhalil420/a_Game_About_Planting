@@ -205,13 +205,13 @@ public class PlayerInventory : MonoBehaviour
     {
         // Scroll wheel up/down
         float scroll = Input.GetAxis("Mouse ScrollWheel");
-        if (scroll > 0f)
+        if (scroll < 0f)
         {
             SlotHolders[_currentSlotIndex].HeldItem?.OnChangingItems();
             _currentSlotIndex = (_currentSlotIndex + 1) % SlotHolders.Count;
         }
 
-        else if (scroll < 0f)
+        else if (scroll > 0f)
         {
             SlotHolders[_currentSlotIndex].HeldItem?.OnChangingItems();
             _currentSlotIndex = (_currentSlotIndex - 1 + SlotHolders.Count) % SlotHolders.Count;

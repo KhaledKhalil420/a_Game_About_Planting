@@ -6,10 +6,11 @@ public class Shop : MonoBehaviour
     [SerializeField] private Transform[] sellingPoints;
     [SerializeField] private List<Sellable> possibleItemsToSell = new();
     [SerializeField] private List<Sellable> currentItems = new();
+    [SerializeField] private string foldersName;
 
     private void Awake()
     {
-        GameObject[] loaded = Resources.LoadAll<GameObject>("Shop");
+        GameObject[] loaded = Resources.LoadAll<GameObject>("Shop" + foldersName);
         foreach (GameObject obj in loaded)
         {
             if (obj.TryGetComponent(out Sellable i)) possibleItemsToSell.Add(i);

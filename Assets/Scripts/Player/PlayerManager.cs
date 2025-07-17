@@ -1,10 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using System.Linq;
+using System.Collections.Generic;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -13,17 +9,17 @@ public class PlayerManager : MonoBehaviour
 
     public List<GameObject> players;
     public GameObject localPlayer;
-    internal float localPlayerMoney = 0;
-    private float allTimeCollected;
-
-    public GUI gui;
 
     public void LockPlayer()
     {
+        localPlayer.GetComponent<PlayerMovement>().playerLook.enabled = false;
+        localPlayer.GetComponent<PlayerMovement>().enabled = false;
     }
 
     public void UnlockPlayer()
     {
+        localPlayer.GetComponent<PlayerMovement>().playerLook.enabled = true;
+        localPlayer.GetComponent<PlayerMovement>().enabled = true;
     }
     
     public Transform GetClosestPlayer(Vector3 locateFrom)
@@ -50,6 +46,5 @@ public class PlayerManager : MonoBehaviour
 
         players = GameObject.FindGameObjectsWithTag("Player").ToList();
         players.ForEach(player => player.transform.parent = null);
-        Debug.Log(GetClosestPlayer(transform.position).name);
     }
 }
