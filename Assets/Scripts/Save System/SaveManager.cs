@@ -44,7 +44,7 @@ public class SaveManager : MonoBehaviour
     public void Load()
     {
         //Unload all old objects
-        GameObjectData[] previousObjects = FindObjectsByType<GameObjectData>(FindObjectsInactive.Exclude, FindObjectsSortMode.InstanceID);
+        GameObjectSavable[] previousObjects = FindObjectsByType<GameObjectSavable>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID);
         Array.ForEach(previousObjects, pre => Destroy(pre.gameObject));
 
         LoadObject();
@@ -56,10 +56,10 @@ public class SaveManager : MonoBehaviour
 
     private void SaveObject()
     {
-        foreach (var obj in FindObjectsByType<GameObjectData>(FindObjectsSortMode.InstanceID))
+        foreach (var obj in FindObjectsByType<GameObjectSavable>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID))
         {
             // Clone data into a serializable class
-            var data = new GameObjectSaveData();
+            var data = new GameObjectData();
             data.id = obj.saveData.id;
             data.position = obj.transform.position;
             data.objectName = obj.saveData.objectName;
@@ -86,7 +86,7 @@ public class SaveManager : MonoBehaviour
             }
 
             // Spawn
-            GameObjectData gameObject = Instantiate(prefab, data.position, Quaternion.Euler(data.eulerAngles)).GetComponent<GameObjectData>();
+            GameObjectSavable gameObject = Instantiate(prefab, data.position, Quaternion.Euler(data.eulerAngles)).GetComponent<GameObjectSavable>();
             gameObject.name = data.objectName;
             gameObject.saveData.id = data.id;
         }
@@ -103,7 +103,6 @@ public class SaveManager : MonoBehaviour
             var breakableData = new BreakableData();
 
             breakableData.id = breakable.saveData.id;
-            Debug.Log(breakable);
             breakableData.health = breakable.breakableSaveData.health;
 
             file.breakables.Add(breakableData);
@@ -117,7 +116,7 @@ public class SaveManager : MonoBehaviour
 
         foreach (var breakableData in saveFile.breakables)
         {
-            var match = FindObjectsByType<Breakable>(FindObjectsInactive.Include, FindObjectsSortMode.None).FirstOrDefault(x => x.GetComponent<GameObjectData>().saveData.id == breakableData.id);
+            var match = FindObjectsByType<Breakable>(FindObjectsInactive.Include, FindObjectsSortMode.None).FirstOrDefault(x => x.GetComponent<GameObjectSavable>().saveData.id == breakableData.id);
 
             if (match != null)
             {
@@ -132,38 +131,13 @@ public class SaveManager : MonoBehaviour
     
     private void SaveFarmland()
     {
-        foreach (var farmland in FindObjectsByType<FarmlandSquare>(FindObjectsInactive.Exclude, FindObjectsSortMode.InstanceID))
-        {
-            var farmlandData = new FarmlandSquareData();
 
-            farmland.saveData.id = farmlandData.id;
-            farmland.farmlandData.soilQualityLevel = farmlandData.soilQualityLevel;
-            farmland.farmlandData.seed = farmlandData.seed;
-            farmland.farmlandData.waterLevel = farmlandData.waterLevel;
-            farmland.farmlandData.isReadyToHarvest = farmlandData.isReadyToHarvest;
-
-            file.farmlands.Add(farmlandData);
-        }
     }
+
 
     private void LoadFarmland()
     {
-        string json = File.ReadAllText(filePath);
-        SaveFile saveFile = JsonUtility.FromJson<SaveFile>(json);
 
-        foreach (var farmlandData in saveFile.farmlands)
-        {
-            var match = FindObjectsByType<FarmlandSquare>(FindObjectsInactive.Include, FindObjectsSortMode.None).FirstOrDefault(x => x.GetComponent<GameObjectData>().saveData.id == farmlandData.id);
-
-            if (match != null)
-            {
-                match.soilQualityLevel = farmlandData.soilQualityLevel;
-                match.seedIn = match.GetSeedData(farmlandData.seed);
-                match.waterLevel = farmlandData.waterLevel;
-                match.isReadyToHarvest = farmlandData.isReadyToHarvest;
-                match.FullyGrowSoil();
-            }
-        }
     }
 
     #endregion

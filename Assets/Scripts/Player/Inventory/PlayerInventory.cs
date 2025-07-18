@@ -109,7 +109,7 @@ public class PlayerInventory : MonoBehaviour
                         Destroy(item.gameObject);
                         sameTypeSlot.UpdateSlot();
 
-                        AudioManager.instance.PlaySound("Pickup", 1, 1.1f);
+                        AudioManager.instance?.PlaySound("Pickup", 1, 1.1f);
                     }
 
                     else if (FindNearestEmptySlot(out SlotHolder emptySlot) != null)

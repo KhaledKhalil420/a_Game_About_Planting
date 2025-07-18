@@ -1,10 +1,11 @@
 using UnityEngine;
 
 [System.Serializable]
-public class GameObjectData : MonoBehaviour
+public class GameObjectSavable : MonoBehaviour
 {
-    internal GameObjectSaveData saveData;
+    internal GameObjectData saveData;
     public GameObject prefab;
+
 
     public GameObject ReturnPrefab()
     {
@@ -14,7 +15,7 @@ public class GameObjectData : MonoBehaviour
     private void Awake()
     {
         saveData = new();
-        
+
         //Generate ID
         saveData.id = gameObject.GetInstanceID().ToString() + "@";
 
@@ -24,11 +25,25 @@ public class GameObjectData : MonoBehaviour
         //Set Object Name
         saveData.objectName = gameObject.name;
     }
+
+    public void SaveObj()
+    {
+        saveData = new();
+
+        //Generate ID
+        saveData.id = gameObject.GetInstanceID().ToString() + "@";
+
+        //Set Prefab Name
+        saveData.prefabName = prefab != null ? prefab.name.Replace("(Clone)", "") : "";
+
+        //Set Object Name
+        saveData.objectName = gameObject.name;
+     }
 }
 
 
 [System.Serializable]
-public class GameObjectSaveData
+public class GameObjectData
 {
     public string id;
     public string objectName;

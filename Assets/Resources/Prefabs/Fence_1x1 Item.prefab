@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4016345088375724035}
   - component: {fileID: 5345243705865974217}
   - component: {fileID: 6197012256593410579}
+  - component: {fileID: -5940033900357972804}
   m_Layer: 7
   m_Name: Fence_1x1 Item
   m_TagString: Untagged
@@ -158,3 +159,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 1
+--- !u!114 &-5940033900357972804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6253683728810710833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d12abbdc1213ba4ab123d3391a96096, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 6253683728810710833}

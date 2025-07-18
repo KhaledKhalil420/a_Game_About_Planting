@@ -1,9 +1,8 @@
 using DG.Tweening;
 using UnityEngine;
 
-public partial class FarmlandSquare : GameObjectData, IInteractable
+public partial class FarmlandSquare : GameObjectSavable, IInteractable
 {
-    internal FarmlandSquareData farmlandData;
     [SerializeField] internal int soilQualityLevel = 4;
     [SerializeField] internal SeedData seedIn; //OMG HE SAID THE THING!!!
     [SerializeField] internal float waterLevel = 100;
@@ -19,20 +18,7 @@ public partial class FarmlandSquare : GameObjectData, IInteractable
 
     private void Awake()
     {
-        saveData = new();
-        farmlandData = new();
-
-        //Generate ID
-        saveData.id = gameObject.GetInstanceID().ToString() + "@";
-
-        //Set Prefab Name
-        saveData.prefabName = prefab != null ? prefab.name.Replace("(Clone)", "") : "";
-
-        //Set Object Name
-        saveData.objectName = gameObject.name;
-
-        //Set seed name
-        farmlandData.seed = seedIn.name;
+        SaveObj();
     }
 
     private void Update()
@@ -79,7 +65,6 @@ public partial class FarmlandSquare : GameObjectData, IInteractable
         inventory.GetSelectedSlot().HeldQuantity -= 1;
         inventory.GetSelectedSlot().UpdateSlot();
         seedIn = seed.seedData;
-        farmlandData.seed = seedIn.name;
 
         childHolder.localScale = new(0.15f, 0.15f, 0.15f);
         DOVirtual.Vector3(childHolder.localScale, new Vector3(1, 1, 1), seed.seedData.GetTotalTimeToGrow(),
@@ -104,7 +89,6 @@ public partial class FarmlandSquare : GameObjectData, IInteractable
         }
 
         seedIn = null;
-        farmlandData.seed = "";
         isReadyToHarvest = false;
         growingElapsedTime = 0;
 
@@ -161,6 +145,9 @@ public partial class FarmlandSquare : GameObjectData, IInteractable
 
     public void FullyGrowSoil()
     {
+        if (seedIn == null)
+            return;
+
         DOTween.KillAll(this);
 
         //Grow soil
@@ -188,12 +175,5 @@ public partial class FarmlandSquare : GameObjectData, IInteractable
 
         else return null;
      }
-}
 
-public class FarmlandSquareData : GameObjectSaveData
-{
-    public  int soilQualityLevel;
-    public string seed;
-    public float waterLevel;
-    public bool isReadyToHarvest;
 }

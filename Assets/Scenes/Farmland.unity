@@ -598,7 +598,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5009706925125941247, guid: 4bff07ddfc5ebeb4dae1de9dd663691e, type: 3}
       propertyPath: m_Name
-      value: Lantern (3)
+      value: Lantern
       objectReference: {fileID: 0}
     - target: {fileID: 5009706925125941247, guid: 4bff07ddfc5ebeb4dae1de9dd663691e, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -7887,7 +7887,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5329490885619692857, guid: ab6e9f679c7a4514684c3b8177a60dbb, type: 3}
       propertyPath: m_Name
-      value: Placeable_Lamp (1)
+      value: Placeable_Lamp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9647,7 +9647,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5009706925125941247, guid: 4bff07ddfc5ebeb4dae1de9dd663691e, type: 3}
       propertyPath: m_Name
-      value: Lantern (3)
+      value: Lantern
       objectReference: {fileID: 0}
     - target: {fileID: 5009706925125941247, guid: 4bff07ddfc5ebeb4dae1de9dd663691e, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -27085,7 +27085,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 3332774623193117486, guid: e7210b38c7e145044a754c63b4866306, type: 3}
-  health: 100
   source: {fileID: 1323809014}
   childTree: {fileID: 1513393558}
 --- !u!82 &1323809014
@@ -30196,7 +30195,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5009706925125941247, guid: 4bff07ddfc5ebeb4dae1de9dd663691e, type: 3}
       propertyPath: m_Name
-      value: Lantern (3)
+      value: Lantern
       objectReference: {fileID: 0}
     - target: {fileID: 5009706925125941247, guid: 4bff07ddfc5ebeb4dae1de9dd663691e, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -32377,7 +32376,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5009706925125941247, guid: 4bff07ddfc5ebeb4dae1de9dd663691e, type: 3}
       propertyPath: m_Name
-      value: Lantern (3)
+      value: Lantern
       objectReference: {fileID: 0}
     - target: {fileID: 5009706925125941247, guid: 4bff07ddfc5ebeb4dae1de9dd663691e, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -41719,7 +41718,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2591585688983627959, guid: f6a6275933969d04c9cc80ab9d293d0a, type: 3}
       propertyPath: m_Name
-      value: Carrot_item (1)
+      value: Carrot_item
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

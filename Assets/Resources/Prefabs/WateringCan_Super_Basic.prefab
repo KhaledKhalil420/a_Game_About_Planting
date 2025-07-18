@@ -4848,6 +4848,7 @@ GameObject:
   - component: {fileID: 8718764163734195017}
   - component: {fileID: 2355281594706981388}
   - component: {fileID: 3194586821935691529}
+  - component: {fileID: -6254313004757674581}
   m_Layer: 7
   m_Name: WateringCan_Super_Basic
   m_TagString: Untagged
@@ -5093,3 +5094,16 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-6254313004757674581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7280261322664062507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d12abbdc1213ba4ab123d3391a96096, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 7280261322664062507}

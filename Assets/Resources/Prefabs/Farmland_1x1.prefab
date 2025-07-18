@@ -46,7 +46,6 @@ GameObject:
   - component: {fileID: 4576664515467235788}
   - component: {fileID: 2540566083392040174}
   - component: {fileID: -8618890769139541060}
-  - component: {fileID: -7391065119460037989}
   m_Layer: 6
   m_Name: Farmland_1x1
   m_TagString: Untagged
@@ -135,16 +134,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 486bef586af7b8e4098981e8b36810ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _soilQualityLevel: 1
-  _seedIn: {fileID: 0}
-  _waterLevel: 0
-  _growingElapsedTime: 0
-  _isReadyToHarvest: 0
+  prefab: {fileID: 7731005561311465804}
+  soilQualityLevel: 4
+  seedIn: {fileID: 0}
+  waterLevel: 0
+  growingElapsedTime: 0
+  isReadyToHarvest: 0
   childHolder: {fileID: 6070021196751998865}
   source: {fileID: 2540566083392040174}
   plantingSound: {fileID: 8300000, guid: 5599ccfc3f21d2442a9b14b766404ff6, type: 3}
   harvestingSound: {fileID: 8300000, guid: 0bb772c08bddb874cb3d0bb9ffe23c12, type: 3}
-  _renderer: {fileID: 2983093095135384833}
+  renderr: {fileID: 2983093095135384833}
   drySoilColor: {r: 0.41960785, g: 0.3019608, b: 0.21960784, a: 1}
   wateredSoilColor: {r: 0.24528301, g: 0.17100391, b: 0.1214845, a: 1}
 --- !u!65 &4576664515467235788
@@ -283,21 +283,3 @@ LODGroup:
     fadeTransitionWidth: 1
     renderers: []
   m_Enabled: 1
---- !u!114 &-7391065119460037989
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7731005561311465804}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d12abbdc1213ba4ab123d3391a96096, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  saveData:
-    id: 
-    objectName: 
-    prefabName: 
-    position: {x: 0, y: 0, z: 0}
-  prefab: {fileID: 7731005561311465804}

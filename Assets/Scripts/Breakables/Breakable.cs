@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Breakable : GameObjectData
+public class Breakable : GameObjectSavable
 {
     internal BreakableData breakableSaveData;
     private bool isKilled = false;
@@ -38,7 +38,7 @@ public class Breakable : GameObjectData
 }
 
 [System.Serializable]
-public class BreakableData : GameObjectSaveData
+public class BreakableData : GameObjectData
 {
     public int health = 100;
 }
