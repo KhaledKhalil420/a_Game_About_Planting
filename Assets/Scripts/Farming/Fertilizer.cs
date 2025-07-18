@@ -8,7 +8,7 @@ public class Fertilizer : Tool
         {
             if (hit.transform.TryGetComponent(out FarmlandSquare farmlandSquare))
             {
-                if (farmlandSquare._isReadyToHarvest)
+                if (farmlandSquare.isReadyToHarvest)
                     return;
 
                 //Grow square

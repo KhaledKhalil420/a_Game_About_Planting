@@ -572,7 +572,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3332774623193117486, guid: e7210b38c7e145044a754c63b4866306, type: 3}
       propertyPath: m_Name
-      value: Spruce 1_Breakable (9)
+      value: SpruceBreakable(Clone)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3909,7 +3909,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3332774623193117486, guid: e7210b38c7e145044a754c63b4866306, type: 3}
       propertyPath: m_Name
-      value: Spruce 1_Breakable (18)
+      value: SpruceBreakable(Clone)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3976,7 +3976,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3332774623193117486, guid: e7210b38c7e145044a754c63b4866306, type: 3}
       propertyPath: m_Name
-      value: Spruce 1_Breakable (19)
+      value: SpruceBreakable(Clone)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4043,7 +4043,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3332774623193117486, guid: e7210b38c7e145044a754c63b4866306, type: 3}
       propertyPath: m_Name
-      value: Spruce 1_Breakable (7)
+      value: SpruceBreakable(Clone)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6940,7 +6940,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3332774623193117486, guid: e7210b38c7e145044a754c63b4866306, type: 3}
       propertyPath: m_Name
-      value: Spruce 1_Breakable (12)
+      value: SpruceBreakable(Clone)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7440,7 +7440,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3332774623193117486, guid: e7210b38c7e145044a754c63b4866306, type: 3}
       propertyPath: m_Name
-      value: Spruce 1_Breakable
+      value: SpruceBreakable(Clone)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7825,7 +7825,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3332774623193117486, guid: e7210b38c7e145044a754c63b4866306, type: 3}
       propertyPath: m_Name
-      value: Spruce 1_Breakable (4)
+      value: SpruceBreakable(Clone)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8587,7 +8587,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3332774623193117486, guid: e7210b38c7e145044a754c63b4866306, type: 3}
       propertyPath: m_Name
-      value: Spruce 1_Breakable (15)
+      value: SpruceBreakable(Clone)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11486,7 +11486,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3332774623193117486, guid: e7210b38c7e145044a754c63b4866306, type: 3}
       propertyPath: m_Name
-      value: Spruce 1_Breakable (20)
+      value: SpruceBreakable(Clone)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12782,7 +12782,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3332774623193117486, guid: e7210b38c7e145044a754c63b4866306, type: 3}
       propertyPath: m_Name
-      value: Spruce 1_Breakable (13)
+      value: SpruceBreakable(Clone)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -13593,7 +13593,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3332774623193117486, guid: e7210b38c7e145044a754c63b4866306, type: 3}
       propertyPath: m_Name
-      value: Spruce 1_Breakable (8)
+      value: SpruceBreakable(Clone)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -14507,7 +14507,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3332774623193117486, guid: e7210b38c7e145044a754c63b4866306, type: 3}
       propertyPath: m_Name
-      value: Spruce 1_Breakable (10)
+      value: SpruceBreakable(Clone)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -19396,7 +19396,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3332774623193117486, guid: e7210b38c7e145044a754c63b4866306, type: 3}
       propertyPath: m_Name
-      value: Spruce 1_Breakable (2)
+      value: SpruceBreakable(Clone)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -21167,7 +21167,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3332774623193117486, guid: e7210b38c7e145044a754c63b4866306, type: 3}
       propertyPath: m_Name
-      value: Spruce 1_Breakable (6)
+      value: SpruceBreakable(Clone)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -26473,7 +26473,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3332774623193117486, guid: e7210b38c7e145044a754c63b4866306, type: 3}
       propertyPath: m_Name
-      value: Spruce 1_Breakable (14)
+      value: SpruceBreakable(Clone)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -27079,11 +27079,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1185795844}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4b1fa5c9ba3fdcd4a8ebc440b620a23f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  prefab: {fileID: 3332774623193117486, guid: e7210b38c7e145044a754c63b4866306, type: 3}
   health: 100
   source: {fileID: 1323809014}
   childTree: {fileID: 1513393558}
@@ -30164,7 +30165,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3332774623193117486, guid: e7210b38c7e145044a754c63b4866306, type: 3}
       propertyPath: m_Name
-      value: Spruce 1_Breakable (1)
+      value: SpruceBreakable(Clone)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -31390,7 +31391,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3332774623193117486, guid: e7210b38c7e145044a754c63b4866306, type: 3}
       propertyPath: m_Name
-      value: Spruce 1_Breakable (16)
+      value: SpruceBreakable(Clone)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -31457,7 +31458,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3332774623193117486, guid: e7210b38c7e145044a754c63b4866306, type: 3}
       propertyPath: m_Name
-      value: Spruce 1_Breakable (3)
+      value: SpruceBreakable(Clone)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -34549,7 +34550,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3332774623193117486, guid: e7210b38c7e145044a754c63b4866306, type: 3}
       propertyPath: m_Name
-      value: Spruce 1_Breakable (17)
+      value: SpruceBreakable(Clone)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -35366,7 +35367,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3332774623193117486, guid: e7210b38c7e145044a754c63b4866306, type: 3}
       propertyPath: m_Name
-      value: Spruce 1_Breakable (11)
+      value: SpruceBreakable(Clone)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -39909,7 +39910,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3332774623193117486, guid: e7210b38c7e145044a754c63b4866306, type: 3}
       propertyPath: m_Name
-      value: Spruce 1_Breakable (5)
+      value: SpruceBreakable(Clone)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -41745,10 +41746,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5a5df4d106c4c54b850355dc8e9337d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 
-  prefab: {fileID: 0}
-  position: {x: 0, y: 0, z: 0}
-  objectName: 
 --- !u!1001 &2081598720
 PrefabInstance:
   m_ObjectHideFlags: 0

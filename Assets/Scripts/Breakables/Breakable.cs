@@ -1,15 +1,30 @@
 using UnityEngine;
 
-public class Breakable : MonoBehaviour
+public class Breakable : GameObjectData
 {
-    [SerializeField] private int health = 100;
+    internal BreakableData breakableSaveData;
     private bool isKilled = false;
+
+    private void Awake()
+    {
+        saveData = new();
+        breakableSaveData = new();
+        
+        //Generate ID
+        saveData.id = gameObject.GetInstanceID().ToString() + "@";
+
+        //Set Prefab Name
+        saveData.prefabName = prefab != null ? prefab.name.Replace("(Clone)", "") : "";
+
+        //Set Object Name
+        saveData.objectName = gameObject.name;
+    }
 
     public void Damage(int damage)
     {
-        health -= damage;
+        breakableSaveData.health -= damage;
 
-        if (health <= 0 && !isKilled)
+        if (breakableSaveData.health <= 0 && !isKilled)
         {
             isKilled = true;
             OnDestroyed();
@@ -18,6 +33,12 @@ public class Breakable : MonoBehaviour
 
     public virtual void OnDestroyed()
     {
-        
+
     }
+}
+
+[System.Serializable]
+public class BreakableData : GameObjectSaveData
+{
+    public int health = 100;
 }

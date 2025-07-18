@@ -276,7 +276,7 @@ GameObject:
   - component: {fileID: 6046354582334540804}
   - component: {fileID: 5361238317525667038}
   m_Layer: 0
-  m_Name: Spruce 1_Breakable
+  m_Name: SpruceBreakable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -355,6 +355,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b1fa5c9ba3fdcd4a8ebc440b620a23f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  prefab: {fileID: 3332774623193117486}
   health: 100
   source: {fileID: 6046354582334540804}
   childTree: {fileID: 2382649259771430202}

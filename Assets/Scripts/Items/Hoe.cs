@@ -109,8 +109,8 @@ public class Hoe : Tool
 
         FarmlandSquare fsq = Instantiate(farmlandObject, preview.transform.position, preview.transform.rotation)
             .GetComponent<FarmlandSquare>();
-        fsq._soilQualityLevel = soilQuality;
-        fsq._waterLevel = soilWater;
+        fsq.soilQualityLevel = soilQuality;
+        fsq.waterLevel = soilWater;
 
         Destroy(preview);
         preview = null;
@@ -151,13 +151,13 @@ public class Hoe : Tool
 
         if (Physics.Raycast(ray, out RaycastHit hit, 5f) && hit.transform.TryGetComponent(out FarmlandSquare square))
         {
-            if (square._seedIn != null)
+            if (square.seedIn != null)
             {
               
-                Item s = square._seedIn.reward;
+                Item s = square.seedIn.reward;
                 s.HeldQuantity = 1;
 
-                Instantiate(s, square.transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
+                Instantiate(s, square.transform.position + new Vector3(0, 0.5f, 0), Quaternion.Euler(0, 90, 0));
                 animator.SetTrigger("Remove");  
             }
 

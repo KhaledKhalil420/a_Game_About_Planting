@@ -20,7 +20,7 @@ public class WaterSprayer : Placeable
         {
             if (farmland.TryGetComponent(out FarmlandSquare farmlandSquare))
             {
-                farmlandSquare._waterLevel += 50;
+                farmlandSquare.waterLevel += 50;
             }
         }
 

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8513614881593026662}
   - component: {fileID: 8065091365633062561}
   - component: {fileID: 8655840380682543278}
+  - component: {fileID: 7598578337900330595}
   m_Layer: 6
   m_Name: Fence_1x1_Placeable
   m_TagString: Untagged
@@ -122,3 +123,16 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.3099583, y: 2, z: 3.9309292}
   m_Center: {x: -0.010779798, y: 0.99999994, z: -0.00000017881393}
+--- !u!114 &7598578337900330595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7865136323051080115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d12abbdc1213ba4ab123d3391a96096, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 7865136323051080115}
