@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class FarmlandSquare : MonoBehaviour, IInteractable
+public partial class FarmlandSquare : MonoBehaviour, IInteractable
 {
     [SerializeField] internal int _soilQualityLevel = 4;
     [SerializeField] internal SeedData _seedIn; //OMG HE SAID THE THING!!!
@@ -13,7 +13,6 @@ public class FarmlandSquare : MonoBehaviour, IInteractable
     [SerializeField] private AudioClip plantingSound, harvestingSound;
     [SerializeField] private Renderer _renderer;
     [SerializeField] private Color drySoilColor, wateredSoilColor;
-
     private int _frameCounter = 0;
     private const int FRAME_INTERVAL = 100;
 

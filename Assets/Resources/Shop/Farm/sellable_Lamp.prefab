@@ -156,7 +156,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b2b954cf09d2e64891c4d19bb11f0d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 150
+  cost: 100
   item: {fileID: 7478703756229676875, guid: 97159715f2862e14eb0134c1cb69656b, type: 3}
   text: {fileID: 796133980862852213}
   group: {fileID: 0}

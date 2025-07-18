@@ -1,192 +1,90 @@
-using UnityEngine;
 using System;
 using System.IO;
-using System.Linq;
-using System.Collections.Generic;
-
+using UnityEngine;
 
 public class SaveManager : MonoBehaviour
 {
-    public static SaveManager instance;
-
-    public List<ISavable> savables = new();
-    public static string savingPath;
+    internal string filePath;
+    internal SaveFile file;
 
     private void Awake()
     {
-        //Set instance
-        instance = this;
-
-        //Set saving path
-        savingPath = Application.persistentDataPath + "/save.json";
-
-        #region Load Savables too list
-
-        GameObject[] objects = FindObjectsByType<GameObject>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
-        Array.ForEach(objects, ob =>
-        {
-            if (ob.TryGetComponent(out ISavable savable))
-                savables.Add(savable);
-        });
-
-        #endregion
-
-        
+        filePath = Application.persistentDataPath + "/world.json";
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F5)) SaveGame();
-        if (Input.GetKeyDown(KeyCode.F6)) LoadGame();
-    }
-
-    #region Values Saving
-
-    public void SaveValue(GameObject gameObject, string value)
-    {
-        //Get id
-        string id = "";
-        if (gameObject.TryGetComponent(out SavableObject savableObject))
+        if (Input.GetKeyDown(KeyCode.F5))
         {
-            id = savableObject.objectID;
+            Save(); // Save game
         }
 
-        //Save value
-        File.AppendAllText(savingPath, id + "$" + value.ToString() + "\n");
+        if (Input.GetKeyDown(KeyCode.F6))
+        {
+            Load(); // Load game
+        }
+    }
+
+    public void Save()
+    {
+        //Make a new Save File
+        file = new();
+
+        SaveObject();
+    }
+
+    public void Load()
+    {
+        //Unload all old objects
+        GameObjectData[] previousObjects = FindObjectsByType<GameObjectData>(FindObjectsInactive.Exclude, FindObjectsSortMode.InstanceID);
+        Array.ForEach(previousObjects, pre => Destroy(pre.gameObject));
+
+        LoadObject();
+    }
+
+    #region GameObject Handling
+
+    private void SaveObject()
+    {
+        foreach (var obj in FindObjectsByType<GameObjectData>(FindObjectsSortMode.InstanceID))
+        {
+            // Clone data into a serializable class
+            var data = new GameObjectSaveData();
+            data.id = obj.saveData.id;
+            data.position = obj.transform.position;
+            data.objectName = obj.saveData.objectName;
+            data.prefabName = obj.saveData.prefabName;
+            data.eulerAngles = obj.transform.eulerAngles;
+
+            file.gameObjects.Add(data);
+        }
+
+        // Convert to JSON and write
+        string json = JsonUtility.ToJson(file, true);
+        File.WriteAllText(filePath, json);
+    }
+
+    private void LoadObject()
+    {
+        string json = File.ReadAllText(filePath);
+        SaveFile saveFile = JsonUtility.FromJson<SaveFile>(json);
+
+        foreach (var data in saveFile.gameObjects)
+        {
+            // Get prefab
+            GameObject prefab = Resources.Load<GameObject>("Prefabs/" + data.prefabName);
+            if (prefab == null)
+            {
+                Debug.LogWarning("Missing prefab: " + data.prefabName);
+                continue;
+            }
+
+            // Spawn
+            GameObjectData gameObject = Instantiate(prefab, data.position, Quaternion.Euler(data.eulerAngles)).GetComponent<GameObjectData>();
+            gameObject.name = data.objectName;
+            gameObject.saveData.id = data.id;
+        }
     }
 
     #endregion
-
-    #region Value Loading
-
-    public float LoadValueFloat(GameObject gameObject)
-    {
-        string id = "";
-        if (gameObject.TryGetComponent(out SavableObject savableObject))
-            id = savableObject.objectID;
-
-        if (!File.Exists(savingPath)) return 0f;
-
-        foreach (var line in File.ReadAllLines(savingPath))
-        {
-            if (line.StartsWith(id + "$"))
-            {
-                string valStr = line.Substring(id.Length + 1);
-                if (float.TryParse(valStr, out float result)) return result;
-            }
-        }
-
-        return 0f;
-    }
-
-
-    public int LoadValueInt(GameObject gameObject)
-    {
-        string id = "";
-        if (gameObject.TryGetComponent(out SavableObject savableObject))
-            id = savableObject.objectID;
-
-        if (!File.Exists(savingPath)) return 0;
-
-        foreach (var line in File.ReadAllLines(savingPath))
-        {
-            if (line.StartsWith(id + "$"))
-            {
-                string valStr = line.Substring(id.Length + 1);
-                if (int.TryParse(valStr, out int result)) return result;
-            }
-        }
-
-        return 0;
-    }
-
-
-    public bool LoadValueBool(GameObject gameObject)
-    {
-        string id = "";
-        if (gameObject.TryGetComponent(out SavableObject savableObject))
-            id = savableObject.objectID;
-
-        if (!File.Exists(savingPath)) return false;
-
-        foreach (var line in File.ReadAllLines(savingPath))
-        {
-            if (line.StartsWith(id + "$"))
-            {
-                string valStr = line.Substring(id.Length + 1);
-                if (bool.TryParse(valStr, out bool result)) return result;
-            }
-        }
-
-        return false;
-    }
-
-
-    public Vector3 LoadValueVector3(GameObject gameObject)
-    {
-        string id = "";
-        if (gameObject.TryGetComponent(out SavableObject savableObject))
-            id = savableObject.objectID;
-
-        if (!File.Exists(savingPath)) return Vector3.zero;
-
-        foreach (var line in File.ReadAllLines(savingPath))
-        {
-            if (line.StartsWith(id + "$"))
-            {
-                string valStr = line.Substring(id.Length + 1).Trim('(', ')');
-                var parts = valStr.Split(',');
-
-                if (parts.Length == 3
-                    && float.TryParse(parts[0], out float x)
-                    && float.TryParse(parts[1], out float y)
-                    && float.TryParse(parts[2], out float z))
-                {
-                    return new Vector3(x, y, z);
-                }
-            }
-        }
-
-        return Vector3.zero;
-    }
-
-
-    public string LoadValue(GameObject gameObject)
-    {
-        string id = "";
-        if (gameObject.TryGetComponent(out SavableObject savableObject))
-            id = savableObject.objectID;
-
-        if (!File.Exists(savingPath)) return "";
-
-        foreach (var line in File.ReadAllLines(savingPath))
-        {
-            if (line.StartsWith(id + "$"))
-            {
-                return line.Substring(id.Length + 1);
-            }
-        }
-
-        return "";
-    }
-
-
-    #endregion
-
-
-    public void SaveGame()
-    {
-        foreach (ISavable savable in savables)
-        {
-            savable.Save();
-        }
-    }
-
-    public void LoadGame()
-    {
-        foreach (ISavable savable in savables)
-        {
-            savable.Load();
-        }
-    }
 }

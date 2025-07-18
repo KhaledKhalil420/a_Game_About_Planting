@@ -292,7 +292,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 7731005561311465804}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5a5df4d106c4c54b850355dc8e9337d, type: 3}
+  m_Script: {fileID: 11500000, guid: 5d12abbdc1213ba4ab123d3391a96096, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _id: 
+  saveData:
+    id: 
+    objectName: 
+    prefabName: 
+    position: {x: 0, y: 0, z: 0}
+  prefab: {fileID: 7731005561311465804}

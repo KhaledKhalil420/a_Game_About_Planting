@@ -124,11 +124,10 @@ public class Hoe : Tool
     {
         Ray ray = new Ray(_camera.transform.position, _camera.transform.forward);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, 5f) &&
-            hit.transform.TryGetComponent(out FarmlandSquare square))
+        if (Physics.Raycast(ray, out RaycastHit hit, 5f) && hit.transform.TryGetComponent(out FarmlandSquare square))
         {
-            if(square._seedIn == null)
-            animator.SetTrigger("Remove");
+            if(square != null)
+                animator.SetTrigger("Remove");
         }
     }
 
@@ -150,9 +149,18 @@ public class Hoe : Tool
 
         Ray ray = new Ray(_camera.transform.position, _camera.transform.forward);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, 5f) &&
-            hit.transform.TryGetComponent(out FarmlandSquare square))
+        if (Physics.Raycast(ray, out RaycastHit hit, 5f) && hit.transform.TryGetComponent(out FarmlandSquare square))
         {
+            if (square._seedIn != null)
+            {
+              
+                Item s = square._seedIn.reward;
+                s.HeldQuantity = 1;
+
+                Instantiate(s, square.transform.position + new Vector3(0, 0.5f, 0), Quaternion.identity);
+                animator.SetTrigger("Remove");  
+            }
+
             Destroy(square.gameObject);
         }
     }

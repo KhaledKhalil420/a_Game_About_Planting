@@ -29,6 +29,7 @@ public class Tree : Breakable
 
         source.Play();
 
+        PlayersPurse.GiveCoins(5);
         Destroy(gameObject, 7f);
     }
 
