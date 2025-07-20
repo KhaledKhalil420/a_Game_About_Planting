@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 3650135219831093284}
   - component: {fileID: 398211942150125977}
   - component: {fileID: 4652869712734207476}
-  - component: {fileID: 284108169963400813}
   m_Layer: 7
   m_Name: Hoe_Super_Basic
   m_TagString: Untagged
@@ -184,19 +183,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.2601435, y: 1.7427628, z: 0.2554224}
   m_Center: {x: -9.3087926e-11, y: 0.14944264, z: 0.0015600778}
---- !u!114 &284108169963400813
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3605743286250025885}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d12abbdc1213ba4ab123d3391a96096, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 3605743286250025885}
 --- !u!1 &4456853270322543548
 GameObject:
   m_ObjectHideFlags: 0

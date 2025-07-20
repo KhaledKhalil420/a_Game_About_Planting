@@ -117,7 +117,17 @@ public class Hoe : Tool
         previewRenderer = null;
     }
 
-    public override void OnUseAlt() { }
+    public override void OnUseAlt()
+    {
+        Ray ray = new Ray(_camera.transform.position, _camera.transform.forward);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, 5f) && hit.transform.TryGetComponent(out FarmlandSquare square))
+        {
+            if (square != null)
+                animator.SetTrigger("Remove");
+        }
+    }
+
     public override void OnStoppingUseAlt() { }
 
     public override void OnUseMiddle()

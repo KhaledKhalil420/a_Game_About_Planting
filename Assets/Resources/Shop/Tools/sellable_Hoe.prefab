@@ -71,6 +71,8 @@ MonoBehaviour:
   cost: 500
   item: {fileID: 3696952300053628221, guid: c588644299a777d4b9365a2ccb4e7865, type: 3}
   text: {fileID: 796133980862852213}
+  desrcriptionText: {fileID: 8269031185378981017}
+  description: Makes good quality soil (plants grow twice as fast)
   group: {fileID: 0}
 --- !u!1 &6225653414803697207
 GameObject:
@@ -187,7 +189,7 @@ Transform:
   m_GameObject: {fileID: 7958163473935665935}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -359,3 +361,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5821413707116517253, guid: 2e52edc7734c0e4459f6b4d37e6079ed, type: 3}
   m_PrefabInstance: {fileID: 7666159836315949394}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8269031185378981017 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1775029359449386443, guid: 2e52edc7734c0e4459f6b4d37e6079ed, type: 3}
+  m_PrefabInstance: {fileID: 7666159836315949394}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

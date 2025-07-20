@@ -9,12 +9,16 @@ public class Sellable : MonoBehaviour, IInteractable, IHighlightable
     public int cost;
     public Item item;
     public TMP_Text text;
+    public TMP_Text desrcriptionText;
+    public string description;
     public CanvasGroup group;
 
     private void Start()
     {
-        text.text = cost.ToString();
         group = GetComponentInChildren<CanvasGroup>();
+
+        text.text = cost.ToString();
+        desrcriptionText.text = description;
     }
 
     public void Interact(GameObject sender)

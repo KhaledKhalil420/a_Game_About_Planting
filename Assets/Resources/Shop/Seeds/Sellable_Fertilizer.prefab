@@ -182,6 +182,8 @@ MonoBehaviour:
   cost: 100
   item: {fileID: 427869047156516409, guid: c2f07f264a8acdf4dae9638c20ecc54f, type: 3}
   text: {fileID: 3452549826441283959}
+  desrcriptionText: {fileID: 6207091031910388123}
+  description: instantally grows seeds
   group: {fileID: 0}
 --- !u!1001 &5658262365109926992
 PrefabInstance:
@@ -292,6 +294,17 @@ RectTransform:
 --- !u!114 &3452549826441283959 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7021046270219793703, guid: 2e52edc7734c0e4459f6b4d37e6079ed, type: 3}
+  m_PrefabInstance: {fileID: 5658262365109926992}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6207091031910388123 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1775029359449386443, guid: 2e52edc7734c0e4459f6b4d37e6079ed, type: 3}
   m_PrefabInstance: {fileID: 5658262365109926992}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}

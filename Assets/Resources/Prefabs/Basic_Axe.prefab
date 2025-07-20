@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 3149854044894848798}
   - component: {fileID: 2746952242556200375}
   - component: {fileID: 2815874775012117723}
-  - component: {fileID: -7231984510188469348}
   m_Layer: 7
   m_Name: Basic_Axe
   m_TagString: Untagged
@@ -184,16 +183,3 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -5495902117074765545, guid: f9915f6b9cb6bda42bb07625ef4c8cc8, type: 3}
---- !u!114 &-7231984510188469348
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4262338775872429807}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d12abbdc1213ba4ab123d3391a96096, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 4262338775872429807}

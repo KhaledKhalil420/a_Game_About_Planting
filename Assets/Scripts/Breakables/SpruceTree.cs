@@ -1,7 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
 
-public class Tree : Breakable
+public class SpruceTree : Breakable
 {
     [SerializeField] private AudioSource source;
     [SerializeField] private Renderer childTree;

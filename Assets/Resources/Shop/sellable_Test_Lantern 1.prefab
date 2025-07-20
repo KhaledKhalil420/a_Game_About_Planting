@@ -155,9 +155,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b2b954cf09d2e64891c4d19bb11f0d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 40
+  cost: 69
   item: {fileID: 8040241675876510638, guid: 4bff07ddfc5ebeb4dae1de9dd663691e, type: 3}
   text: {fileID: 796133980862852213}
+  desrcriptionText: {fileID: 8269031185378981017}
+  description: It lights
   group: {fileID: 0}
 --- !u!1001 &7666159836315949394
 PrefabInstance:
@@ -276,3 +278,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5821413707116517253, guid: 2e52edc7734c0e4459f6b4d37e6079ed, type: 3}
   m_PrefabInstance: {fileID: 7666159836315949394}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8269031185378981017 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1775029359449386443, guid: 2e52edc7734c0e4459f6b4d37e6079ed, type: 3}
+  m_PrefabInstance: {fileID: 7666159836315949394}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

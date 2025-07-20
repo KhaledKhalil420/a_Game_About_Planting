@@ -71,6 +71,8 @@ MonoBehaviour:
   cost: 30
   item: {fileID: 1962442201436682261, guid: f6a6275933969d04c9cc80ab9d293d0a, type: 3}
   text: {fileID: 3452549826441283959}
+  desrcriptionText: {fileID: 6207091031910388123}
+  description: good for the eyes
   group: {fileID: 0}
 --- !u!1 &7447585366447851502
 GameObject:
@@ -268,6 +270,17 @@ RectTransform:
 --- !u!114 &3452549826441283959 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7021046270219793703, guid: 2e52edc7734c0e4459f6b4d37e6079ed, type: 3}
+  m_PrefabInstance: {fileID: 5658262365109926992}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6207091031910388123 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1775029359449386443, guid: 2e52edc7734c0e4459f6b4d37e6079ed, type: 3}
   m_PrefabInstance: {fileID: 5658262365109926992}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}

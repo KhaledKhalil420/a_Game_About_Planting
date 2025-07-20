@@ -27,7 +27,7 @@ public class Axe : Tool
         if (!Physics.Raycast(cam.position, cam.forward, out var hit, range))
             return;
 
-        if (hit.transform.TryGetComponent<Tree>(out var tree))
+        if (hit.transform.TryGetComponent<SpruceTree>(out var tree))
         {
             //Camera shake
             CameraShaker.Instance.ShakeOnce(10, 2, 0.15f, 0.2f);

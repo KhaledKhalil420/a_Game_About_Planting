@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 3696952300053628221}
   - component: {fileID: 8007758534828084295}
   - component: {fileID: 2395673925814335177}
-  - component: {fileID: 4945637250836286396}
   m_Layer: 7
   m_Name: Hoe_Tier 2
   m_TagString: Untagged
@@ -127,13 +126,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 511e3adf891646042b55fc07cddd87ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 00378ab3034b6004d9796eb3b4b69552, type: 2}
+  data: {fileID: 11400000, guid: 69aa9815fff962f4a8c9182ca70779a6, type: 2}
   isSingleQuantityItem: 1
   HeldQuantity: 1
   animator: {fileID: 4271692878547087096}
   farmlandObject: {fileID: 7731005561311465804, guid: 73a057102fdbf9749900d1b297e5fd1d, type: 3}
   ghostMaterial: {fileID: 2100000, guid: c611588113626d0459e9ab412b6d4e82, type: 2}
-  redMaterial: {fileID: 0}
+  redMaterial: {fileID: 2100000, guid: 8cff52d912e6bd74fb48c30ac1de4c8c, type: 2}
   soilWater: 50
   soilQuality: 2
 --- !u!64 &8007758534828084295
@@ -185,19 +184,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
---- !u!114 &4945637250836286396
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 888623528849807358}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d12abbdc1213ba4ab123d3391a96096, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 888623528849807358}
 --- !u!1 &4953908924954167503
 GameObject:
   m_ObjectHideFlags: 0

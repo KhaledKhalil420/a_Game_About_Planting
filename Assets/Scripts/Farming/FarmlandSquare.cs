@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-public partial class FarmlandSquare : GameObjectSavable, IInteractable
+public partial class FarmlandSquare : MonoBehaviour, IInteractable
 {
     [SerializeField] internal int soilQualityLevel = 4;
     [SerializeField] internal SeedData seedIn; //OMG HE SAID THE THING!!!
@@ -15,11 +15,6 @@ public partial class FarmlandSquare : GameObjectSavable, IInteractable
     [SerializeField] private Color drySoilColor, wateredSoilColor;
     private int _frameCounter = 0;
     private const int FRAME_INTERVAL = 100;
-
-    private void Awake()
-    {
-        SaveObj();
-    }
 
     private void Update()
     {
@@ -77,6 +72,7 @@ public partial class FarmlandSquare : GameObjectSavable, IInteractable
     private void Harvest(PlayerInventory inventory)
     {
         Item reward = Instantiate(seedIn.reward);
+        reward.HeldQuantity = 2;
         int getDoubleChance = Random.Range(1, 20);
         if (getDoubleChance == 2)
             reward.HeldQuantity *= 2;
@@ -167,13 +163,5 @@ public partial class FarmlandSquare : GameObjectSavable, IInteractable
     }
 
     #endregion
-
-    public SeedData GetSeedData(string seedName)
-    {
-        if (!seedName.Equals(""))
-            return Resources.Load<SeedData>("Seeds/" + seedName);
-
-        else return null;
-     }
 
 }

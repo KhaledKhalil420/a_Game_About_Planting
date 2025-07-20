@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 3724408097371482226}
   - component: {fileID: 8573837551728010493}
   - component: {fileID: 994777883161327877}
-  - component: {fileID: 139861991134283605}
   m_Layer: 7
   m_Name: WateringCan_Basic
   m_TagString: Untagged
@@ -106,7 +105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 219143ec6e67a7740909772628a37506, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 9b7b1583a7f1a414e9b5f5fe7b8da600, type: 2}
+  data: {fileID: 11400000, guid: e6eacd019c5a15148b271f5b68be0125, type: 2}
   isSingleQuantityItem: 0
   HeldQuantity: 1
   animator: {fileID: 0}
@@ -261,19 +260,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &139861991134283605
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3790767297333662979}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d12abbdc1213ba4ab123d3391a96096, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 3790767297333662979}
 --- !u!1 &4704566896906780338
 GameObject:
   m_ObjectHideFlags: 0
