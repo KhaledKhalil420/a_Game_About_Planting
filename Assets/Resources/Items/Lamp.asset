@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Lamp
   m_EditorClassIdentifier: 
   Name: Lamp
-  sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  sprite: {fileID: 21300000, guid: 6256c01cabca59447bd985f4683ebfd9, type: 3}
+  model: {fileID: 5222839605999628017, guid: 97159715f2862e14eb0134c1cb69656b, type: 3}

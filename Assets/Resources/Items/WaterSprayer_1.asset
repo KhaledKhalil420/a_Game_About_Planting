@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: WaterSprayer_1
   m_EditorClassIdentifier: 
   Name: Auto Water Sprayer
-  sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  sprite: {fileID: 21300000, guid: d2b8bfb5959f1f546aa7edd5ccd95d42, type: 3}
+  model: {fileID: 5017102704754038127, guid: 07585182225a763489435f8030499843, type: 3}

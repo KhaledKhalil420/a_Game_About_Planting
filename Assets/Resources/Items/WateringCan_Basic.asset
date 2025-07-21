@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: WateringCan_Basic
   m_EditorClassIdentifier: 
   Name: Basic Water Can
-  sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  sprite: {fileID: 21300000, guid: 1e648824496c9ba4299cd61f50de7b58, type: 3}
+  model: {fileID: 7280261322664062507, guid: a28035195cf1d1b4d87c8ed8a0c91073, type: 3}

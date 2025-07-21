@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Lantern
   m_EditorClassIdentifier: 
   Name: Lantern
-  sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  sprite: {fileID: 21300000, guid: 3e116557cb99f01449048270257242a3, type: 3}
+  model: {fileID: 5009706925125941247, guid: 4bff07ddfc5ebeb4dae1de9dd663691e, type: 3}

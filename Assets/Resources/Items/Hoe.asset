@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Hoe
   m_EditorClassIdentifier: 
   Name: Basic Hoe
-  sprite: {fileID: 10915, guid: 0000000000000000f000000000000000, type: 0}
+  sprite: {fileID: 21300000, guid: f87dea8d5b343c14f9758d5daacaeed7, type: 3}
+  model: {fileID: 3605743286250025885, guid: ab4c40fb8e6d6744baa8e23455008d82, type: 3}

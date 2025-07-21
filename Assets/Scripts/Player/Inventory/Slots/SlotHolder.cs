@@ -12,6 +12,7 @@ public class SlotHolder : MonoBehaviour
     [SerializeField] private Image _slotBorderImage;
     [SerializeField] private TMP_Text _itemQuantityText;
     [SerializeField] private Sprite _empty;
+    [SerializeField] private Color unselected, selected;
 
     public void UpdateSlot()
     {
@@ -29,15 +30,15 @@ public class SlotHolder : MonoBehaviour
 
         if (HeldItem != null)
         {
-            HeldItem.OnSelect(); 
+            HeldItem.OnSelect();
             HeldItem.gameObject.SetActive(isSelected);
         }
 
-        _slotBorderImage.color = Color.Lerp(_slotBorderImage.color, isSelected ? Color.darkGray : Color.black, Time.deltaTime * 10f);
+        _slotBorderImage.color = Color.Lerp(_slotBorderImage.color, isSelected ? selected : unselected, Time.deltaTime * 10f);
 
         _itemQuantityText.text = HeldItem != null ? HeldQuantity.ToString() : "";
         _itemQuantityText.text = HeldQuantity > 1 ? HeldQuantity.ToString() : "";
-        
+
         _itemIconImage.sprite = HeldItem != null ? HeldItem.data.sprite : _empty;
     }
 

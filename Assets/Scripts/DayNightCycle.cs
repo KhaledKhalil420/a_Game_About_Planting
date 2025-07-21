@@ -29,7 +29,8 @@ public class DayNightCycle : MonoBehaviour
     public event Action OnNightStarted;
 
     float timeSpeed;
-    Color currentSceneColor;
+    Color currentAmbientColor;
+    Color currentFogColor;
     int currentColorIndex = -1;
     AudioSource srcA, srcB;
     bool usingA = true;
@@ -52,7 +53,8 @@ public class DayNightCycle : MonoBehaviour
         }
 
         timeSpeed = 1f / dayDuration;
-        currentSceneColor = RenderSettings.ambientLight;
+        currentAmbientColor = RenderSettings.ambientLight;
+        currentFogColor = RenderSettings.fogColor;
 
         srcA = gameObject.AddComponent<AudioSource>();
         srcB = gameObject.AddComponent<AudioSource>();
@@ -61,7 +63,7 @@ public class DayNightCycle : MonoBehaviour
         srcB.outputAudioMixerGroup = sfxMixerGroup;
         srcA.playOnAwake = srcB.playOnAwake = false;
 
-        UpdateSceneColor(true);
+        UpdateSceneColor(forceInit: true);
 
         srcA.Play();
         srcB.Play();
@@ -130,12 +132,14 @@ public class DayNightCycle : MonoBehaviour
             currentColorIndex = newIndex;
         }
 
-        currentSceneColor = Color.Lerp(currentSceneColor, setting.ambientColor, Time.deltaTime * 2f);
+        // smooth interpolate ambient and fog separately
+        currentAmbientColor = Color.Lerp(currentAmbientColor, setting.ambientColor, Time.deltaTime * 2f);
+        currentFogColor     = Color.Lerp(currentFogColor, setting.fogColor,     Time.deltaTime * 2f);
 
         if (!_indoors)
         {
-            RenderSettings.ambientLight = currentSceneColor;
-            RenderSettings.fogColor = currentSceneColor;
+            RenderSettings.ambientLight = currentAmbientColor;
+            RenderSettings.fogColor     = currentFogColor;
         }
     }
 
@@ -164,7 +168,7 @@ public class DayNightCycle : MonoBehaviour
             CurrentState = isDay ? TimeState.Day : TimeState.Night;
 
             if (isDay) OnDayStarted?.Invoke();
-            else OnNightStarted?.Invoke();
+            else       OnNightStarted?.Invoke();
         }
     }
 
@@ -191,7 +195,7 @@ public class DayNightCycle : MonoBehaviour
         public float nightIntensity = 0.25f;
         public LightSettings(float day, float night)
         {
-            dayIntensity = day;
+            dayIntensity   = day;
             nightIntensity = night;
         }
     }
@@ -202,6 +206,7 @@ public class DayNightCycle : MonoBehaviour
         [Range(0f, 1f)] public float startTime;
         [Range(0f, 1f)] public float endTime;
         [ColorUsage(true, true)] public Color ambientColor = Color.white;
+        [ColorUsage(true, true)] public Color fogColor     = Color.white;
         public AudioClip ambientClip;
     }
 }
