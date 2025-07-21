@@ -25,7 +25,7 @@ public partial class FarmlandSquare : MonoBehaviour, IInteractable
         {
             growingElapsedTime += dt * soilQualityLevel * Tick.Tickspeed;
             waterLevel -= dt / soilQualityLevel;
-            if (growingElapsedTime >= seedIn.GetTotalTimeToGrow()) isReadyToHarvest = true;
+            if (growingElapsedTime >= seedIn.GetTotalTimeToGrow()) FullyGrowSoil();
         }
 
         _frameCounter++;
@@ -115,7 +115,7 @@ public partial class FarmlandSquare : MonoBehaviour, IInteractable
                 if (_currentGrowingStageModel) Destroy(_currentGrowingStageModel.gameObject);
                 var stage = seedIn.seedGrowingStages[i];
                 _currentGrowingStageModel = Instantiate(stage.currentStageModel, transform.position, Quaternion.identity, childHolder).transform;
-                _currentGrowingStageModel.localPosition = new Vector3(0, 0.15f, 0);
+                _currentGrowingStageModel.localPosition = new Vector3(0, 0.05f, 0);
                 _currentGrowingStageModel.localScale = new Vector3(0.75f, 0.75f, 0.75f);
                 DOVirtual.Vector3(_currentGrowingStageModel.localScale, new Vector3(1, 1, 1), 1, value => _currentGrowingStageModel.localScale = value);
                 break;
