@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b6fef2aa0ffb5145b7927eb431974ee, type: 3}
+  m_Name: GlowBerry
+  m_EditorClassIdentifier: 
+  seedGrowingStages:
+  - growingDuration: 120
+    currentStageModel: {fileID: 919132149155446097, guid: b96ad4187916f3a4584815dd1b0bb4a3, type: 3}
+  - growingDuration: 60
+    currentStageModel: {fileID: 919132149155446097, guid: 6058695839ac07240b94dbcafb0d563d, type: 3}
+  - growingDuration: 1
+    currentStageModel: {fileID: 919132149155446097, guid: bc9ae504c77e4a04e8977b9ec38c9038, type: 3}
+  reward: {fileID: 5038972183459300720, guid: 841adba73be30cd4cb5e50f1b15cc1ab, type: 3}
+  sellingProfit: 100
