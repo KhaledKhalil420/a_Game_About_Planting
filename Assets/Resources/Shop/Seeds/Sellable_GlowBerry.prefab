@@ -68,11 +68,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b2b954cf09d2e64891c4d19bb11f0d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 500
+  cost: 850
   item: {fileID: 5038972183459300720, guid: 841adba73be30cd4cb5e50f1b15cc1ab, type: 3}
   text: {fileID: 3452549826441283959}
   desrcriptionText: {fileID: 6207091031910388123}
-  description: it glows?
+  description: it glows? (Seed)
   group: {fileID: 0}
 --- !u!1 &3762136629074496703
 GameObject:

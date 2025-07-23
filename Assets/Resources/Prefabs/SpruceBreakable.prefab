@@ -292,7 +292,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.6626892, y: -0.95975006, z: -26.39175}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1.3899959, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6301076937833488849}
@@ -356,7 +356,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 3332774623193117486}
-  health: 100
   source: {fileID: 6046354582334540804}
   childTree: {fileID: 2382649259771430202}
 --- !u!82 &6046354582334540804

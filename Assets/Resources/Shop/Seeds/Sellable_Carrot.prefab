@@ -72,7 +72,7 @@ MonoBehaviour:
   item: {fileID: 1962442201436682261, guid: f6a6275933969d04c9cc80ab9d293d0a, type: 3}
   text: {fileID: 3452549826441283959}
   desrcriptionText: {fileID: 6207091031910388123}
-  description: good for the eyes
+  description: Good For Eyes (Seed)
   group: {fileID: 0}
 --- !u!1 &7447585366447851502
 GameObject:
