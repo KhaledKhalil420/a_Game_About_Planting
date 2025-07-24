@@ -29,6 +29,12 @@ public class PlaceableItem : Item
             {
                 preview = Instantiate(placeableObject);
                 preview.GetComponent<Placeable>().enabled = false;
+
+                if (preview.TryGetComponent(out SpruceTree tree))
+                {
+                    tree.enabled = false;
+                }
+
                 preview.GetComponent<Collider>().enabled = false;
                 SetGhostMaterial(preview);
             }

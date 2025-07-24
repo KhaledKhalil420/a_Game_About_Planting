@@ -197,6 +197,7 @@ MonoBehaviour:
   farmlandObject: {fileID: 7731005561311465804, guid: 73a057102fdbf9749900d1b297e5fd1d, type: 3}
   ghostMaterial: {fileID: 2100000, guid: c611588113626d0459e9ab412b6d4e82, type: 2}
   redMaterial: {fileID: 2100000, guid: 8cff52d912e6bd74fb48c30ac1de4c8c, type: 2}
+  dirtBag: {fileID: 8481697934438152373, guid: 7f2641d03a7f68a4fb79b53893f073ff, type: 3}
   soilWater: 100
   soilQuality: 6
 --- !u!95 &6706856241680923684

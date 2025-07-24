@@ -358,6 +358,7 @@ MonoBehaviour:
   prefab: {fileID: 3332774623193117486}
   source: {fileID: 6046354582334540804}
   childTree: {fileID: 2382649259771430202}
+  Pinecone: {fileID: 1030938873046053253, guid: 77263995019491f498cf338ffbee5d63, type: 3}
 --- !u!82 &6046354582334540804
 AudioSource:
   m_ObjectHideFlags: 0

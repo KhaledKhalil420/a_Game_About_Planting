@@ -1,15 +1,16 @@
 using UnityEngine;
 
-public class Breakable : GameObjectSavable
+public class  Breakable : GameObjectSavable
 {
-    internal BreakableData breakableSaveData;
+    public BreakableData breakableSaveData;
     private bool isKilled = false;
+    [SerializeField] internal bool isBreakable = false;
 
     private void Awake()
     {
         saveData = new();
         breakableSaveData = new();
-        
+
         //Generate ID
         saveData.id = gameObject.GetInstanceID().ToString() + "@";
 

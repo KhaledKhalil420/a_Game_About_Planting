@@ -5,26 +5,33 @@ public class Hoe : Tool
     public GameObject farmlandObject;
     public Material ghostMaterial;
     public Material redMaterial;
+    public Item dirtBag;
     public float soilWater;
     public int soilQuality;
 
-    private bool _isUsing;
-    private bool _canPlace;
+    private bool isUsing;
+    private bool canPlace;
     private GameObject preview;
     private MeshRenderer previewRenderer;
+    private PlayerInventory inventory;
 
     private void Start()
     {
         _camera = PlayerLook.mainCamera.transform;
+        inventory = PlayerInventory.instance;
     }
 
     private void Update()
     {
-        if (!_isUsing) return;
+        if (!inventory.HasItem(dirtBag)) // this is what I need in the script
+            return;
+
+        if (!isUsing)
+            return;
 
         Ray ray = new Ray(_camera.transform.position, _camera.transform.forward);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, 5f, LayerMask.GetMask("Ground", "Farmland")))
+        if (Physics.Raycast(ray, out RaycastHit hit, 5f, LayerMask.GetMask("Farmland")))
         {
             Vector3 snapPos = SnapToGrid(hit.point);
 
@@ -37,7 +44,7 @@ public class Hoe : Tool
 
             preview.transform.position = snapPos;
             
-            _canPlace = true;
+            canPlace = true;
             if (Physics.CheckSphere(snapPos, 0.4f, LayerMask.GetMask("Interactable")))
             {
                 Collider[] hits = Physics.OverlapSphere(snapPos, 0.4f, LayerMask.GetMask("Interactable"));
@@ -46,13 +53,13 @@ public class Hoe : Tool
                 {
                     if (col.TryGetComponent<FarmlandSquare>(out var fsq) && col.gameObject != preview)
                     {
-                        _canPlace = false;
+                        canPlace = false;
                         break;
                     }
                 }
             }
         
-            previewRenderer.material = _canPlace ? ghostMaterial : redMaterial;
+            previewRenderer.material = canPlace ? ghostMaterial : redMaterial;
         }
         else
         {
@@ -61,7 +68,7 @@ public class Hoe : Tool
                 Destroy(preview);
                 preview = null;
                 previewRenderer = null;
-                _canPlace = true;
+                canPlace = true;
             }
         }
     }
@@ -77,20 +84,20 @@ public class Hoe : Tool
 
     public override void OnUse()
     {
-        _isUsing = true;
+        isUsing = true;
     }
 
     public override void OnStoppingUse()
     {
-        _isUsing = false;
+        isUsing = false;
 
-        if (!_canPlace)
+        if (!canPlace)
         {
             Destroy(preview);
             preview = null;
             previewRenderer = null;
 
-            _canPlace = true;
+            canPlace = true;
             return;
         }
 
@@ -103,7 +110,7 @@ public class Hoe : Tool
 
     public void Plant()
     {
-        if (!preview || !_canPlace) return;
+        if (!preview || !canPlace) return;
 
         AudioManager.instance?.PlaySound("Hoeing", 0.9f, 1.25f);
 
@@ -111,6 +118,9 @@ public class Hoe : Tool
             .GetComponent<FarmlandSquare>();
         fsq.soilQualityLevel = soilQuality;
         fsq.waterLevel = soilWater;
+
+        inventory.FindSlotWithItem(dirtBag, out SlotHolder holder);
+        holder.HeldQuantity--;
 
         Destroy(preview);
         preview = null;
@@ -143,7 +153,7 @@ public class Hoe : Tool
 
     public override void OnChangingItems()
     {
-        _isUsing = false;
+        isUsing = false;
 
         if (preview)
         {
@@ -163,13 +173,16 @@ public class Hoe : Tool
         {
             if (square.seedIn != null)
             {
-              
                 Item s = square.seedIn.reward;
                 s.HeldQuantity = 1;
 
                 Instantiate(s, square.transform.position + new Vector3(0, 0.5f, 0), Quaternion.Euler(0, 90, 0));
+                
                 animator.SetTrigger("Remove");  
             }
+
+            Item dirtBagObj = Instantiate(dirtBag, square.transform.position + new Vector3(0, 0.15f, 0), Quaternion.identity).GetComponent<Item>();
+            inventory.GiveItem(dirtBagObj, out bool Given);
 
             Destroy(square.gameObject);
         }

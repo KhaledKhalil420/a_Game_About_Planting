@@ -7,6 +7,9 @@ public class PlayerInventory : MonoBehaviour
 {
     public static PlayerInventory instance;
 
+    public GameObject slotPrefab;
+    public Transform slotParent;
+
     public Color selectedSlotColor, unselectedSlotColor;
     public CanvasGroup group, heldItemGroup;
     public TMP_Text heldItemText;
@@ -140,7 +143,7 @@ public class PlayerInventory : MonoBehaviour
                 selectedSlot.HeldItem.HeldQuantity = selectedSlot.HeldQuantity;
                 selectedSlot.HeldItem.SetItemParent(null);
                 selectedSlot.HeldItem.transform.position = _camera.position;
-    
+
                 if (selectedSlot.HeldItem.TryGetComponent(out Rigidbody rigidbody))
                     rigidbody.AddForce(_camera.forward * 6, ForceMode.Impulse);
 
@@ -316,12 +319,48 @@ public class PlayerInventory : MonoBehaviour
         return null;
     }
 
+    public SlotHolder FindSlotWithItem(Item item, out SlotHolder outSlot)
+    {
+        foreach (var slot in SlotHolders)
+        {
+            if (slot.HeldItem.data == item.data)
+            {
+                outSlot = slot;
+                return slot;
+            }
+
+        }
+        
+        outSlot = null;
+        return null;
+    }
+
+    public bool HasItem(Item item)
+    {
+        foreach (var slot in SlotHolders)
+        {
+            if (slot.HeldItem?.data == item.data)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private void UpdateSlots()
     {
         foreach (var slot in SlotHolders)
         {
             slot.UpdateSlot();
         }
+    }
+
+    public void AddInventorySlot()
+    {
+        SlotHolder slot = Instantiate(slotPrefab, slotParent).GetComponent<SlotHolder>();
+        SlotHolders.Add(slot);
+        UpdateSlots();
      }
     
     #endregion

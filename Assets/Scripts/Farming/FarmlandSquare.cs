@@ -163,5 +163,4 @@ public partial class FarmlandSquare : MonoBehaviour, IInteractable
     }
 
     #endregion
-
 }

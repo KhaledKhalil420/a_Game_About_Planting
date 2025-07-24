@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3775813028203660820
+--- !u!1 &2168355044158935816
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,46 +8,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4117419814139228833}
-  - component: {fileID: 149543635353686341}
-  - component: {fileID: 5124483098255689875}
-  m_Layer: 7
-  m_Name: Basic_Axe
+  - component: {fileID: 1393275969207691197}
+  - component: {fileID: 2910068328124335193}
+  - component: {fileID: 7884739338055720335}
+  m_Layer: 0
+  m_Name: Axe
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4117419814139228833
+--- !u!4 &1393275969207691197
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3775813028203660820}
+  m_GameObject: {fileID: 2168355044158935816}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.19827317, y: -0.7113808, z: -0.5562729, w: 0.38103232}
-  m_LocalPosition: {x: 0.205, y: 0.138, z: 0.178}
-  m_LocalScale: {x: 0.609161, y: 0.609161, z: 0.609161}
+  m_LocalRotation: {x: -0.21920659, y: -0.73509896, z: -0.5454597, w: 0.3377155}
+  m_LocalPosition: {x: 0.205, y: 0.125, z: 0.198}
+  m_LocalScale: {x: 0.6416262, y: 0.6231473, z: 0.6416262}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 9220816270194108342}
-  m_LocalEulerAnglesHint: {x: -109.517, y: 74.239, z: -205.119}
---- !u!33 &149543635353686341
+  m_LocalEulerAnglesHint: {x: -71.804, y: -124.494, z: -8.498}
+--- !u!33 &2910068328124335193
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3775813028203660820}
+  m_GameObject: {fileID: 2168355044158935816}
   m_Mesh: {fileID: -5495902117074765545, guid: f9915f6b9cb6bda42bb07625ef4c8cc8, type: 3}
---- !u!23 &5124483098255689875
+--- !u!23 &7884739338055720335
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3775813028203660820}
+  m_GameObject: {fileID: 2168355044158935816}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -64,10 +64,10 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -1444460858095362738, guid: f9915f6b9cb6bda42bb07625ef4c8cc8, type: 3}
-  - {fileID: -679119645113550102, guid: f9915f6b9cb6bda42bb07625ef4c8cc8, type: 3}
-  - {fileID: -9158073036951078715, guid: f9915f6b9cb6bda42bb07625ef4c8cc8, type: 3}
-  - {fileID: 775511354417394461, guid: f9915f6b9cb6bda42bb07625ef4c8cc8, type: 3}
+  - {fileID: 2100000, guid: 65e6e70c8952ee34db99a27dccca4972, type: 2}
+  - {fileID: 2100000, guid: fc7861401e7494f49b2725a0cf19e7d0, type: 2}
+  - {fileID: 2100000, guid: fc7861401e7494f49b2725a0cf19e7d0, type: 2}
+  - {fileID: 2100000, guid: 9c169e82697f1ea41b98c46bfa949698, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -121,7 +121,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4227326635285647063}
-  - {fileID: 4117419814139228833}
+  - {fileID: 1393275969207691197}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &5545300284584966993
@@ -157,8 +157,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b2b954cf09d2e64891c4d19bb11f0d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cost: 100
-  item: {fileID: 4581614957520671922, guid: 1545a94fd740c3547b4e137961b739aa, type: 3}
+  cost: 150
+  item: {fileID: 4581614957520671922, guid: 6969a69fbf496114eb62ee97f4441396, type: 3}
   text: {fileID: 796133980862852213}
   desrcriptionText: {fileID: 8269031185378981017}
   description: 'cuts wood. tip: cutting wood gives 5 coins'

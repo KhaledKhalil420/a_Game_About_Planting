@@ -47,7 +47,7 @@ public class Shop : MonoBehaviour
     {
         //Get player inventory
         PlayerInventory inventory = PlayerInventory.instance;
-        
+
         if (inventory.GetSelectedSlot().HeldItem is Seed seed)
         {
             inventory.GetSelectedSlot().HeldQuantity -= 1;

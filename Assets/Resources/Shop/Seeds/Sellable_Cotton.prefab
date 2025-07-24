@@ -69,7 +69,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cost: 20000
-  item: {fileID: 1962442201436682261, guid: f6a6275933969d04c9cc80ab9d293d0a, type: 3}
+  item: {fileID: 388279649345496736, guid: a7f30a0d8289244428e24cd739bf206c, type: 3}
   text: {fileID: 3452549826441283959}
   desrcriptionText: {fileID: 6207091031910388123}
   description: It's Cotton (and yes, you can plant it)

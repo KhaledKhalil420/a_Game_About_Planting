@@ -1,22 +1,28 @@
 using UnityEngine;
 using UnityEngine.Audio;
+using System.Collections.Generic;
 
 public class RandomMusicPlayer : MonoBehaviour
 {
-    public AudioClip[] musicClips;
-    private AudioClip lastPickedClip;
+    public AudioMixerGroup musicGroup;
     public float minDelay = 30f;
     public float maxDelay = 120f;
-    public AudioMixerGroup musicGroup;
 
     private AudioSource source;
     private float timer;
 
+    private List<AudioClip> playlist = new List<AudioClip>();
+    private List<AudioClip> playedClips = new List<AudioClip>();
+
     void Start()
     {
-        musicClips = Resources.LoadAll<AudioClip>("Music");
+        AudioClip[] clips = Resources.LoadAll<AudioClip>("Music");
+        playlist.AddRange(clips);
+        ShufflePlaylist();
+
         source = gameObject.AddComponent<AudioSource>();
         source.outputAudioMixerGroup = musicGroup;
+
         timer = Random.Range(minDelay, maxDelay);
     }
 
@@ -26,12 +32,13 @@ public class RandomMusicPlayer : MonoBehaviour
         {
             timer -= Time.deltaTime;
             if (timer <= 0f)
-                PlayRandom();
+                PlayNext();
         }
 
-        if (Input.GetKey(KeyCode.K))
+        if (Input.GetKeyDown(KeyCode.K))
         {
-            source.Stop();    
+            source.Stop();
+            timer = 0f;
         }
     }
 
@@ -40,32 +47,35 @@ public class RandomMusicPlayer : MonoBehaviour
         timer = Random.Range(minDelay, maxDelay);
     }
 
-    void PlayRandom()
+    void PlayNext()
     {
-        if (musicClips.Length == 0) return;
-
-        AudioClip audioClip = PickMusicClip();
-        if (audioClip == null)
+        if (playlist.Count == 0)
         {
-            PlayRandom();
-            return;
+            playlist.AddRange(playedClips);
+            playedClips.Clear();
+            ShufflePlaylist();
         }
 
-        source.clip = audioClip;
+        if (playlist.Count == 0) return;
+
+        AudioClip clip = playlist[0];
+        playlist.RemoveAt(0);
+        playedClips.Add(clip);
+
+        source.clip = clip;
         source.Play();
+
         ScheduleNext();
     }
 
-    private AudioClip PickMusicClip()
+    void ShufflePlaylist()
     {
-        AudioClip clip = musicClips[Random.Range(0, musicClips.Length)];
-
-        if (clip != lastPickedClip)
+        for (int i = 0; i < playlist.Count; i++)
         {
-            lastPickedClip = clip;
-            return clip;
+            AudioClip temp = playlist[i];
+            int randomIndex = Random.Range(i, playlist.Count);
+            playlist[i] = playlist[randomIndex];
+            playlist[randomIndex] = temp;
         }
-
-        return null;
     }
 }

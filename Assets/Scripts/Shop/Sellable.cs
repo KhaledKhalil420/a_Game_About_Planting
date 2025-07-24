@@ -23,7 +23,13 @@ public class Sellable : MonoBehaviour, IInteractable, IHighlightable
 
     public void Interact(GameObject sender)
     {
-        if (!PlayersPurse.TrySpendCoins(cost)) return;
+        if (!PlayersPurse.TrySpendCoins(cost))
+            return;
+
+        OnBought();
+
+        if (item == null)
+            return;
 
         Item runtimeItem = Instantiate(item);
         AudioManager.instance.PlaySound("Pickup", 1.1f, 1.25f);
@@ -55,4 +61,9 @@ public class Sellable : MonoBehaviour, IInteractable, IHighlightable
     {
         DOTween.Kill(this);
     }
+
+    public virtual void OnBought()
+    {
+
+     }
 }

@@ -5,10 +5,20 @@ public class SpruceTree : Breakable
 {
     [SerializeField] private AudioSource source;
     [SerializeField] private Renderer childTree;
+    [SerializeField] private Item Pinecone;
+    internal int coins = 5;
 
     private void Start()
     {
         childTree.material = new Material(childTree.material);
+
+        if (isBreakable)
+            return;
+
+        Vector3 originalScale = transform.localScale;
+
+        transform.localScale = new Vector3(0.15f, 0.15f, 0.15f);
+        transform.DOScale(originalScale, 25);
     }
 
     public override void OnDestroyed()
@@ -29,7 +39,8 @@ public class SpruceTree : Breakable
 
         source.Play();
 
-        PlayersPurse.GiveCoins(5);
+        PlayersPurse.GiveCoins(coins);
+
         Destroy(gameObject, 7f);
     }
 
@@ -60,5 +71,9 @@ public class SpruceTree : Breakable
         }
     }
 
-
+    private void OnDestroy()
+    {
+        if(Pinecone != null)
+            Instantiate(Pinecone, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
+    }
 }
