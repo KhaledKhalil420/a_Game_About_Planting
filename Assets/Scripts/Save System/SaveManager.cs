@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SaveManager : MonoBehaviour
@@ -10,134 +12,133 @@ public class SaveManager : MonoBehaviour
 
     private void Awake()
     {
-        filePath = Application.persistentDataPath + "/world.json";
+        filePath = Application.persistentDataPath + "/save.json";
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.F5))
-        {
-            Save(); // Save game
-        }
-
-        if (Input.GetKeyDown(KeyCode.F6))
-        {
-            Load(); // Load game
-        }
+        if (Input.GetKeyDown(KeyCode.F5)) Save();
+        if (Input.GetKeyDown(KeyCode.F6)) Load();
     }
 
     public void Save()
     {
-        //Make a new Save File
         file = new();
-
-        SaveObject();
-        SaveTree();
-        SaveFarmland();
-
-        // Convert to JSON and write
+        SaveObjects();
         string json = JsonUtility.ToJson(file, true);
         File.WriteAllText(filePath, json);
     }
 
     public void Load()
     {
-        //Unload all old objects
-        GameObjectSavable[] previousObjects = FindObjectsByType<GameObjectSavable>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID);
-        Array.ForEach(previousObjects, pre => Destroy(pre.gameObject));
+        if (!File.Exists(filePath)) return;
 
-        LoadObject();
-        LoadTree();
-        LoadFarmland();
+        var oldObjects = FindObjectsByType<SaveableObject>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID).Select(x => x.gameObject).ToArray();
+        foreach (var obj in oldObjects)
+            Destroy(obj);
+
+        string json = File.ReadAllText(filePath);
+        file = JsonUtility.FromJson<SaveFile>(json);
+        if (file.objects == null) file.objects = new();
+
+        LoadObjects();
     }
 
-    #region GameObject Handling
+    #region SaveableObjects
 
-    private void SaveObject()
+    private void SaveObjects()
     {
-        foreach (var obj in FindObjectsByType<GameObjectSavable>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID))
+        var all = FindObjectsByType<SaveableObject>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID);
+
+        foreach (var obj in all)
         {
-            // Clone data into a serializable class
-            var data = new GameObjectData();
-            data.id = obj.saveData.id;
+            //Create data and set variables
+            var data = new SaveableData();
+            data.id = obj.uniqueID;
+            data.prefab = obj.prefabName;
             data.position = obj.transform.position;
-            data.objectName = obj.saveData.objectName;
-            data.prefabName = obj.saveData.prefabName;
-            data.eulerAngles = obj.transform.eulerAngles;
+            data.rotation = obj.transform.eulerAngles;
 
-            file.gameObjects.Add(data);
+            var list = new List<SaveableVariable>();
+            var fields = obj.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+
+            foreach (var f in fields)
+            {
+                if (f.GetCustomAttribute(typeof(Savable)) != null)
+                {
+                    object val = f.GetValue(obj);
+                    string jsonVal = ToJson(val, f.FieldType);
+                    list.Add(new SaveableVariable { name = f.Name, json = jsonVal });
+                }
+            }
+
+            data.data = list;
+            file.objects.Add(data);
         }
     }
 
-    private void LoadObject()
+    private void LoadObjects()
     {
-        string json = File.ReadAllText(filePath);
-        SaveFile saveFile = JsonUtility.FromJson<SaveFile>(json);
-
-        foreach (var data in saveFile.gameObjects)
+        foreach (var objData in file.objects)
         {
-            // Get prefab
-            GameObject prefab = Resources.Load<GameObject>("Prefabs/" + data.prefabName);
+            //Get Prefab
+            GameObject prefab = Resources.Load<GameObject>("Prefabs/" + objData.prefab);
+
             if (prefab == null)
-            {
-                Debug.LogWarning("Missing prefab: " + data.prefabName);
                 continue;
-            }
 
-            // Spawn
-            GameObjectSavable gameObject = Instantiate(prefab, data.position, Quaternion.Euler(data.eulerAngles)).GetComponent<GameObjectSavable>();
-            gameObject.name = data.objectName;
-            gameObject.saveData.id = data.id;
-        }
-    }
+            //Spawn Prefab Copy and load data
+            var obj = Instantiate(prefab, objData.position, Quaternion.Euler(objData.rotation));
+            var saveable = obj.GetComponent<SaveableObject>();
+            saveable.uniqueID = objData.id;
 
-    #endregion
-
-    #region Breakables
-
-    private void SaveTree()
-    {
-        foreach (var breakable in FindObjectsByType<Breakable>(FindObjectsInactive.Exclude, FindObjectsSortMode.InstanceID))
-        {
-            var breakableData = new BreakableData();
-
-            breakableData.id = breakable.saveData.id;
-            breakableData.health = breakable.breakableSaveData.health;
-
-            file.breakables.Add(breakableData);
-        }
-    }
-
-    private void LoadTree()
-    {
-        string json = File.ReadAllText(filePath);
-        SaveFile saveFile = JsonUtility.FromJson<SaveFile>(json);
-
-        foreach (var breakableData in saveFile.breakables)
-        {
-            var match = FindObjectsByType<Breakable>(FindObjectsInactive.Include, FindObjectsSortMode.None).FirstOrDefault(x => x.GetComponent<GameObjectSavable>().saveData.id == breakableData.id);
-
-            if (match != null)
+            var fields = saveable.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            foreach (var f in fields)
             {
-                match.breakableSaveData.health = breakableData.health;
+                if (f.GetCustomAttribute(typeof(Savable)) != null)
+                {
+                    var match = objData.data.FirstOrDefault(x => x.name == f.Name);
+                    if (match != null)
+                    {
+                        object val = FromJson(match.json, f.FieldType);
+                        f.SetValue(saveable, val);
+                    }
+                }
             }
         }
     }
 
     #endregion
 
-    #region FarmlandSquare
-    
-    private void SaveFarmland()
-    {
+    #region Helpers
 
+    private string ToJson(object val, Type type)
+    {
+        if (val == null) return "";
+
+        if (type == typeof(int) || type == typeof(float) || type == typeof(bool) || type == typeof(string))
+            return val.ToString();
+
+        return JsonUtility.ToJson(val);
     }
 
-
-    private void LoadFarmland()
+    private object FromJson(string json, Type type)
     {
+        if (string.IsNullOrEmpty(json)) return GetDefault(type);
 
+        if (type == typeof(int))
+            return int.Parse(json);
+        if (type == typeof(float))
+            return float.Parse(json);
+        if (type == typeof(bool))
+            return bool.Parse(json);
+        if (type == typeof(string))
+            return json;
+
+        return JsonUtility.FromJson(json, type);
     }
+
+    private object GetDefault(Type type) => type.IsValueType ? Activator.CreateInstance(type) : null;
 
     #endregion
 }

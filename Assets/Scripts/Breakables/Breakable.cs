@@ -1,31 +1,26 @@
 using UnityEngine;
 
-public class  Breakable : GameObjectSavable
+public class Breakable : SaveableObject
 {
-    public BreakableData breakableSaveData;
-    private bool isKilled = false;
-    [SerializeField] internal bool isBreakable = false;
+    [Savable] public int health = 100;
+    [Savable] private bool isKilled = false;
+    [Savable, SerializeField] internal bool isBreakable = false;
 
-    private void Awake()
+    private void Start()
     {
-        saveData = new();
-        breakableSaveData = new();
-
-        //Generate ID
-        saveData.id = gameObject.GetInstanceID().ToString() + "@";
-
-        //Set Prefab Name
-        saveData.prefabName = prefab != null ? prefab.name.Replace("(Clone)", "") : "";
-
-        //Set Object Name
-        saveData.objectName = gameObject.name;
+        if (health <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 
     public void Damage(int damage)
     {
-        breakableSaveData.health -= damage;
+        if (isKilled) return;
 
-        if (breakableSaveData.health <= 0 && !isKilled)
+        health -= damage;
+
+        if (health <= 0)
         {
             isKilled = true;
             OnDestroyed();
@@ -36,10 +31,4 @@ public class  Breakable : GameObjectSavable
     {
 
     }
-}
-
-[System.Serializable]
-public class BreakableData : GameObjectData
-{
-    public int health = 100;
 }

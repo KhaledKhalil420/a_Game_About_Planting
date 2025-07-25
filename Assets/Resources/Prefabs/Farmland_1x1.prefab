@@ -134,7 +134,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 486bef586af7b8e4098981e8b36810ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 7731005561311465804}
+  uniqueID: 
+  prefabName: Farmland_1x1
   soilQualityLevel: 4
   seedIn: {fileID: 0}
   waterLevel: 0

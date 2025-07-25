@@ -1,13 +1,14 @@
 using DG.Tweening;
 using UnityEngine;
 
-public partial class FarmlandSquare : MonoBehaviour, IInteractable
+public partial class FarmlandSquare : SaveableObject, IInteractable
 {
-    [SerializeField] internal int soilQualityLevel = 4;
+    [SerializeField, Savable] internal int soilQualityLevel = 4;
+    [Savable] internal string seedInID;
     [SerializeField] internal SeedData seedIn; //OMG HE SAID THE THING!!!
-    [SerializeField] internal float waterLevel = 100;
-    [SerializeField] private float growingElapsedTime = 0;
-    [SerializeField] internal bool isReadyToHarvest = false;
+    [SerializeField, Savable] internal float waterLevel = 100;
+    [SerializeField, Savable] private float growingElapsedTime = 0;
+    [SerializeField, Savable] internal bool isReadyToHarvest = false;
     [SerializeField] private Transform childHolder;
     [SerializeField] private AudioSource source;
     [SerializeField] private AudioClip plantingSound, harvestingSound;
@@ -15,6 +16,11 @@ public partial class FarmlandSquare : MonoBehaviour, IInteractable
     [SerializeField] private Color drySoilColor, wateredSoilColor;
     private int _frameCounter = 0;
     private const int FRAME_INTERVAL = 100;
+
+    private void Start()
+    {
+        seedIn = Resources.Load<SeedData>("Seeds/" + seedInID);
+    }
 
     private void Update()
     {
@@ -59,7 +65,9 @@ public partial class FarmlandSquare : MonoBehaviour, IInteractable
     {
         inventory.GetSelectedSlot().HeldQuantity -= 1;
         inventory.GetSelectedSlot().UpdateSlot();
+
         seedIn = seed.seedData;
+        seedInID = seedIn.name;
 
         childHolder.localScale = new(0.25f, 0.25f, 0.25f);
         DOVirtual.Vector3(childHolder.localScale, new Vector3(1, 1, 1), seed.seedData.GetTotalTimeToGrow(),
@@ -92,6 +100,7 @@ public partial class FarmlandSquare : MonoBehaviour, IInteractable
         }
 
         seedIn = null;
+        seedInID = "";
         isReadyToHarvest = false;
         growingElapsedTime = 0;
 

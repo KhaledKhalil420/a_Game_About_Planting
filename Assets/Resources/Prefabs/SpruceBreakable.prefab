@@ -355,14 +355,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b1fa5c9ba3fdcd4a8ebc440b620a23f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 3332774623193117486}
-  breakableSaveData:
-    id: 
-    objectName: 
-    prefabName: 
-    position: {x: 0, y: 0, z: 0}
-    eulerAngles: {x: 0, y: 0, z: 0}
-    health: 100
+  uniqueID: 
+  prefabName: SpruceBreakable
+  health: 100
   isBreakable: 0
   source: {fileID: 6046354582334540804}
   childTree: {fileID: 2382649259771430202}
