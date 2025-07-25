@@ -7,6 +7,7 @@ public class Shop : MonoBehaviour
     [SerializeField] private List<Sellable> possibleItemsToSell = new();
     [SerializeField] private List<Sellable> currentItems = new();
     [SerializeField] private string foldersName;
+    [SerializeField] private AudioSource source;
 
     private void Awake()
     {
@@ -17,6 +18,8 @@ public class Shop : MonoBehaviour
         }
 
         RefreshTrades();
+
+        source = GetComponent<AudioSource>();
     }
 
     public void RefreshTrades()
@@ -53,6 +56,8 @@ public class Shop : MonoBehaviour
             inventory.GetSelectedSlot().HeldQuantity -= 1;
             inventory.GetSelectedSlot().UpdateSlot();
             PlayersPurse.GiveCoins(seed.seedData.sellingProfit);
+
+            source.Play();
         }
     }
 }

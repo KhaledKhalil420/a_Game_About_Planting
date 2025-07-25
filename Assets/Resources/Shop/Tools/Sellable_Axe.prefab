@@ -161,7 +161,7 @@ MonoBehaviour:
   item: {fileID: 4581614957520671922, guid: 6969a69fbf496114eb62ee97f4441396, type: 3}
   text: {fileID: 796133980862852213}
   desrcriptionText: {fileID: 8269031185378981017}
-  description: 'cuts wood. tip: cutting wood gives 5 coins'
+  description: 'cuts wood. tip: cutting wood gives 30 coins'
   group: {fileID: 0}
 --- !u!1001 &7666159836315949394
 PrefabInstance:

@@ -27,11 +27,16 @@ public class PlaceableItem : Item
         {
             if (preview == null)
             {
-                preview = Instantiate(placeableObject);
-                preview.GetComponent<Placeable>().enabled = false;
+                preview = Instantiate(placeableObject.gameObject);
+
+                if (preview.TryGetComponent(out Placeable placeable))
+                {
+                    placeable.enabled = false;
+                }
 
                 if (preview.TryGetComponent(out SpruceTree tree))
                 {
+                    tree.transform.localScale = new Vector3(0.15f, 0.15f, 0.15f);
                     tree.enabled = false;
                 }
 
@@ -44,6 +49,7 @@ public class PlaceableItem : Item
         }
         else if (preview)
         {
+            Debug.Log("W");
             Destroy(preview);
             preview = null;
         }

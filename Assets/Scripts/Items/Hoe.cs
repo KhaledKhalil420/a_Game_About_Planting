@@ -182,6 +182,7 @@ public class Hoe : Tool
             }
 
             Item dirtBagObj = Instantiate(dirtBag, square.transform.position + new Vector3(0, 0.15f, 0), Quaternion.identity).GetComponent<Item>();
+            dirtBagObj.HeldQuantity = 1;
             inventory.GiveItem(dirtBagObj, out bool Given);
 
             Destroy(square.gameObject);

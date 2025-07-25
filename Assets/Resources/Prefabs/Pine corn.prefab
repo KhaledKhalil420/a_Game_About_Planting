@@ -153,7 +153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: a08d4f6be8a2f0045b208ff29374e703, type: 2}
   isSingleQuantityItem: 0
-  HeldQuantity: 1
+  HeldQuantity: 2
   placeableObject: {fileID: 3332774623193117486, guid: e7210b38c7e145044a754c63b4866306, type: 3}
   ghostMaterial: {fileID: 2100000, guid: c611588113626d0459e9ab412b6d4e82, type: 2}
   PlaceableLayers:

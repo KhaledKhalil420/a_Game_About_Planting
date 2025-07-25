@@ -315,7 +315,7 @@ LODGroup:
   m_AnimateCrossFading: 1
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.14999983
+  - screenRelativeHeight: 0.45315883
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 2382649259771430202}
@@ -356,6 +356,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 3332774623193117486}
+  breakableSaveData:
+    id: 
+    objectName: 
+    prefabName: 
+    position: {x: 0, y: 0, z: 0}
+    eulerAngles: {x: 0, y: 0, z: 0}
+    health: 100
+  isBreakable: 0
   source: {fileID: 6046354582334540804}
   childTree: {fileID: 2382649259771430202}
   Pinecone: {fileID: 1030938873046053253, guid: 77263995019491f498cf338ffbee5d63, type: 3}

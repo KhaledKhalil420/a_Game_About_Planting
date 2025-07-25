@@ -61,12 +61,19 @@ public partial class FarmlandSquare : MonoBehaviour, IInteractable
         inventory.GetSelectedSlot().UpdateSlot();
         seedIn = seed.seedData;
 
-        childHolder.localScale = new(0.15f, 0.15f, 0.15f);
+        childHolder.localScale = new(0.25f, 0.25f, 0.25f);
         DOVirtual.Vector3(childHolder.localScale, new Vector3(1, 1, 1), seed.seedData.GetTotalTimeToGrow(),
         value => childHolder.localScale = value);
 
         source.pitch = Random.Range(0.9f, 1.1f);
         source.PlayOneShot(plantingSound);
+
+        var stage = seedIn.seedGrowingStages[0];
+        _currentGrowingStageModel = Instantiate(stage.currentStageModel, transform.position, Quaternion.identity, childHolder).transform;
+        _currentGrowingStageModel = Instantiate(stage.currentStageModel, transform.position, Quaternion.identity, childHolder).transform;
+        _currentGrowingStageModel.localPosition = new Vector3(0, 0.05f, 0);
+        _currentGrowingStageModel.localScale = new Vector3(0.75f, 0.75f, 0.75f);
+        
     }
 
     private void Harvest(PlayerInventory inventory)
@@ -144,7 +151,7 @@ public partial class FarmlandSquare : MonoBehaviour, IInteractable
         if (seedIn == null)
             return;
 
-        DOTween.KillAll(this);
+        DOTween.Kill(this, false);
 
         //Grow soil
         isReadyToHarvest = true;

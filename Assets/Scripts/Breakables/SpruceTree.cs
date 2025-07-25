@@ -18,7 +18,7 @@ public class SpruceTree : Breakable
         Vector3 originalScale = transform.localScale;
 
         transform.localScale = new Vector3(0.15f, 0.15f, 0.15f);
-        transform.DOScale(originalScale, 25);
+        transform.DOScale(originalScale, 250).OnComplete(() => isBreakable = true);
     }
 
     public override void OnDestroyed()
@@ -40,7 +40,7 @@ public class SpruceTree : Breakable
         source.Play();
 
         PlayersPurse.GiveCoins(coins);
-
+        
         Destroy(gameObject, 7f);
     }
 
@@ -73,7 +73,7 @@ public class SpruceTree : Breakable
 
     private void OnDestroy()
     {
-        if(Pinecone != null)
+        if(Pinecone != null && enabled)
             Instantiate(Pinecone, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
     }
 }

@@ -106,7 +106,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: e6eacd019c5a15148b271f5b68be0125, type: 2}
-  isSingleQuantityItem: 0
+  isSingleQuantityItem: 1
   HeldQuantity: 1
   animator: {fileID: 0}
   _offset: {x: 0, y: 0, z: 0.25}

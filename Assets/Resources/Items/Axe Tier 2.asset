@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Axe Tier 2
   m_EditorClassIdentifier: 
   Name: Axe
-  sprite: {fileID: 21300000, guid: 980284ba22e0557428ff58f4f91f82a3, type: 3}
-  model: {fileID: 4262338775872429807, guid: 1545a94fd740c3547b4e137961b739aa, type: 3}
+  sprite: {fileID: 21300000, guid: febb40028243cd1439817bc390037bcf, type: 3}
+  model: {fileID: 4262338775872429807, guid: 6969a69fbf496114eb62ee97f4441396, type: 3}
