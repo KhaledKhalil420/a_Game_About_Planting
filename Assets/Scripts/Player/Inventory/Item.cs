@@ -1,24 +1,29 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class Item : MonoBehaviour, IHighlightable
+public class Item : SaveableObject, IHighlightable
 {
     public ItemData data;
 
     public bool isSingleQuantityItem = false;
-    public int HeldQuantity;
+    [Savable] public int HeldQuantity;
 
     internal bool isItemPickedUp;
+    
+    private void Start()
+    {
+        prefabName = data.model.name;
+    }
 
     public void UpdateHoldingItem(bool isHolding)
     {
         isItemPickedUp = isHolding;
         int targetLayer = LayerMask.NameToLayer(isHolding ? "Held" : "Pickable");
-    
+
         GetComponent<Collider>().enabled = !isHolding;
         GetComponent<Rigidbody>().constraints = isHolding ? RigidbodyConstraints.FreezeAll : RigidbodyConstraints.None;
         gameObject.layer = targetLayer;
-    
+
         foreach (Transform child in GetComponentsInChildren<Transform>(true))
         {
             child.gameObject.layer = targetLayer;

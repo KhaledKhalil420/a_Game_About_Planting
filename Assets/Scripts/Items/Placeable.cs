@@ -1,12 +1,13 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class Placeable : MonoBehaviour, IInteractableAlt
+public class Placeable : SaveableObject, IInteractableAlt
 {
     public GameObject associatedItem;
 
     private void Start()
     {
+        prefabName = associatedItem.GetComponent<Item>().data.model.name;
         Vector3 originalScale = transform.localScale;
         transform.localScale = Vector3.zero;
         transform.DOScale(originalScale, 0.35f).SetEase(Ease.OutQuad);

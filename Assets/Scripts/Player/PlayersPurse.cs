@@ -13,10 +13,16 @@ public class PlayersPurse : MonoBehaviour
         UpdateUi();
     }
 
+    private void Start()
+    {
+        coins = PlayerPrefs.GetInt("coins", 0);
+    }
+
     public static void GiveCoins(int quantity)
     {
         instance.coins += quantity;
         instance.UpdateUi();
+        instance.SaveCoins();
     }
 
     public static bool TrySpendCoins(int quantity)
@@ -33,6 +39,7 @@ public class PlayersPurse : MonoBehaviour
     {
         if (quantity <= instance.coins)
         {
+            instance.SaveCoins();
             instance.coins -= quantity;
             instance.UpdateUi();
         }
@@ -42,5 +49,10 @@ public class PlayersPurse : MonoBehaviour
     public void UpdateUi()
     {
         coinsQuantityText.text = coins.ToString();
+    }
+
+    public void SaveCoins()
+    {
+        PlayerPrefs.SetInt("Coins", coins);
     }
 }

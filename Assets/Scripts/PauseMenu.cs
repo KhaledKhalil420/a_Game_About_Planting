@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Audio;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -25,6 +26,23 @@ public class PauseMenu : MonoBehaviour
     {
         parent.gameObject.SetActive(false);
     }
+
+    public void QuitToMenu()
+    {
+        ResumeGame();
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        CrossFader.StartFade();
+
+        DOVirtual.DelayedCall(0.15f, () =>
+        {
+            SceneManager.LoadScene("Main Menu");
+        });
+        
+        SaveManager.instance.Save();
+     }
 
     private void Update()
     {

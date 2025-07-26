@@ -81,7 +81,7 @@ public partial class FarmlandSquare : SaveableObject, IInteractable
         _currentGrowingStageModel = Instantiate(stage.currentStageModel, transform.position, Quaternion.identity, childHolder).transform;
         _currentGrowingStageModel.localPosition = new Vector3(0, 0.05f, 0);
         _currentGrowingStageModel.localScale = new Vector3(0.75f, 0.75f, 0.75f);
-        
+
     }
 
     private void Harvest(PlayerInventory inventory)

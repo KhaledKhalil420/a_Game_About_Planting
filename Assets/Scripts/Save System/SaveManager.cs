@@ -5,49 +5,81 @@ using System.Reflection;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+    How To Use Very Cool Save Manager!
+
+        -Place all prefabs in Resources/Prefabs 
+            --if Resources if null then make the file
+
+        -Add The Savable Object Component To Object
+            --Then add the name of the Prefab in the Savable Component
+
+        -Add The [Savable] attribute to the value you want to save 
+            --Note: Manager can only save, floats, bools, strings and ints
+
+        -Optional: you can subscribe to the OnSave/OnLoad Events for more logic
+
+        Made by very cool Khaled Khalil
+*/
+
 public class SaveManager : MonoBehaviour
 {
+    [SerializeField] private bool autoSaveOnQuit = true;
+    [SerializeField] private float autosaveTime = 50;
+    public static SaveManager instance;
+
     internal string filePath;
     internal SaveFile file;
 
+    public event Action OnSave;
+    public event Action OnLoad;
+
     private void Awake()
     {
-        filePath = Application.persistentDataPath + "/save.json";
-    }
+        instance = this;
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F5)) Save();
-        if (Input.GetKeyDown(KeyCode.F6)) Load();
+        filePath = Application.persistentDataPath + "/save.json";
+        Load();
+
+
+        InvokeRepeating(nameof(Save), autosaveTime, autosaveTime);
     }
 
     public void Save()
     {
+        //Create new save file
         file = new();
         SaveObjects();
         string json = JsonUtility.ToJson(file, true);
         File.WriteAllText(filePath, json);
+
+        OnSave?.Invoke();
     }
 
     public void Load()
     {
-        if (!File.Exists(filePath)) return;
+        if (!File.Exists(filePath) || new FileInfo(filePath).Length == 0) return;
 
+        //Delete all old objects
         var oldObjects = FindObjectsByType<SaveableObject>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID).Select(x => x.gameObject).ToArray();
         foreach (var obj in oldObjects)
             Destroy(obj);
 
+        //Load json file
         string json = File.ReadAllText(filePath);
         file = JsonUtility.FromJson<SaveFile>(json);
         if (file.objects == null) file.objects = new();
 
         LoadObjects();
+
+        OnLoad?.Invoke();
     }
 
     #region SaveableObjects
 
     private void SaveObjects()
     {
+        //Get all savables
         var all = FindObjectsByType<SaveableObject>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID);
 
         foreach (var obj in all)
@@ -59,9 +91,11 @@ public class SaveManager : MonoBehaviour
             data.position = obj.transform.position;
             data.rotation = obj.transform.eulerAngles;
 
-            var list = new List<SaveableVariable>();
+            //Load all variables on all fields in component
+            List<SaveableVariable> list = new List<SaveableVariable>();
             var fields = obj.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
+            //Save all [savable] variables on fields
             foreach (var f in fields)
             {
                 if (f.GetCustomAttribute(typeof(Savable)) != null)
@@ -72,6 +106,7 @@ public class SaveManager : MonoBehaviour
                 }
             }
 
+            //Add all data to the list and save it
             data.data = list;
             file.objects.Add(data);
         }
@@ -92,7 +127,10 @@ public class SaveManager : MonoBehaviour
             var saveable = obj.GetComponent<SaveableObject>();
             saveable.uniqueID = objData.id;
 
-            var fields = saveable.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            //Load all fields on component
+            FieldInfo[] fields = saveable.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+
+            //Load each field by the same name on json file
             foreach (var f in fields)
             {
                 if (f.GetCustomAttribute(typeof(Savable)) != null)
@@ -141,4 +179,10 @@ public class SaveManager : MonoBehaviour
     private object GetDefault(Type type) => type.IsValueType ? Activator.CreateInstance(type) : null;
 
     #endregion
+
+    void OnApplicationQuit()
+    {
+        if(autoSaveOnQuit)
+        Save();
+    }
 }
