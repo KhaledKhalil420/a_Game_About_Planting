@@ -22,12 +22,12 @@ public class PlayerInteract : MonoBehaviour
 
     private void Inputs()
     {
-        if (Input.GetKeyDown(Keybinds.Key("Use")))
+        if (Input.GetKeyDown(Keybinds.Key("Interact")))
         {
             _eHoldTime = 0f;
             TryInteract();
         }
-        else if (Input.GetKey(Keybinds.Key("Use")))
+        else if (Input.GetKey(Keybinds.Key("Interact")))
         {
             _eHoldTime += Time.deltaTime;
             if (_eHoldTime >= HoldThreshold)
@@ -35,7 +35,7 @@ public class PlayerInteract : MonoBehaviour
                 TryInteract();
             }
         }
-        else if (Input.GetKeyUp(Keybinds.Key("Use")))
+        else if (Input.GetKeyUp(Keybinds.Key("Interact")))
         {
             _eHoldTime = 0f;
         }

@@ -5,14 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    public Animator fadeInCanvas;
     public CanvasGroup group;
 
     public void NewGame()
     {
-        fadeInCanvas.Play("Fade");
+        CrossFader.StartFade(0.25f, 4, 0f, GetRandomTip(), () => SceneManager.LoadScene("Farmland"));
         group.interactable = false;
-        DOVirtual.DelayedCall(1, () => SceneManager.LoadScene("Farmland"), false);
         SaveFile file = new();
         string json = JsonUtility.ToJson(file, true);
         File.WriteAllText(Application.persistentDataPath + "/save.json", json);
@@ -21,9 +19,8 @@ public class MainMenu : MonoBehaviour
 
     public void LoadGame()
     {
-        fadeInCanvas.Play("Fade");
         group.interactable = false;
-        DOVirtual.DelayedCall(1, () => SceneManager.LoadScene("Farmland"), false);
+        CrossFader.StartFade(0.25f, 4, 0f, GetRandomTip(), () => SceneManager.LoadScene("Farmland"));
     }
 
     public void OpenCredits()
@@ -35,5 +32,11 @@ public class MainMenu : MonoBehaviour
     {
         Debug.Log("Quit Game");
         Application.Quit();
+    }
+
+    public string GetRandomTip()
+    {
+        string[] tips = new string[] { "Check The Key Maps For Controls!", "This is a tip", "Have a Good Time", "Tip of Day: Tea is overrated", "You can sell Crops in the bin", "You can reset trades by pressing the bell" };
+        return tips[Random.Range(0, tips.Length)];
     }
 }

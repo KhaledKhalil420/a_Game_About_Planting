@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -39,7 +40,7 @@ public class CrossFader : MonoBehaviour
         });
     }
 
-    public static void StartFade(float start, float durationInBetween, float end, string message = "")
+    public static void StartFade(float start, float durationInBetween, float end, string message = "", Action onComplete = null)
     {
         PlayerManager.instance.LockPlayer();
 
@@ -54,10 +55,14 @@ public class CrossFader : MonoBehaviour
         {
             DOVirtual.DelayedCall(durationInBetween, () =>
             {
-                instance.group.DOFade(0, end).OnComplete(() => instance.message.text = "");
-                PlayerManager.instance.UnlockPlayer();
+                instance.group.DOFade(0, end).OnComplete(() =>
+                {
+                    instance.message.text = "";
+                    PlayerManager.instance.UnlockPlayer();
+                    onComplete?.Invoke();  // Run your custom action here if provided
+                });
             });
-
         });
     }
+
 }

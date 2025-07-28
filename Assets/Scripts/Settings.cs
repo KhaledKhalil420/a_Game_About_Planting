@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Audio;
@@ -19,7 +20,8 @@ public class SaveSettingsData
     public float SfxVolume = 0f;
     public float MasterVolume = 0f;
     public float AmbienceVolume = 0f;
-    public bool VSync = true; // 👈 NEW
+    public bool VSync = true;
+    public List<KeyEntry> KeyBindings = new();
 }
 
 public class Settings : MonoBehaviour
@@ -39,22 +41,27 @@ public class Settings : MonoBehaviour
     [SerializeField] private Slider ambienceSlider;
     [SerializeField] private TMP_Dropdown graphicsDropdown;
     [SerializeField] private TMP_Dropdown resolutionDropdown;
-    [SerializeField] private Toggle vsyncToggle; // 👈 NEW
+    [SerializeField] private Toggle vsyncToggle;
+    [SerializeField] private Transform keybindsParent;
+    [SerializeField] private GameObject keybindPrefab;
 
     [Header("Audio Mixers")]
     [SerializeField] private AudioMixer masterMixer;
 
-    private List<Resolution> validResolutions = new List<Resolution>();
-    private SaveSettingsData settingsData = new SaveSettingsData();
+    private List<Resolution> validResolutions = new();
+    private SaveSettingsData settingsData = new();
     private string fullPath => Path.Combine(Application.persistentDataPath, SaveFileName);
+    private readonly List<TMP_Text> keybindButtons = new();
+    private int waitingForKeyIndex = -1;
 
     private void Awake()
     {
-        if (mainCamera == null)
-            mainCamera = Camera.main;
+        if (mainCamera == null) mainCamera = Camera.main;
         playerLook = mainCamera?.GetComponentInParent<PlayerLook>();
+
         PopulateResolutions();
         LoadSettings();
+        SetupKeybindUI();
         AnimateAllUI();
     }
 
@@ -71,7 +78,7 @@ public class Settings : MonoBehaviour
         sfxSlider.onValueChanged.AddListener(OnSfxVolumeChanged);
         masterSlider.onValueChanged.AddListener(OnMasterVolumeChanged);
         ambienceSlider.onValueChanged.AddListener(OnAmbienceVolumeChanged);
-        vsyncToggle.onValueChanged.AddListener(OnVSyncChanged); // 👈 NEW
+        vsyncToggle.onValueChanged.AddListener(OnVSyncChanged);
     }
 
     private void UnsubscribeUI()
@@ -84,7 +91,7 @@ public class Settings : MonoBehaviour
         sfxSlider.onValueChanged.RemoveListener(OnSfxVolumeChanged);
         masterSlider.onValueChanged.RemoveListener(OnMasterVolumeChanged);
         ambienceSlider.onValueChanged.RemoveListener(OnAmbienceVolumeChanged);
-        vsyncToggle.onValueChanged.RemoveListener(OnVSyncChanged); // 👈 NEW
+        vsyncToggle.onValueChanged.RemoveListener(OnVSyncChanged);
     }
 
     private void PopulateResolutions()
@@ -92,90 +99,97 @@ public class Settings : MonoBehaviour
         resolutionDropdown.ClearOptions();
         validResolutions.Clear();
         float targetAspect = 16f / 9f;
+
         foreach (var res in Screen.resolutions)
-        {
             if (res.width >= 640 && res.height >= 360 &&
                 Mathf.Approximately((float)res.width / res.height, targetAspect) &&
                 !validResolutions.Exists(r => r.width == res.width && r.height == res.height))
-            {
                 validResolutions.Add(res);
-            }
-        }
+
         var options = validResolutions.ConvertAll(r => $"{r.width} x {r.height}");
         resolutionDropdown.AddOptions(options);
     }
 
-    private void OnSensitivityChanged(float value)
+    private void OnSensitivityChanged(float v)   { settingsData.Sensitivity = v; if (playerLook != null) playerLook.Sensitivity = v; SaveSettings(); }
+    private void OnRenderDistanceChanged(float v){ settingsData.RenderDistance = v; if (mainCamera != null) mainCamera.farClipPlane = v; SaveSettings(); }
+    private void OnQualityChanged(int i)         { settingsData.QualityLevel = i; QualitySettings.SetQualityLevel(i, true); SaveSettings(); }
+    private void OnResolutionChanged(int i)
     {
-        settingsData.Sensitivity = value;
-        if (playerLook != null) playerLook.Sensitivity = value;
-        SaveSettings();
-    }
-
-    private void OnRenderDistanceChanged(float value)
-    {
-        settingsData.RenderDistance = value;
-        if (mainCamera != null) mainCamera.farClipPlane = value;
-        SaveSettings();
-    }
-
-    private void OnQualityChanged(int index)
-    {
-        settingsData.QualityLevel = index;
-        QualitySettings.SetQualityLevel(index, true);
-        SaveSettings();
-    }
-
-    private void OnResolutionChanged(int index)
-    {
-        settingsData.ResolutionIndex = index;
-        if (index >= 0 && index < validResolutions.Count)
+        settingsData.ResolutionIndex = i;
+        if (i >= 0 && i < validResolutions.Count)
         {
-            var res = validResolutions[index];
-            Screen.SetResolution(res.width, res.height, FullScreenMode.FullScreenWindow, res.refreshRateRatio);
+            var r = validResolutions[i];
+            Screen.SetResolution(r.width, r.height, FullScreenMode.FullScreenWindow, r.refreshRateRatio);
         }
         SaveSettings();
     }
+    private void OnMusicVolumeChanged(float v)   { settingsData.MusicVolume = v; masterMixer.SetFloat("VolumeMusic", v); SaveSettings(); }
+    private void OnSfxVolumeChanged(float v)     { settingsData.SfxVolume = v; masterMixer.SetFloat("VolumeSfx", v); SaveSettings(); }
+    private void OnMasterVolumeChanged(float v)  { settingsData.MasterVolume = v; masterMixer.SetFloat("VolumeMaster", v); SaveSettings(); }
+    private void OnAmbienceVolumeChanged(float v){ settingsData.AmbienceVolume = v; masterMixer.SetFloat("VolumeAmbience", v); SaveSettings(); }
+    private void OnVSyncChanged(bool on)        { settingsData.VSync = on; QualitySettings.vSyncCount = on ? 1 : 0; SaveSettings(); }
 
-    private void OnMusicVolumeChanged(float value)
+    private void WaitForKey(int idx)
     {
-        settingsData.MusicVolume = value;
-        masterMixer.SetFloat("VolumeMusic", value);
-        SaveSettings();
+        waitingForKeyIndex = idx;
+        keybindButtons[idx].text = "Press a key...";
     }
 
-    private void OnSfxVolumeChanged(float value)
+    private void OnGUI()
     {
-        settingsData.SfxVolume = value;
-        masterMixer.SetFloat("VolumeSfx", value);
-        SaveSettings();
+        if (waitingForKeyIndex < 0) return;
+        var e = Event.current;
+
+        if (e.isKey && e.type == EventType.KeyDown)
+        {
+            string action = ConfigActions[waitingForKeyIndex];
+            Keybinds.Set(action, e.keyCode);
+            keybindButtons[waitingForKeyIndex].text = $"{action}: {e.keyCode}";
+            settingsData.KeyBindings = SerializeKeybinds();
+            SaveSettings();
+            waitingForKeyIndex = -1;
+        }
+        else if (e.isMouse && e.type == EventType.MouseDown)
+        {
+            string action = ConfigActions[waitingForKeyIndex];
+            KeyCode mouseKey = MouseButtonToKeyCode(e.button);
+            Keybinds.Set(action, mouseKey);
+            keybindButtons[waitingForKeyIndex].text = $"{action}: {mouseKey}";
+            settingsData.KeyBindings = SerializeKeybinds();
+            SaveSettings();
+            waitingForKeyIndex = -1;
+        }
     }
 
-    private void OnMasterVolumeChanged(float value)
+    private KeyCode MouseButtonToKeyCode(int button)
     {
-        settingsData.MasterVolume = value;
-        masterMixer.SetFloat("VolumeMaster", value);
-        SaveSettings();
+        return button switch
+        {
+            0 => KeyCode.Mouse0,
+            1 => KeyCode.Mouse1,
+            2 => KeyCode.Mouse2,
+            3 => KeyCode.Mouse3,
+            4 => KeyCode.Mouse4,
+            5 => KeyCode.Mouse5,
+            6 => KeyCode.Mouse6,
+            _ => KeyCode.None,
+        };
     }
 
-    private void OnAmbienceVolumeChanged(float value)
+    private List<KeyEntry> SerializeKeybinds()
     {
-        settingsData.AmbienceVolume = value;
-        masterMixer.SetFloat("VolumeAmbience", value);
-        SaveSettings();
-    }
-
-    private void OnVSyncChanged(bool value) // 👈 NEW
-    {
-        settingsData.VSync = value;
-        QualitySettings.vSyncCount = value ? 1 : 0;
-        SaveSettings();
+        var list = new List<KeyEntry>();
+        var map = typeof(Keybinds).GetField("keyMap", BindingFlags.NonPublic | BindingFlags.Static)
+                                  .GetValue(null) as Dictionary<string, KeyCode>;
+        foreach (var kv in map)
+            list.Add(new KeyEntry { Action = kv.Key, Key = kv.Value });
+        return list;
     }
 
     private void SaveSettings()
     {
         try { File.WriteAllText(fullPath, JsonUtility.ToJson(settingsData, true)); }
-        catch (Exception ex) { Debug.LogError($"Failed to save settings: {ex.Message}"); }
+        catch (Exception e) { Debug.LogError($"Failed to save settings: {e.Message}"); }
     }
 
     private void LoadSettings()
@@ -183,22 +197,27 @@ public class Settings : MonoBehaviour
         if (File.Exists(fullPath))
         {
             try { settingsData = JsonUtility.FromJson<SaveSettingsData>(File.ReadAllText(fullPath)); }
-            catch (Exception ex) { Debug.LogError($"Failed to load settings: {ex.Message}"); settingsData = new SaveSettingsData(); }
+            catch { settingsData = new SaveSettingsData(); }
         }
+
+        if (settingsData.KeyBindings.Count > 0)
+            foreach (var entry in settingsData.KeyBindings)
+                Keybinds.Set(entry.Action, entry.Key);
+
         ApplySettingsToUI();
     }
 
     private void ApplySettingsToUI()
     {
-        sensitivitySlider.value = settingsData.Sensitivity;
-        renderDistanceSlider.value = settingsData.RenderDistance;
-        graphicsDropdown.value = settingsData.QualityLevel;
-        resolutionDropdown.value = settingsData.ResolutionIndex;
-        musicSlider.value = settingsData.MusicVolume;
-        sfxSlider.value = settingsData.SfxVolume;
-        masterSlider.value = settingsData.MasterVolume;
-        ambienceSlider.value = settingsData.AmbienceVolume;
-        vsyncToggle.isOn = settingsData.VSync; // 👈 NEW
+        sensitivitySlider.value       = settingsData.Sensitivity;
+        renderDistanceSlider.value    = settingsData.RenderDistance;
+        graphicsDropdown.value        = settingsData.QualityLevel;
+        resolutionDropdown.value      = settingsData.ResolutionIndex;
+        musicSlider.value             = settingsData.MusicVolume;
+        sfxSlider.value               = settingsData.SfxVolume;
+        masterSlider.value            = settingsData.MasterVolume;
+        ambienceSlider.value          = settingsData.AmbienceVolume;
+        vsyncToggle.isOn              = settingsData.VSync;
 
         OnSensitivityChanged(settingsData.Sensitivity);
         OnRenderDistanceChanged(settingsData.RenderDistance);
@@ -208,56 +227,85 @@ public class Settings : MonoBehaviour
         OnSfxVolumeChanged(settingsData.SfxVolume);
         OnMasterVolumeChanged(settingsData.MasterVolume);
         OnAmbienceVolumeChanged(settingsData.AmbienceVolume);
-        OnVSyncChanged(settingsData.VSync); // 👈 NEW
+        OnVSyncChanged(settingsData.VSync);
+    }
+
+    private void SetupKeybindUI()
+    {
+        keybindButtons.Clear();
+        foreach (Transform c in keybindsParent) Destroy(c.gameObject);
+
+        for (int i = 0; i < ConfigActions.Count; i++)
+        {
+            var go = Instantiate(keybindPrefab, keybindsParent);
+            var txt = go.GetComponentInChildren<TMP_Text>();
+            keybindButtons.Add(txt);
+
+            string action = ConfigActions[i];
+            var key = Keybinds.Key(action);
+            txt.text = $"{action}: {key}";
+
+            var trig = go.GetComponent<EventTrigger>() ?? go.AddComponent<EventTrigger>();
+            trig.triggers ??= new List<EventTrigger.Entry>();
+            int idx = i;
+            var entry = new EventTrigger.Entry { eventID = EventTriggerType.PointerClick };
+            entry.callback.AddListener(_ => WaitForKey(idx));
+            trig.triggers.Add(entry);
+        }
+    }
+
+    private List<string> ConfigActions
+    {
+        get
+        {
+            var cfg = Resources.Load<KeybindsConfig>("KeybindsConfig");
+            if (cfg == null)
+            {
+                Debug.LogError("KeybindsConfig asset not found!");
+                return new List<string>();
+            }
+            var actions = new List<string>();
+            foreach (var e in cfg.keyEntries) actions.Add(e.Action);
+            return actions;
+        }
     }
 
     public void ExitGame() => Application.Quit();
 
     private void AnimateAllUI()
     {
-        AnimateUIElement(sensitivitySlider.GetComponent<RectTransform>());
-        AnimateUIElement(renderDistanceSlider.GetComponent<RectTransform>());
-        AnimateUIElement(musicSlider.GetComponent<RectTransform>());
-        AnimateUIElement(sfxSlider.GetComponent<RectTransform>());
-        AnimateUIElement(masterSlider.GetComponent<RectTransform>());
-        AnimateUIElement(ambienceSlider.GetComponent<RectTransform>());
-        AnimateUIElement(graphicsDropdown.GetComponent<RectTransform>());
-        AnimateUIElement(resolutionDropdown.GetComponent<RectTransform>());
-        AnimateUIElement(vsyncToggle.GetComponent<RectTransform>()); // 👈 NEW
+        Animate(sensitivitySlider.GetComponent<RectTransform>());
+        Animate(renderDistanceSlider.GetComponent<RectTransform>());
+        Animate(musicSlider.GetComponent<RectTransform>());
+        Animate(sfxSlider.GetComponent<RectTransform>());
+        Animate(masterSlider.GetComponent<RectTransform>());
+        Animate(ambienceSlider.GetComponent<RectTransform>());
+        Animate(graphicsDropdown.GetComponent<RectTransform>());
+        Animate(resolutionDropdown.GetComponent<RectTransform>());
+        Animate(vsyncToggle.GetComponent<RectTransform>());
     }
 
-    private void AnimateUIElement(RectTransform target)
+    private void Animate(RectTransform t)
     {
-        if (target == null) return;
+        if (t == null) return;
+        float y0 = t.anchoredPosition.y;
+        t.DOAnchorPosY(y0 + 3f, 3f).SetLoops(-1, LoopType.Yoyo).SetEase(Ease.InOutSine)
+         .SetDelay(UnityEngine.Random.Range(0f,1f)).SetUpdate(true);
 
-        float startY = target.anchoredPosition.y;
-        target.DOAnchorPosY(startY + 3f, 3f)
-            .SetLoops(-1, LoopType.Yoyo)
-            .SetEase(Ease.InOutSine)
-            .SetDelay(UnityEngine.Random.Range(0f, 1f))
-            .SetUpdate(true);
-
-        var trigger = target.gameObject.GetComponent<EventTrigger>() ?? target.gameObject.AddComponent<EventTrigger>();
-        trigger.triggers ??= new List<EventTrigger.Entry>();
-        AddTrigger(trigger, EventTriggerType.PointerEnter, () => Wiggle(target));
-        AddTrigger(trigger, EventTriggerType.PointerClick, () => Pulse(target));
+        var trig = t.gameObject.GetComponent<EventTrigger>() ?? t.gameObject.AddComponent<EventTrigger>();
+        trig.triggers ??= new List<EventTrigger.Entry>();
+        AddTrigger(trig, EventTriggerType.PointerEnter, () => { });
+        AddTrigger(trig, EventTriggerType.PointerClick, () =>
+        {
+            AudioManager.instance?.PlaySound("Click",1,1.15f);
+            t.DOPunchScale(Vector3.one * .05f, .2f, 3, .4f).SetUpdate(true);
+        });
     }
 
-    private void AddTrigger(EventTrigger trigger, EventTriggerType type, Action callback)
+    private void AddTrigger(EventTrigger tg, EventTriggerType type, Action cb)
     {
-        var entry = new EventTrigger.Entry { eventID = type };
-        entry.callback.AddListener((_) => callback());
-        trigger.triggers.Add(entry);
-    }
-
-    private void Wiggle(RectTransform target) { }
-
-    private void Pulse(RectTransform target)
-    {
-        AudioManager.instance?.PlaySound("Click", 1, 1.15f);
-
-        target.DOKill(true);
-        target.DOPunchScale(Vector3.one * 0.05f, 0.2f, 3, 0.4f)
-            .SetUpdate(true);
+        var ent = new EventTrigger.Entry { eventID = type };
+        ent.callback.AddListener(_ => cb());
+        tg.triggers.Add(ent);
     }
 }

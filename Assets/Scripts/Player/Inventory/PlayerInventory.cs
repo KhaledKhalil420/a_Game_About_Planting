@@ -99,7 +99,7 @@ public class PlayerInventory : MonoBehaviour
     private void HandlePickup()
     {
         //if found same type slot, take as much as you can, then on next interact add the rest to a new slot
-        if (Input.GetKey(Keybinds.Key("Use")))
+        if (Input.GetKey(Keybinds.Key("Interact")))
         {
             if (Physics.Raycast(_camera.position, _camera.forward, out RaycastHit hit, interact.raycastDistance, LayerMask.GetMask("Pickable")))
             {
@@ -160,7 +160,7 @@ public class PlayerInventory : MonoBehaviour
 
     private void HandleUse()
     {
-        if (Input.GetKeyDown(Keybinds.Key("LeftClick")))
+        if (Input.GetKeyDown(Keybinds.Key("Use")))
         {
             SlotHolder selectedSlot = SlotHolders[_currentSlotIndex];
 
@@ -168,7 +168,7 @@ public class PlayerInventory : MonoBehaviour
                 selectedSlot.HeldItem.OnUse();
         }
 
-        if (Input.GetKeyUp(Keybinds.Key("LeftClick")))
+        if (Input.GetKeyUp(Keybinds.Key("Use")))
         {
             SlotHolder selectedSlot = SlotHolders[_currentSlotIndex];
 
@@ -176,7 +176,7 @@ public class PlayerInventory : MonoBehaviour
                 selectedSlot.HeldItem.OnStoppingUse();
         }
 
-        if (Input.GetKeyDown(Keybinds.Key("RightClick")))
+        if (Input.GetKeyDown(Keybinds.Key("Use Alt")))
         {
             SlotHolder selectedSlot = SlotHolders[_currentSlotIndex];
 
@@ -184,7 +184,7 @@ public class PlayerInventory : MonoBehaviour
                 selectedSlot.HeldItem.OnUseAlt();
         }
 
-        if (Input.GetKeyUp(Keybinds.Key("RightClick")))
+        if (Input.GetKeyUp(Keybinds.Key("Use Alt")))
         {
             SlotHolder selectedSlot = SlotHolders[_currentSlotIndex];
 
@@ -192,7 +192,7 @@ public class PlayerInventory : MonoBehaviour
                 selectedSlot.HeldItem.OnStoppingUseAlt();
         }
 
-        if (Input.GetKeyDown(Keybinds.Key("MiddleClick")))
+        if (Input.GetKeyDown(Keybinds.Key("Pickup Buildings")))
         {
             SlotHolder selectedSlot = SlotHolders[_currentSlotIndex];
 

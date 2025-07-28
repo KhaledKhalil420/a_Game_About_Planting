@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: KeybindsConfig
   m_EditorClassIdentifier: 
   keyEntries:
-  - Action: Use
+  - Action: Interact
     Key: 101
   - Action: Throw
     Key: 113
-  - Action: LeftClick
+  - Action: Use
     Key: 323
-  - Action: RightClick
+  - Action: Use Alt
     Key: 324
-  - Action: MiddleClick
+  - Action: Pickup Buildings
     Key: 325
