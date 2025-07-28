@@ -27,7 +27,7 @@ public class PlayerManager : MonoBehaviour
             movement.enabled = true;
         }
     }
-    
+
     public Transform GetClosestPlayer(Vector3 locateFrom)
     {
         GameObject closestPlayer = null;
@@ -52,5 +52,10 @@ public class PlayerManager : MonoBehaviour
 
         players = GameObject.FindGameObjectsWithTag("Player").ToList();
         players.ForEach(player => player.transform.parent = null);
+    }
+    
+    private void OnDestroy()
+    {
+        instance = null;
     }
 }
