@@ -5,6 +5,7 @@ public class SellablePriceIncrease : Sellable
 {
     public string sellableName;
     public float costIncrease;
+    public int maxPrice = 200000;
 
 
     public UnityEvent onBuyEvent;
@@ -22,6 +23,8 @@ public class SellablePriceIncrease : Sellable
     public override void OnBought()
     {
         onBuyEvent?.Invoke();
+
+        if(cost < maxPrice)
         ShopEconomy.instance.IncreaseItemCost(sellableName, costIncrease);
 
         if(item == null)    

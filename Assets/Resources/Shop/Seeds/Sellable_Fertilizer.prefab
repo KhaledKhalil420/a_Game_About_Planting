@@ -122,6 +122,7 @@ GameObject:
   - component: {fileID: 38940504125169275}
   - component: {fileID: 162672236646763230}
   - component: {fileID: 8711281263050010566}
+  - component: {fileID: 5365707963448862586}
   m_Layer: 6
   m_Name: Sellable_Fertilizer
   m_TagString: Untagged
@@ -185,6 +186,30 @@ MonoBehaviour:
   desrcriptionText: {fileID: 6207091031910388123}
   description: instantally grows seeds
   group: {fileID: 0}
+--- !u!114 &5365707963448862586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2591585688983627959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45af313de6d388c419467af99b39f470, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cost: 100
+  item: {fileID: 427869047156516409, guid: c2f07f264a8acdf4dae9638c20ecc54f, type: 3}
+  text: {fileID: 3452549826441283959}
+  desrcriptionText: {fileID: 6207091031910388123}
+  description: instantally grows seeds
+  group: {fileID: 0}
+  sellableName: Fertilizer
+  costIncrease: 4
+  maxPrice: 2000000
+  onBuyEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &5658262365109926992
 PrefabInstance:
   m_ObjectHideFlags: 0

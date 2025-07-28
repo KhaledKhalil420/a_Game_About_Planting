@@ -6,10 +6,12 @@ public class WaterSprayer : Placeable
     [SerializeField] private float _sprayingRange = 15;
     [SerializeField] private ParticleSystem _particles;
     [SerializeField] private AudioSource _source;
+    [SerializeField] private GameObject sphere;
 
     private void Start()
     {
         InvokeRepeating(nameof(Spray), _sprayingCycle / 4, _sprayingCycle);
+        sphere.SetActive(false);
     }
 
     private void Spray()

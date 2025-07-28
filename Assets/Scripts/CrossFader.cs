@@ -17,32 +17,32 @@ public class CrossFader : MonoBehaviour
     public static void StartFade()
     {
         instance.message.enabled = false;
-        PlayerManager.instance.LockPlayer();
+        PlayerManager.instance?.LockPlayer();
 
         instance.group.alpha = 0;
         instance.group.DOFade(1f, 0.15f).OnComplete(() =>
         {
             instance.group.DOFade(0, 0.15f);
-            PlayerManager.instance.UnlockPlayer();
+            PlayerManager.instance?.UnlockPlayer();
         });
     }
 
     public static void StartFade(float duration)
     {
         instance.message.enabled = false;
-        PlayerManager.instance.LockPlayer();
+        PlayerManager.instance?.LockPlayer();
 
         instance.group.alpha = 0;
         instance.group.DOFade(1f, duration).OnComplete(() =>
         {
             instance.group.DOFade(0, duration);
-            PlayerManager.instance.UnlockPlayer();
+            PlayerManager.instance?.UnlockPlayer();
         });
     }
 
-    public static void StartFade(float start, float durationInBetween, float end, string message = "", Action onComplete = null)
+    public static void StartFade(float start, float durationInBetween, float end, string message = "", Action onComplete = null, bool leaveAlpha = false)
     {
-        PlayerManager.instance.LockPlayer();
+        PlayerManager.instance?.LockPlayer();
 
         if (instance?.message != null)
         {
@@ -55,10 +55,11 @@ public class CrossFader : MonoBehaviour
         {
             DOVirtual.DelayedCall(durationInBetween, () =>
             {
-                instance.group.DOFade(0, end).OnComplete(() =>
+                int v = leaveAlpha ? 1 : 0;
+                instance.group.DOFade(v, end).OnComplete(() =>
                 {
                     instance.message.text = "";
-                    PlayerManager.instance.UnlockPlayer();
+                    PlayerManager.instance?.UnlockPlayer();
                     onComplete?.Invoke();  // Run your custom action here if provided
                 });
             });

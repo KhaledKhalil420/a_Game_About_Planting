@@ -16852,6 +16852,7 @@ GameObject:
   - component: {fileID: 1828871461}
   - component: {fileID: 1828871463}
   - component: {fileID: 1828871462}
+  - component: {fileID: 1828871464}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -16876,7 +16877,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 621.7146, y: 155.4286}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1828871462
 MonoBehaviour:
@@ -16898,10 +16899,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: 'Tip of the day: Tea is overrrated'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 58e7451d9d3aba54c96ba5686d027ced, type: 2}
+  m_sharedMaterial: {fileID: -5309983401665804944, guid: 58e7451d9d3aba54c96ba5686d027ced, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -16925,12 +16926,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
+  m_fontSize: 32
   m_fontSizeBase: 36
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 0
+  m_fontSizeMax: 32
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -16977,6 +16978,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1828871460}
   m_CullTransparentMesh: 1
+--- !u!114 &1828871464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1828871460}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01569f1f832c3cb41ae23464452cf16e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 1828871462}
+  speed: 1
 --- !u!1 &1841485234
 GameObject:
   m_ObjectHideFlags: 0

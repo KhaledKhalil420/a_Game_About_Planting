@@ -12,14 +12,20 @@ public class PlayerManager : MonoBehaviour
 
     public void LockPlayer()
     {
-        localPlayer.GetComponent<PlayerMovement>().playerLook.enabled = false;
-        localPlayer.GetComponent<PlayerMovement>().enabled = false;
+        if (localPlayer.TryGetComponent(out PlayerMovement movement))
+        {
+            movement.playerLook.enabled = false;
+            movement.enabled = false;
+        }
     }
 
     public void UnlockPlayer()
     {
-        localPlayer.GetComponent<PlayerMovement>().playerLook.enabled = true;
-        localPlayer.GetComponent<PlayerMovement>().enabled = true;
+        if (localPlayer.TryGetComponent(out PlayerMovement movement))
+        {
+            movement.playerLook.enabled = true;
+            movement.enabled = true;
+        }
     }
     
     public Transform GetClosestPlayer(Vector3 locateFrom)
