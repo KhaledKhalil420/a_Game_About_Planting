@@ -4,14 +4,15 @@ using System.Linq;
 using System.Reflection;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Mathematics;
 
 /*
-    How To Use Very Cool Save Manager!
+    How To Use Ez Save System!
 
         -Place all prefabs in Resources/Prefabs 
-            --if Resources if null then make the file
+            --if Resources is null then make the file
 
-        -Add The Savable Object Component To Object
+        -Add the SavableObject component to the Object
             --Then add the name of the Prefab in the Savable Component
 
         -Add The [Savable] attribute to the value you want to save 
@@ -19,7 +20,7 @@ using UnityEngine;
 
         -Optional: you can subscribe to the OnSave/OnLoad Events for more logic
 
-        Made by very cool Khaled Khalil
+        Made by the very cool Khaled Khalil
 */
 
 public class SaveManager : MonoBehaviour
@@ -58,7 +59,10 @@ public class SaveManager : MonoBehaviour
 
     public void Load()
     {
-        if (!File.Exists(filePath) || new FileInfo(filePath).Length == 0) return;
+        string json = File.ReadAllText(filePath);
+        file = JsonUtility.FromJson<SaveFile>(json);
+
+        if (!File.Exists(filePath) || file.objects?.Count == 0 || file.objects == null) return;
 
         //Delete all old objects
         var oldObjects = FindObjectsByType<SaveableObject>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID).Select(x => x.gameObject).ToArray();
@@ -66,7 +70,6 @@ public class SaveManager : MonoBehaviour
             Destroy(obj);
 
         //Load json file
-        string json = File.ReadAllText(filePath);
         file = JsonUtility.FromJson<SaveFile>(json);
         if (file.objects == null) file.objects = new();
 
@@ -109,6 +112,12 @@ public class SaveManager : MonoBehaviour
             //Add all data to the list and save it
             data.data = list;
             file.objects.Add(data);
+
+            //Trigger ISavable if available
+            if (obj.TryGetComponent(out ISavable savable))
+            {
+                savable.OnSave();
+            }
         }
     }
 
@@ -142,6 +151,12 @@ public class SaveManager : MonoBehaviour
                         f.SetValue(saveable, val);
                     }
                 }
+            }
+
+            //Trigger ISavable if available
+            if (obj.TryGetComponent(out ISavable savable))
+            {
+                savable.OnLoad();
             }
         }
     }

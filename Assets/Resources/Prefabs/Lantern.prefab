@@ -224,6 +224,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 090bfbfe08aac1443b59e7650e30c214, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uniqueID: 
+  prefabName: Lantern
   data: {fileID: 11400000, guid: 56aa3e815a86dec4f838a5c3b6d4d699, type: 2}
   isSingleQuantityItem: 1
   HeldQuantity: 1

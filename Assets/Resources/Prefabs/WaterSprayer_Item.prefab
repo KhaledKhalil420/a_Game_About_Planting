@@ -102,6 +102,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f4c9e6de637f864d9938cda1c5e4fdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uniqueID: 
+  prefabName: WaterSprayer_Item
   data: {fileID: 11400000, guid: b3cdafd5f4fb9c345b7acbd2d94c296b, type: 2}
   isSingleQuantityItem: 0
   HeldQuantity: 1

@@ -4,12 +4,15 @@ using DG.Tweening;
 
 public class HouseDoor : MonoBehaviour, IInteractable
 {
+    //I regret adding the "_" but I'm balls deep now
+
     [SerializeField] Transform _goingTo;
     [SerializeField] AudioMixerGroup _ambientMixerGroup;
     [SerializeField] AudioSource _source;
     [SerializeField] float _targetedLowPass = 22000;
-    [SerializeField] bool _disableLight, _disableFog, _onTrigger;
+    [SerializeField] bool _disableLight, _disableFog, _onTrigger, _setIndoors;
     [SerializeField] GameObject _SpawnIn, _DisableIn;
+    [SerializeField] Color _fogColor;
 
     DayNightCycle _dayNight;
     Rigidbody _playerRb;
@@ -72,8 +75,10 @@ public class HouseDoor : MonoBehaviour, IInteractable
     void ChangeLights()
     {
         _ambientMixerGroup.audioMixer.SetFloat("LowPassAmbience", _targetedLowPass);
+
+        RenderSettings.fogColor = _fogColor;
         RenderSettings.fog = !_disableFog;
-        _dayNight.SetIndoors(_disableFog);
+        _dayNight.SetIndoors(_setIndoors);
 
         Color black = Color.black;
         RenderSettings.ambientSkyColor = black;

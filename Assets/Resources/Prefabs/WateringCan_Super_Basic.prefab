@@ -4938,6 +4938,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 219143ec6e67a7740909772628a37506, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uniqueID: 
+  prefabName: WateringCan_Super_Basic
   data: {fileID: 11400000, guid: 9b7b1583a7f1a414e9b5f5fe7b8da600, type: 2}
   isSingleQuantityItem: 0
   HeldQuantity: 1

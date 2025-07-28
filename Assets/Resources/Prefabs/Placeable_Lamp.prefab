@@ -134,7 +134,6 @@ GameObject:
   - component: {fileID: 2627891279628821773}
   - component: {fileID: 5034587247313103158}
   - component: {fileID: 3000144604017054939}
-  - component: {fileID: 3680285979728217623}
   m_Layer: 6
   m_Name: Placeable_Lamp
   m_TagString: Untagged
@@ -225,6 +224,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc11ac47c8545d847be6fde74e9fcafd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uniqueID: 
+  prefabName: Placeable_Lamp
   associatedItem: {fileID: 5222839605999628017, guid: 97159715f2862e14eb0134c1cb69656b, type: 3}
 --- !u!65 &3000144604017054939
 BoxCollider:
@@ -247,16 +248,3 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.26475567, y: 3.0688543, z: 0.21827409}
   m_Center: {x: 0, y: 1.5373695, z: -0.0130262375}
---- !u!114 &3680285979728217623
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5329490885619692857}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d12abbdc1213ba4ab123d3391a96096, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab: {fileID: 5329490885619692857}

@@ -152,6 +152,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bb3fa0ccb37c6146817d0d0d858ae37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uniqueID: 
+  prefabName: Ferilizer
   data: {fileID: 11400000, guid: 4929c6093f5806c49aa4fae1e2ed010d, type: 2}
   isSingleQuantityItem: 0
   HeldQuantity: 2

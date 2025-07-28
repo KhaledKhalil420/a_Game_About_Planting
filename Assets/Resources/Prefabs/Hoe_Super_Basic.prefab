@@ -104,6 +104,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 511e3adf891646042b55fc07cddd87ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uniqueID: 
+  prefabName: Hoe_Super_Basic
   data: {fileID: 11400000, guid: 00378ab3034b6004d9796eb3b4b69552, type: 2}
   isSingleQuantityItem: 1
   HeldQuantity: 1

@@ -7,7 +7,7 @@ public class Placeable : SaveableObject, IInteractableAlt
 
     private void Start()
     {
-        prefabName = associatedItem.GetComponent<Item>().data.model.name;
+        prefabName = associatedItem.GetComponent<PlaceableItem>().placeableObject.name;
         Vector3 originalScale = transform.localScale;
         transform.localScale = Vector3.zero;
         transform.DOScale(originalScale, 0.35f).SetEase(Ease.OutQuad);

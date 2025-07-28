@@ -124,6 +124,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 090bfbfe08aac1443b59e7650e30c214, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uniqueID: 
+  prefabName: Dirt_Bag
   data: {fileID: 11400000, guid: 3f6ce4de3729eee4b85910b192fc56b2, type: 2}
   isSingleQuantityItem: 0
   HeldQuantity: 4

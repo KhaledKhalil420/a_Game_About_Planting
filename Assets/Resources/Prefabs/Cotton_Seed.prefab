@@ -149,6 +149,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38a92b4d350b2f04b8c027046d29d890, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uniqueID: 
+  prefabName: Cotton_Seed
   data: {fileID: 11400000, guid: dde301501f3ffa748b04356e71c7920c, type: 2}
   isSingleQuantityItem: 0
   HeldQuantity: 1

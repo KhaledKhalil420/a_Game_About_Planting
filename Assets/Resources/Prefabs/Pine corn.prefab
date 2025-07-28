@@ -151,6 +151,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f4c9e6de637f864d9938cda1c5e4fdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uniqueID: 
+  prefabName: Pine corn
   data: {fileID: 11400000, guid: a08d4f6be8a2f0045b208ff29374e703, type: 2}
   isSingleQuantityItem: 0
   HeldQuantity: 2

@@ -190,6 +190,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 511e3adf891646042b55fc07cddd87ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uniqueID: 
+  prefabName: Perfect Hoe
   data: {fileID: 11400000, guid: a7e0cf03c6b7fbe4dbd63144a71cd81d, type: 2}
   isSingleQuantityItem: 1
   HeldQuantity: 1

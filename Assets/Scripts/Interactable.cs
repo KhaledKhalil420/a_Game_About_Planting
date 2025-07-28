@@ -8,13 +8,19 @@ public class Interactable : MonoBehaviour, IInteractable, IHighlightable
     public void Highlight()
     {
     }
+    public void UnHighlight()
+    {
+    }
 
     public void Interact(GameObject sender)
     {
         unityEvent?.Invoke();
+        OnInteract();
     }
 
-    public void UnHighlight()
+
+    public virtual void OnInteract()
     {
-    }
+
+     }
 }

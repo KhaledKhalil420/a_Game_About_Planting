@@ -105,6 +105,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef696642d3c35504b8129479b8b69b09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uniqueID: 
+  prefabName: Axe
   data: {fileID: 11400000, guid: 179a3b7d92914b74d80a2ce9ad1ae607, type: 2}
   isSingleQuantityItem: 1
   HeldQuantity: 1

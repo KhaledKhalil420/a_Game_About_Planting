@@ -128,6 +128,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38a92b4d350b2f04b8c027046d29d890, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uniqueID: 
+  prefabName: GlowBerry_Seed
   data: {fileID: 11400000, guid: 7e42c3006b535b24597a1e62c995a466, type: 2}
   isSingleQuantityItem: 0
   HeldQuantity: 2

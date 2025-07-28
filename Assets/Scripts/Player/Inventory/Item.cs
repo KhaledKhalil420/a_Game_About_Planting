@@ -12,7 +12,7 @@ public class Item : SaveableObject, IHighlightable
     
     private void Start()
     {
-        prefabName = data.model.name;
+        prefabName = data?.model?.name;
     }
 
     public void UpdateHoldingItem(bool isHolding)

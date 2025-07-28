@@ -1,7 +1,7 @@
 using DG.Tweening;
 using UnityEngine;
 
-public partial class FarmlandSquare : SaveableObject, IInteractable
+public partial class FarmlandSquare : SaveableObject, IInteractable, ISavable
 {
     [SerializeField, Savable] internal int soilQualityLevel = 4;
     [Savable] internal string seedInID;
@@ -176,6 +176,16 @@ public partial class FarmlandSquare : SaveableObject, IInteractable
         _currentGrowingStageModel.localScale = new Vector3(1, 1, 1);
         childHolder.localScale = new Vector3(1, 1, 1);
 
+    }
+
+    public void OnSave()
+    {
+        
+    }
+
+    public void OnLoad()
+    {
+        FullyGrowSoil();
     }
 
     #endregion

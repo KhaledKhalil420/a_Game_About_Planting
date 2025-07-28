@@ -1,7 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
 
-public class SpruceTree : Breakable
+public class SpruceTree : Breakable, ISavable
 {
     [SerializeField] private AudioSource source;
     [SerializeField] private Renderer childTree;
@@ -75,5 +75,19 @@ public class SpruceTree : Breakable
     {
         if(Pinecone != null && enabled)
             Instantiate(Pinecone, transform.position + new Vector3(0, 1, 0), Quaternion.identity);
+    }
+
+    public void OnSave()
+    {
+        
+    }
+
+    public void OnLoad()
+    {
+        DOTween.Kill(this);
+        transform.localScale = new Vector3(1, 1.35f, 1);
+        isBreakable = true;
+
+        Debug.Log("T");
     }
 }

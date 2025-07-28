@@ -18,7 +18,8 @@ public class SaveSettingsData
     public float MusicVolume = 0f;
     public float SfxVolume = 0f;
     public float MasterVolume = 0f;
-    public float AmbienceVolume = 0f; // 👈 NEW
+    public float AmbienceVolume = 0f;
+    public bool VSync = true; // 👈 NEW
 }
 
 public class Settings : MonoBehaviour
@@ -35,9 +36,10 @@ public class Settings : MonoBehaviour
     [SerializeField] private Slider musicSlider;
     [SerializeField] private Slider sfxSlider;
     [SerializeField] private Slider masterSlider;
-    [SerializeField] private Slider ambienceSlider; // 👈 NEW
+    [SerializeField] private Slider ambienceSlider;
     [SerializeField] private TMP_Dropdown graphicsDropdown;
     [SerializeField] private TMP_Dropdown resolutionDropdown;
+    [SerializeField] private Toggle vsyncToggle; // 👈 NEW
 
     [Header("Audio Mixers")]
     [SerializeField] private AudioMixer masterMixer;
@@ -68,7 +70,8 @@ public class Settings : MonoBehaviour
         musicSlider.onValueChanged.AddListener(OnMusicVolumeChanged);
         sfxSlider.onValueChanged.AddListener(OnSfxVolumeChanged);
         masterSlider.onValueChanged.AddListener(OnMasterVolumeChanged);
-        ambienceSlider.onValueChanged.AddListener(OnAmbienceVolumeChanged); // 👈 NEW
+        ambienceSlider.onValueChanged.AddListener(OnAmbienceVolumeChanged);
+        vsyncToggle.onValueChanged.AddListener(OnVSyncChanged); // 👈 NEW
     }
 
     private void UnsubscribeUI()
@@ -80,7 +83,8 @@ public class Settings : MonoBehaviour
         musicSlider.onValueChanged.RemoveListener(OnMusicVolumeChanged);
         sfxSlider.onValueChanged.RemoveListener(OnSfxVolumeChanged);
         masterSlider.onValueChanged.RemoveListener(OnMasterVolumeChanged);
-        ambienceSlider.onValueChanged.RemoveListener(OnAmbienceVolumeChanged); // 👈 NEW
+        ambienceSlider.onValueChanged.RemoveListener(OnAmbienceVolumeChanged);
+        vsyncToggle.onValueChanged.RemoveListener(OnVSyncChanged); // 👈 NEW
     }
 
     private void PopulateResolutions()
@@ -161,6 +165,13 @@ public class Settings : MonoBehaviour
         SaveSettings();
     }
 
+    private void OnVSyncChanged(bool value) // 👈 NEW
+    {
+        settingsData.VSync = value;
+        QualitySettings.vSyncCount = value ? 1 : 0;
+        SaveSettings();
+    }
+
     private void SaveSettings()
     {
         try { File.WriteAllText(fullPath, JsonUtility.ToJson(settingsData, true)); }
@@ -186,7 +197,8 @@ public class Settings : MonoBehaviour
         musicSlider.value = settingsData.MusicVolume;
         sfxSlider.value = settingsData.SfxVolume;
         masterSlider.value = settingsData.MasterVolume;
-        ambienceSlider.value = settingsData.AmbienceVolume; // 👈 NEW
+        ambienceSlider.value = settingsData.AmbienceVolume;
+        vsyncToggle.isOn = settingsData.VSync; // 👈 NEW
 
         OnSensitivityChanged(settingsData.Sensitivity);
         OnRenderDistanceChanged(settingsData.RenderDistance);
@@ -195,7 +207,8 @@ public class Settings : MonoBehaviour
         OnMusicVolumeChanged(settingsData.MusicVolume);
         OnSfxVolumeChanged(settingsData.SfxVolume);
         OnMasterVolumeChanged(settingsData.MasterVolume);
-        OnAmbienceVolumeChanged(settingsData.AmbienceVolume); // 👈 NEW
+        OnAmbienceVolumeChanged(settingsData.AmbienceVolume);
+        OnVSyncChanged(settingsData.VSync); // 👈 NEW
     }
 
     public void ExitGame() => Application.Quit();
@@ -207,9 +220,10 @@ public class Settings : MonoBehaviour
         AnimateUIElement(musicSlider.GetComponent<RectTransform>());
         AnimateUIElement(sfxSlider.GetComponent<RectTransform>());
         AnimateUIElement(masterSlider.GetComponent<RectTransform>());
-        AnimateUIElement(ambienceSlider.GetComponent<RectTransform>()); // 👈 NEW
+        AnimateUIElement(ambienceSlider.GetComponent<RectTransform>());
         AnimateUIElement(graphicsDropdown.GetComponent<RectTransform>());
         AnimateUIElement(resolutionDropdown.GetComponent<RectTransform>());
+        AnimateUIElement(vsyncToggle.GetComponent<RectTransform>()); // 👈 NEW
     }
 
     private void AnimateUIElement(RectTransform target)

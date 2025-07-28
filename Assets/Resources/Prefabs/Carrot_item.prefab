@@ -102,6 +102,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38a92b4d350b2f04b8c027046d29d890, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uniqueID: 
+  prefabName: Carrot_item
   data: {fileID: 11400000, guid: d6b86dfddaeabb64ea8ddfb99a094f38, type: 2}
   isSingleQuantityItem: 0
   HeldQuantity: 2

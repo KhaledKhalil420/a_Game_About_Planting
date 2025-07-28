@@ -105,6 +105,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 219143ec6e67a7740909772628a37506, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uniqueID: 
+  prefabName: WateringCan_Basic
   data: {fileID: 11400000, guid: e6eacd019c5a15148b271f5b68be0125, type: 2}
   isSingleQuantityItem: 1
   HeldQuantity: 1
