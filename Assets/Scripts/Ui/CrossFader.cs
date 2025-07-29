@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -16,6 +17,8 @@ public class CrossFader : MonoBehaviour
 
     public static void StartFade()
     {
+        if (instance == null)
+            return;
         instance.message.enabled = false;
         PlayerManager.instance?.LockPlayer();
 
@@ -29,6 +32,9 @@ public class CrossFader : MonoBehaviour
 
     public static void StartFade(float duration)
     {
+        if (instance == null)
+            return;
+
         instance.message.enabled = false;
         PlayerManager.instance?.LockPlayer();
 
@@ -42,6 +48,9 @@ public class CrossFader : MonoBehaviour
 
     public static void StartFade(float start, float durationInBetween, float end, string message = "", Action onComplete = null, bool leaveAlpha = false)
     {
+        if (instance == null)
+            return;
+
         PlayerManager.instance?.LockPlayer();
 
         if (instance?.message != null)

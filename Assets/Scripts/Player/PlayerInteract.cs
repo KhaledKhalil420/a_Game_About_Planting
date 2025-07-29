@@ -24,6 +24,11 @@ public class PlayerInteract : MonoBehaviour
     {
         if (Input.GetKeyDown(Keybinds.Key("Interact")))
         {
+            TryInteractOnce();
+        }
+
+        if (Input.GetKeyDown(Keybinds.Key("Interact")))
+        {
             _eHoldTime = 0f;
             TryInteract();
         }
@@ -51,6 +56,17 @@ public class PlayerInteract : MonoBehaviour
         if (Physics.Raycast(look.transform.position, look.transform.forward, out RaycastHit hit, raycastDistance, LayerMask.GetMask("Interactable", "Farmland")))
         {
             if (hit.transform.TryGetComponent(out IInteractable interactable))
+            {
+                interactable.Interact(gameObject);
+            }
+        }
+    }
+
+    private void TryInteractOnce()
+    {
+        if (Physics.Raycast(look.transform.position, look.transform.forward, out RaycastHit hit, raycastDistance, LayerMask.GetMask("Interactable", "Farmland")))
+        {
+            if (hit.transform.TryGetComponent(out IInteractableOnce interactable))
             {
                 interactable.Interact(gameObject);
             }

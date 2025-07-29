@@ -73,10 +73,11 @@ MonoBehaviour:
   item: {fileID: 0}
   text: {fileID: 796133980862852213}
   desrcriptionText: {fileID: 8269031185378981017}
-  description: 
+  description: Adds an Inventory slot
   group: {fileID: 0}
   sellableName: Backbag
   costIncrease: 5
+  maxPrice: 200000
   onBuyEvent:
     m_PersistentCalls:
       m_Calls:

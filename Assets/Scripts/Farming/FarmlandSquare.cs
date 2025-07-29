@@ -75,9 +75,11 @@ public partial class FarmlandSquare : SaveableObject, IInteractable, ISavable
 
         source.pitch = Random.Range(0.9f, 1.1f);
         source.PlayOneShot(plantingSound);
+        
+        if (_currentGrowingStageModel != null)
+            Destroy(_currentGrowingStageModel.gameObject);
 
         var stage = seedIn.seedGrowingStages[0];
-        _currentGrowingStageModel = Instantiate(stage.currentStageModel, transform.position, Quaternion.identity, childHolder).transform;
         _currentGrowingStageModel = Instantiate(stage.currentStageModel, transform.position, Quaternion.identity, childHolder).transform;
         _currentGrowingStageModel.localPosition = new Vector3(0, 0.05f, 0);
         _currentGrowingStageModel.localScale = new Vector3(0.75f, 0.75f, 0.75f);

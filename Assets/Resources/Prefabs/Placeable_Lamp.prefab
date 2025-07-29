@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7843642400843445504
 Transform:
   m_ObjectHideFlags: 0
@@ -45,12 +45,12 @@ Light:
   m_Type: 2
   m_Color: {r: 1, g: 0.86806077, b: 0.3915094, a: 1}
   m_Intensity: 16
-  m_Range: 10
+  m_Range: 1
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 0
     m_Resolution: 128
     m_CustomResolution: -1
     m_Strength: 0.506
@@ -81,7 +81,7 @@ Light:
   m_RenderMode: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 1983
+    m_Bits: 4294967295
   m_RenderingLayerMask: 1
   m_Lightmapping: 4
   m_LightShadowCasterMode: 0
@@ -112,7 +112,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Version: 3
   m_UsePipelineSettings: 1
-  m_AdditionalLightsShadowResolutionTier: 1
+  m_AdditionalLightsShadowResolutionTier: 0
   m_LightLayerMask: 1
   m_RenderingLayers: 1
   m_CustomShadowLayers: 0
@@ -175,7 +175,7 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
+  m_DynamicOccludee: 0
   m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
@@ -190,7 +190,7 @@ MeshRenderer:
   m_Materials:
   - {fileID: 963798294112862009, guid: a24d6b074af52cc4491b092e0dcb2110, type: 3}
   - {fileID: -1444460858095362738, guid: a24d6b074af52cc4491b092e0dcb2110, type: 3}
-  - {fileID: -7964107986667598607, guid: a24d6b074af52cc4491b092e0dcb2110, type: 3}
+  - {fileID: 2100000, guid: cb8515c4d0e1dc7468d16f05dfcb759d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

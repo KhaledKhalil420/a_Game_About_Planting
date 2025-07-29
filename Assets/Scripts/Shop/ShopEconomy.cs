@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
-
-public class ShopEconomy : MonoBehaviour
+ 
+public class ShopEconomy : SaveableObject   
 {
     public static ShopEconomy instance;
-    public List<ItemCostData> scalableItems;
+    [Savable] public ItemCostData[] scalableItems; //can my system save this variable???
 
     private void Awake()
     {

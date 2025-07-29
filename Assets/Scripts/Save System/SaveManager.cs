@@ -16,7 +16,7 @@ using Unity.Mathematics;
             --Then add the name of the Prefab in the Savable Component
 
         -Add The [Savable] attribute to the value you want to save 
-            --Note: Manager can only save, floats, bools, strings and ints
+            --Note: Manager can save floats, bools, strings, ints, and serializable arrays/objects
 
         -Optional: you can subscribe to the OnSave/OnLoad Events for more logic
 
@@ -42,7 +42,6 @@ public class SaveManager : MonoBehaviour
         filePath = Application.persistentDataPath + "/save.json";
         Load();
 
-
         InvokeRepeating(nameof(Save), autosaveTime, autosaveTime);
     }
 
@@ -59,19 +58,22 @@ public class SaveManager : MonoBehaviour
 
     public void Load()
     {
+        if (!File.Exists(filePath))
+            return;
+
         string json = File.ReadAllText(filePath);
         file = JsonUtility.FromJson<SaveFile>(json);
+        if (file == null || file.objects == null || file.objects.Count == 0)
+            return;
 
-        if (!File.Exists(filePath) || file.objects?.Count == 0 || file.objects == null) return;
+        //Destroy all non-static saveable objects.. #justice for non statics ✊
+        var oldObjects = FindObjectsByType<SaveableObject>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID)
+            .Where(x => !x.isStatic)
+            .Select(x => x.gameObject)
+            .ToArray();
 
-        //Delete all old objects
-        var oldObjects = FindObjectsByType<SaveableObject>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID).Select(x => x.gameObject).ToArray();
         foreach (var obj in oldObjects)
             Destroy(obj);
-
-        //Load json file
-        file = JsonUtility.FromJson<SaveFile>(json);
-        if (file.objects == null) file.objects = new();
 
         LoadObjects();
 
@@ -125,21 +127,30 @@ public class SaveManager : MonoBehaviour
     {
         foreach (var objData in file.objects)
         {
-            //Get Prefab
-            GameObject prefab = Resources.Load<GameObject>("Prefabs/" + objData.prefab);
+            //Try find static existing object with this ID
+            SaveableObject existing = FindObjectsByType<SaveableObject>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+                .FirstOrDefault(x => x.uniqueID == objData.id && x.isStatic);
 
-            if (prefab == null)
-                continue;
+            GameObject obj;
 
-            //Spawn Prefab Copy and load data
-            var obj = Instantiate(prefab, objData.position, Quaternion.Euler(objData.rotation));
-            var saveable = obj.GetComponent<SaveableObject>();
-            saveable.uniqueID = objData.id;
+            if (existing != null)
+            {
+                obj = existing.gameObject;
+            }
+            else
+            {
+                GameObject prefab = Resources.Load<GameObject>("Prefabs/" + objData.prefab);
+                if (prefab == null)
+                    continue;
 
-            //Load all fields on component
-            FieldInfo[] fields = saveable.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                obj = Instantiate(prefab, objData.position, Quaternion.Euler(objData.rotation));
+                existing = obj.GetComponent<SaveableObject>();
+                existing.uniqueID = objData.id;
+            }
 
-            //Load each field by the same name on json file
+            //Load fields
+            FieldInfo[] fields = existing.GetType().GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+
             foreach (var f in fields)
             {
                 if (f.GetCustomAttribute(typeof(Savable)) != null)
@@ -148,16 +159,13 @@ public class SaveManager : MonoBehaviour
                     if (match != null)
                     {
                         object val = FromJson(match.json, f.FieldType);
-                        f.SetValue(saveable, val);
+                        f.SetValue(existing, val);
                     }
                 }
             }
 
-            //Trigger ISavable if available
             if (obj.TryGetComponent(out ISavable savable))
-            {
                 savable.OnLoad();
-            }
         }
     }
 
@@ -171,6 +179,16 @@ public class SaveManager : MonoBehaviour
 
         if (type == typeof(int) || type == typeof(float) || type == typeof(bool) || type == typeof(string))
             return val.ToString();
+
+        //Handle arrays by wrapping them in a serializable container
+        if (type.IsArray)
+        {
+            //Create a wrapper object with the array
+            var wrapperType = typeof(ArrayWrapper<>).MakeGenericType(type.GetElementType());
+            var wrapper = System.Activator.CreateInstance(wrapperType);
+            wrapperType.GetField("items").SetValue(wrapper, val);
+            return JsonUtility.ToJson(wrapper);
+        }
 
         return JsonUtility.ToJson(val);
     }
@@ -188,7 +206,21 @@ public class SaveManager : MonoBehaviour
         if (type == typeof(string))
             return json;
 
+        //Handle arrays by unwrapping from serializable container //I have no idea chatGPT wrote this
+        if (type.IsArray)
+        {
+            var wrapperType = typeof(ArrayWrapper<>).MakeGenericType(type.GetElementType());
+            var wrapper = JsonUtility.FromJson(json, wrapperType);
+            return wrapperType.GetField("items").GetValue(wrapper);
+        }
+
         return JsonUtility.FromJson(json, type);
+    }
+
+    [System.Serializable]
+    private class ArrayWrapper<T>
+    {
+        public T[] items;
     }
 
     private object GetDefault(Type type) => type.IsValueType ? Activator.CreateInstance(type) : null;
@@ -198,6 +230,6 @@ public class SaveManager : MonoBehaviour
     void OnApplicationQuit()
     {
         if(autoSaveOnQuit)
-        Save();
+            Save();
     }
 }

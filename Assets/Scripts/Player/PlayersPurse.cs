@@ -15,7 +15,7 @@ public class PlayersPurse : MonoBehaviour
 
     private void Start()
     {
-        coins = PlayerPrefs.GetInt("coins", 0);
+        coins = PlayerPrefs.GetInt("Coins", 0);
     }
 
     public static void GiveCoins(int quantity)
@@ -52,6 +52,11 @@ public class PlayersPurse : MonoBehaviour
     }
 
     public void SaveCoins()
+    {
+        PlayerPrefs.SetInt("Coins", coins);
+    }
+
+    void OnApplicationQuit()
     {
         PlayerPrefs.SetInt("Coins", coins);
     }

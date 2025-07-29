@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Perfect Hoe
   m_EditorClassIdentifier: 
   Name: Perfect Hoe
-  sprite: {fileID: 21300000, guid: f87dea8d5b343c14f9758d5daacaeed7, type: 3}
+  sprite: {fileID: 21300000, guid: 1c0a4830d56ca3c40957cddba4704d2d, type: 3}
   model: {fileID: 5838857692205880004, guid: 637acc82ea1584748ae13138fafa0775, type: 3}

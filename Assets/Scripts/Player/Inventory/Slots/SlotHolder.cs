@@ -16,15 +16,11 @@ public class SlotHolder : MonoBehaviour
 
     public void UpdateSlot()
     {
-        if (HeldQuantity <= 0)
+        if (HeldQuantity <= 0 && HeldItem != null)
         {
-            if (HeldItem != null)
-            {
-                _itemQuantityText.text = "";
-                HeldItem.OnChangingItems();
-                Destroy(HeldItem.gameObject);
-            }
-
+            _itemQuantityText.text = "";
+            HeldItem.OnChangingItems();
+            Destroy(HeldItem.gameObject);
             HeldItem = null;
         }
 

@@ -18,11 +18,19 @@ public class PlayerInventory : MonoBehaviour
     private Transform _camera;
 
     [SerializeField] private Transform hand;
+    [SerializeField] private int additionalSlots = 0;
     private PlayerInteract interact;
 
     void Awake()
     {
         instance = this;
+
+        additionalSlots = PlayerPrefs.GetInt("Slots", 0);
+
+        for (int i = 0; i < additionalSlots; i++)
+        {
+            RetriveInventorySlots();
+        }
     }
 
     private void Start()
@@ -330,7 +338,7 @@ public class PlayerInventory : MonoBehaviour
             }
 
         }
-        
+
         outSlot = null;
         return null;
     }
@@ -356,12 +364,27 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
-    public void AddInventorySlot()
+    public void RetriveInventorySlots()
     {
         SlotHolder slot = Instantiate(slotPrefab, slotParent).GetComponent<SlotHolder>();
         SlotHolders.Add(slot);
         UpdateSlots();
-     }
+    }
     
+    public void AddInventorySlot() //While saving
+    {
+        SlotHolder slot = Instantiate(slotPrefab, slotParent).GetComponent<SlotHolder>();
+        SlotHolders.Add(slot);
+        UpdateSlots();
+
+        additionalSlots++;
+        PlayerPrefs.SetInt("Slots", additionalSlots);
+    }
+
     #endregion
+
+    private void OnApplicationQuit()
+    {
+        PlayerPrefs.SetInt("Slots", additionalSlots);
+    }
 }
