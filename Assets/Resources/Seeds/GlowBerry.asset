@@ -20,4 +20,4 @@ MonoBehaviour:
   - growingDuration: 3
     currentStageModel: {fileID: 919132149155446097, guid: bc9ae504c77e4a04e8977b9ec38c9038, type: 3}
   reward: {fileID: 5038972183459300720, guid: 841adba73be30cd4cb5e50f1b15cc1ab, type: 3}
-  sellingProfit: 250
+  sellingProfit: 425

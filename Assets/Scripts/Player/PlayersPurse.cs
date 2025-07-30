@@ -16,6 +16,7 @@ public class PlayersPurse : MonoBehaviour
     private void Start()
     {
         coins = PlayerPrefs.GetInt("Coins", 0);
+        coinsQuantityText.text = coins.ToString();
     }
 
     public static void GiveCoins(int quantity)

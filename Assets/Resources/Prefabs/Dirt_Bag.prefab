@@ -126,9 +126,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uniqueID: 
   prefabName: Dirt_Bag
+  isStatic: 0
   data: {fileID: 11400000, guid: 3f6ce4de3729eee4b85910b192fc56b2, type: 2}
   isSingleQuantityItem: 0
-  HeldQuantity: 4
+  HeldQuantity: 6
 --- !u!54 &364724232672681846
 Rigidbody:
   m_ObjectHideFlags: 0

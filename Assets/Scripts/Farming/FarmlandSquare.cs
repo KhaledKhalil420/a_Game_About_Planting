@@ -162,11 +162,12 @@ public partial class FarmlandSquare : SaveableObject, IInteractable, ISavable
         if (seedIn == null)
             return;
 
-        DOTween.Kill(this, false);
+        DOTween.Kill(this);
+        DOTween.Kill(childHolder);
 
         //Grow soil
         isReadyToHarvest = true;
-        growingElapsedTime = 1555;
+        growingElapsedTime = seedIn.GetTotalTimeToGrow();
 
         //Destory last model
         if (_currentGrowingStageModel != null)
@@ -178,6 +179,7 @@ public partial class FarmlandSquare : SaveableObject, IInteractable, ISavable
         _currentGrowingStageModel.localScale = new Vector3(1, 1, 1);
         childHolder.localScale = new Vector3(1, 1, 1);
 
+        _currentStageIndex = seedIn.seedGrowingStages.Length - 1;
     }
 
     public void OnSave()
