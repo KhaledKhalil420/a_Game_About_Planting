@@ -157,7 +157,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Backbag
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -4451470890971527305, guid: 38778846b8aa5ad4599cdb9a17f4d233, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

@@ -24,10 +24,22 @@ public class SellablePriceIncrease : Sellable
     {
         onBuyEvent?.Invoke();
 
-        if(cost < maxPrice)
-        ShopEconomy.instance.IncreaseItemCost(sellableName, costIncrease);
+        if (cost < maxPrice)
+        {
+            float currentPrice = ShopEconomy.instance.GetPrice(sellableName, cost);
+            float wantedPrice = Mathf.Min(currentPrice * costIncrease, maxPrice);
+            float multiplier = wantedPrice / currentPrice;
 
-        if(item == null)    
-        Destroy(gameObject);
+            ShopEconomy.instance.IncreaseItemCost(sellableName, multiplier);
+        }
+
+        if (!PlayersPurse.TrySpendCoins(cost))
+            return;
+
+        if (item == null)
+        {
+            PlayersPurse.SpendCoins(cost);
+            Destroy(gameObject);
+        }
     }
 }
