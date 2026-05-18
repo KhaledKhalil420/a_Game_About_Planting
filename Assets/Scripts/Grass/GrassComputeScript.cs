@@ -1,0 +1,357 @@
+// @Minionsart version
+// credits  to  forkercat https://gist.github.com/junhaowww/fb6c030c17fe1e109a34f1c92571943f
+// and  NedMakesGames https://gist.github.com/NedMakesGames/3e67fabe49e2e3363a657ef8a6a09838
+// for the base setup for compute shaders
+using System;
+using UnityEngine;
+using UnityEngine.Rendering;
+ 
+[ExecuteInEditMode]
+public class GrassComputeScript : MonoBehaviour
+{
+    [Header("Components")]
+    [SerializeField] private GrassPainter grassPainter = default;
+    [SerializeField] private Mesh sourceMesh = default;
+    [SerializeField] private Material material = default;
+    [SerializeField] private ComputeShader computeShader = default;
+ 
+    // Blade
+    [Header("Blade")]
+    public float grassHeight = 1;
+    public float grassWidth = 0.06f;
+    public float grassRandomHeight = 0.25f;
+    [Range(0, 1)] public float bladeRadius = 0.6f;
+    [Range(0, 1)] public float bladeForwardAmount = 0.38f;
+    [Range(1, 5)] public float bladeCurveAmount = 2;
+ 
+    [SerializeField]
+    ShaderInteractor interactor;
+ 
+    // Wind
+    [Header("Wind")]
+    public float windSpeed = 10;
+    public float windStrength = 0.05f;
+    // Interactor
+    [Header("Interactor")]
+    public float affectRadius = 0.3f;
+    public float affectStrength = 5;
+    // LOD
+    [Header("LOD")]
+    public float minFadeDistance = 40;
+    public float maxFadeDistance = 60;
+    // Material
+    [Header("Material")]
+    public Color topTint = new Color(1, 1, 1);
+    public Color bottomTint = new Color(0, 0, 1);
+    public float ambientStrength = 0.1f;
+    // Other
+    [Header("Other")]
+    public bool grassEnabled = true;
+    public UnityEngine.Rendering.ShadowCastingMode castShadow;
+ 
+    private Camera m_MainCamera;
+ 
+    private readonly int m_AllowedBladesPerVertex = 6;
+    private readonly int m_AllowedSegmentsPerBlade = 7;
+ 
+    // The structure to send to the compute shader
+    // This layout kind assures that the data is laid out sequentially
+    [System.Runtime.InteropServices.StructLayout(System.Runtime.InteropServices.LayoutKind.Sequential)]
+    private struct SourceVertex
+    {
+        public Vector3 position;
+        public Vector3 normal;
+        public Vector2 uv;
+        public Vector3 color;
+    }
+ 
+    // A state variable to help keep track of whether compute buffers have been set up
+    private bool m_Initialized;
+    // A compute buffer to hold vertex data of the source mesh
+    private ComputeBuffer m_SourceVertBuffer;
+    // A compute buffer to hold vertex data of the generated mesh
+    private ComputeBuffer m_DrawBuffer;
+    // A compute buffer to hold indirect draw arguments
+    private ComputeBuffer m_ArgsBuffer;
+    // Instantiate the shaders so data belong to their unique compute buffers
+    private ComputeShader m_InstantiatedComputeShader;
+    private Material m_InstantiatedMaterial;
+    // The id of the kernel in the grass compute shader
+    private int m_IdGrassKernel;
+    // The x dispatch size for the grass compute shader
+    private int m_DispatchSize;
+    // The local bounds of the generated mesh
+    private Bounds m_LocalBounds;
+ 
+    private Camera sceneCam;
+
+    // Tracks the previous grassEnabled state to detect changes
+    private bool m_WasEnabled = true;
+ 
+    // The size of one entry in the various compute buffers
+    private const int SOURCE_VERT_STRIDE = sizeof(float) * (3 + 3 + 2 + 3);
+    private const int DRAW_STRIDE = sizeof(float) * (3 + (3 + 2 + 3) * 3);
+    private const int INDIRECT_ARGS_STRIDE = sizeof(int) * 4;
+ 
+    // The data to reset the args buffer with every frame
+    // 0: vertex count per draw instance. We will only use one instance
+    // 1: instance count. One
+    // 2: start vertex location if using a Graphics Buffer
+    // 3: and start instance location if using a Graphics Buffer
+    private int[] argsBufferReset = new int[] { 0, 1, 0, 0 };
+
+    private void Start()
+    {
+        InvokeRepeating(nameof(Refresh), 15, 15);
+    }
+
+    public void ReLoadGrass(object sender, EventArgs e)
+    {
+        Invoke("Refresh", 1);
+    }
+
+    public void Refresh()
+    {
+        OnDisable();
+        OnEnable();
+    }
+
+    public void OnValidate()
+    {
+        // Set up components
+        m_MainCamera = Camera.main;
+        grassPainter = GetComponent<GrassPainter>();
+        sourceMesh = GetComponent<MeshFilter>().sharedMesh;
+    }
+ 
+    private void OnEnable()
+    {
+        // If initialized, call on disable to clean things up
+        if (m_Initialized)
+        {
+            OnDisable();
+        }
+
+        m_MainCamera = Camera.main;
+ 
+        if (grassPainter == null || sourceMesh == null || computeShader == null || material == null)
+        {
+            return;
+        }
+        sourceMesh = GetComponent<MeshFilter>().sharedMesh;
+ 
+        if (sourceMesh.vertexCount == 0)
+        {
+            return;
+        }
+ 
+        m_Initialized = true;
+        NeedUpdate = true;
+        m_WasEnabled = grassEnabled;
+ 
+        // Instantiate the shaders so they can point to their own buffers
+        m_InstantiatedComputeShader = Instantiate(computeShader);
+        m_InstantiatedMaterial = Instantiate(material);
+ 
+        // Grab data from the source mesh
+        Vector3[] positions = sourceMesh.vertices;
+        Vector3[] normals = sourceMesh.normals;
+        Vector2[] uvs = sourceMesh.uv;
+        Color[] colors = sourceMesh.colors;
+ 
+        // Create the data to upload to the source vert buffer
+        SourceVertex[] vertices = new SourceVertex[positions.Length];
+        for (int i = 0; i < vertices.Length; i++)
+        {
+            Color color = colors[i];
+            vertices[i] = new SourceVertex()
+            {
+                position = positions[i],
+                normal = normals[i],
+                uv = uvs[i],
+                color = new Vector3(color.r, color.g, color.b)
+            };
+        }
+ 
+        int numSourceVertices = vertices.Length;
+ 
+        int maxBladesPerVertex = Mathf.Max(1, m_AllowedBladesPerVertex);
+        int maxSegmentsPerBlade = Mathf.Max(1, m_AllowedSegmentsPerBlade);
+        int maxBladeTriangles = maxBladesPerVertex * ((maxSegmentsPerBlade - 1) * 2 + 1);
+ 
+        // Create compute buffers
+        m_SourceVertBuffer = new ComputeBuffer(vertices.Length, SOURCE_VERT_STRIDE,
+            ComputeBufferType.Structured, ComputeBufferMode.Immutable);
+        m_SourceVertBuffer.SetData(vertices);
+ 
+        m_DrawBuffer = new ComputeBuffer(numSourceVertices * maxBladeTriangles, DRAW_STRIDE,
+            ComputeBufferType.Append);
+        m_DrawBuffer.SetCounterValue(0);
+ 
+        m_ArgsBuffer = new ComputeBuffer(1, INDIRECT_ARGS_STRIDE, ComputeBufferType.IndirectArguments);
+ 
+        m_IdGrassKernel = m_InstantiatedComputeShader.FindKernel("Main");
+ 
+        // Set buffer data
+        m_InstantiatedComputeShader.SetBuffer(m_IdGrassKernel, "_SourceVertices", m_SourceVertBuffer);
+        m_InstantiatedComputeShader.SetBuffer(m_IdGrassKernel, "_DrawTriangles", m_DrawBuffer);
+        m_InstantiatedComputeShader.SetBuffer(m_IdGrassKernel, "_IndirectArgsBuffer", m_ArgsBuffer);
+
+        m_InstantiatedComputeShader.SetInt("_NumSourceVertices", numSourceVertices);
+        m_InstantiatedComputeShader.SetInt("_MaxBladesPerVertex", maxBladesPerVertex);
+        m_InstantiatedComputeShader.SetInt("_MaxSegmentsPerBlade", maxSegmentsPerBlade);
+ 
+        m_InstantiatedMaterial.SetBuffer("_DrawTriangles", m_DrawBuffer);
+        m_InstantiatedMaterial.SetColor("_TopTint", topTint);
+        m_InstantiatedMaterial.SetColor("_BottomTint", bottomTint);
+        m_InstantiatedMaterial.SetFloat("_AmbientStrength", ambientStrength);
+ 
+        m_InstantiatedComputeShader.GetKernelThreadGroupSizes(m_IdGrassKernel,
+            out uint threadGroupSize, out _, out _);
+        m_DispatchSize = Mathf.CeilToInt((float)numSourceVertices / threadGroupSize);
+ 
+        m_LocalBounds = sourceMesh.bounds;
+        m_LocalBounds.Expand(Mathf.Max(grassHeight + grassRandomHeight, grassWidth));
+ 
+        SetGrassDataBase();
+    }
+ 
+    private void OnDisable()
+    {
+        if (m_Initialized)
+        {
+            if (Application.isPlaying)
+            {
+                Destroy(m_InstantiatedComputeShader);
+                Destroy(m_InstantiatedMaterial);
+            }
+            else
+            {
+                DestroyImmediate(m_InstantiatedComputeShader);
+                DestroyImmediate(m_InstantiatedMaterial);
+            }
+ 
+            m_SourceVertBuffer?.Release();
+            m_DrawBuffer?.Release();
+            m_ArgsBuffer?.Release();
+        }
+ 
+        m_Initialized = false;
+    }
+
+    bool NeedUpdate = true;
+
+    private void LateUpdate()
+    {
+        if (!m_Initialized)
+        {
+            return;
+        }
+
+        // Detect toggle changes (supports both inspector and scripted changes)
+        if (grassEnabled != m_WasEnabled)
+        {
+            if (!grassEnabled)
+            {
+                // Grass just turned off: clear buffers so nothing is drawn
+                m_DrawBuffer.SetCounterValue(0);
+                m_ArgsBuffer.SetData(argsBufferReset);
+            }
+            else
+            {
+                // Grass just turned on: force a full update next frame
+                NeedUpdate = true;
+            }
+
+            m_WasEnabled = grassEnabled;
+        }
+
+        // Skip rendering entirely when disabled
+        if (!grassEnabled) return;
+
+        if (!NeedUpdate) return;
+
+        // Clear the draw and indirect args buffers of last frame's data
+        m_DrawBuffer.SetCounterValue(0);
+        m_ArgsBuffer.SetData(argsBufferReset);
+
+        // Transform the bounds to world space
+        Bounds bounds = TransformBounds(m_LocalBounds);
+
+        // Update the shader with frame specific data
+        SetGrassDataUpdate();
+
+        // Dispatch the grass shader. It will run on the GPU
+        m_InstantiatedComputeShader.Dispatch(m_IdGrassKernel, m_DispatchSize, 1, 1);
+
+        // DrawProceduralIndirect queues a draw call up for our generated mesh
+        Graphics.DrawProceduralIndirect(m_InstantiatedMaterial, bounds, MeshTopology.Triangles,
+            m_ArgsBuffer, 0, null, null, castShadow, true, gameObject.layer);
+    }
+
+    /// <summary>
+    /// Enables or disables grass rendering. Can be called from other scripts or UI.
+    /// </summary>
+    public void ToggleGrass(bool enabled)
+    {
+        grassEnabled = enabled;
+    }
+ 
+    private void SetGrassDataBase()
+    {
+        m_InstantiatedComputeShader.SetMatrix("_LocalToWorld", transform.localToWorldMatrix);
+        m_InstantiatedComputeShader.SetFloat("_Time", Time.time);
+ 
+        m_InstantiatedComputeShader.SetFloat("_GrassHeight", grassHeight);
+        m_InstantiatedComputeShader.SetFloat("_GrassWidth", grassWidth);
+        m_InstantiatedComputeShader.SetFloat("_GrassRandomHeight", grassRandomHeight);
+ 
+        m_InstantiatedComputeShader.SetFloat("_WindSpeed", windSpeed);
+        m_InstantiatedComputeShader.SetFloat("_WindStrength", windStrength);
+ 
+        m_InstantiatedComputeShader.SetFloat("_InteractorRadius", affectRadius);
+        m_InstantiatedComputeShader.SetFloat("_InteractorStrength", affectStrength);
+ 
+        m_InstantiatedComputeShader.SetFloat("_BladeRadius", bladeRadius);
+        m_InstantiatedComputeShader.SetFloat("_BladeForward", bladeForwardAmount);
+        m_InstantiatedComputeShader.SetFloat("_BladeCurve", Mathf.Max(0, bladeCurveAmount));
+ 
+        m_InstantiatedComputeShader.SetFloat("_MinFadeDist", minFadeDistance);
+        m_InstantiatedComputeShader.SetFloat("_MaxFadeDist", maxFadeDistance);
+    }
+ 
+    private void SetGrassDataUpdate()
+    {
+        m_InstantiatedComputeShader.SetFloat("_Time", Time.time);
+
+        if (interactor != null)
+        {
+            m_InstantiatedComputeShader.SetVector("_PositionMoving", interactor.transform.position);
+        }
+        else
+        {
+            m_InstantiatedComputeShader.SetVector("_PositionMoving", Vector3.zero);
+        }
+ 
+        if (m_MainCamera != null)
+        {
+            m_InstantiatedComputeShader.SetVector("_CameraPositionWS", m_MainCamera.transform.position);
+        }
+    }
+ 
+    private Bounds TransformBounds(Bounds boundsOS)
+    {
+        var center = transform.TransformPoint(boundsOS.center);
+ 
+        var extents = boundsOS.extents;
+        var axisX = transform.TransformVector(extents.x, 0, 0);
+        var axisY = transform.TransformVector(0, extents.y, 0);
+        var axisZ = transform.TransformVector(0, 0, extents.z);
+ 
+        extents.x = Mathf.Abs(axisX.x) + Mathf.Abs(axisY.x) + Mathf.Abs(axisZ.x);
+        extents.y = Mathf.Abs(axisX.y) + Mathf.Abs(axisY.y) + Mathf.Abs(axisZ.y);
+        extents.z = Mathf.Abs(axisX.z) + Mathf.Abs(axisY.z) + Mathf.Abs(axisZ.z);
+ 
+        return new Bounds { center = center, extents = extents };
+    }
+}

@@ -30,7 +30,7 @@ public class Axe : Tool
 
         if (hit.transform.TryGetComponent<SpruceTree>(out var tree))
         {
-            if (!tree.isBreakable)
+            if (!tree.isBreakable || tree.isKilled)
                 return;
 
             //Camera shake

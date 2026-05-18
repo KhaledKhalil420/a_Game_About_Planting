@@ -3,7 +3,7 @@ using UnityEngine;
 public class Breakable : SaveableObject
 {
     [Savable] public int health = 100;
-    [Savable] private bool isKilled = false;
+    [Savable] internal bool isKilled = false;
     [Savable, SerializeField] internal bool isBreakable = false;
 
     private void Start()

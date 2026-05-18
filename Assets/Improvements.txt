@@ -1,0 +1,11 @@
+Grass : 
+1.grass setup: DONE
+2.grass to spawn every within specific areas in batches - so grass areas
+3.grass to despawn when land is placed on it
+Final : shop selling mythic items
+Tutorial : 
+Fixed save system for inventory : 
+New music baby!!! : 
+Tree not being hit when dead already: DONE
+better tree spawn sound
+better building sound
