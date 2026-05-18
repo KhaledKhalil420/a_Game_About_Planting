@@ -44,33 +44,6 @@ public class SpruceTree : Breakable, ISavable
         Destroy(gameObject, 7f);
     }
 
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            Color color = childTree.material.GetColor("_Color");
-            DOTween.To(() => color.a, a =>
-            {
-                color.a = a;
-                childTree.material.SetColor("_Color", color);
-            }, 33f / 255f, 1f);
-        }
-    }
-
-
-    void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            Color color = childTree.material.GetColor("_Color");
-            DOTween.To(() => color.a, a =>
-            {
-                color.a = a;
-                childTree.material.SetColor("_Color", color);
-            }, 1f, 1f);
-        }
-    }
-
     private void OnDestroy()
     {
         if(Pinecone != null && enabled)

@@ -107,11 +107,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uniqueID: 
   prefabName: Basic_Axe
+  isStatic: 0
   data: {fileID: 11400000, guid: 76330d59e6bffc041949d84e462f7943, type: 2}
   isSingleQuantityItem: 1
   HeldQuantity: 1
   animator: {fileID: 3149854044894848798}
-  range: 4
+  range: 2
   cooldown: 0.65
   damage: 50
   coins: 10
