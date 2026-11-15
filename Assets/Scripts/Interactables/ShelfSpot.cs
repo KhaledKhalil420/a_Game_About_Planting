@@ -74,10 +74,12 @@ public class ShelfSpot : SaveableObject, IInteractableOnce, ISavable
             //Remove the item from the inventory for real
             slot.ResetSlot();
             Destroy(invItem.gameObject);
+            AudioManager.instance.PlaySound("Pickup", 1.6f, 2f);
             return;
         }
 
         inventory.GiveItem(storedItem, out bool isGiven);
+        AudioManager.instance.PlaySound("Pickup", 1, 1.25f);
 
         if (isGiven)
         {
