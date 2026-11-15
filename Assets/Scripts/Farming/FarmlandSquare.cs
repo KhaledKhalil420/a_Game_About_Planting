@@ -19,7 +19,8 @@ public partial class FarmlandSquare : SaveableObject, IInteractable, ISavable
 
     private void Start()
     {
-        seedIn = Resources.Load<SeedData>("Seeds/" + seedInID);
+        if (seedIn == null)
+            Restore();
     }
 
     private void Update()
@@ -29,7 +30,9 @@ public partial class FarmlandSquare : SaveableObject, IInteractable, ISavable
         float dt = Time.deltaTime;
         if (seedIn != null && !isReadyToHarvest && waterLevel > 0)
         {
-            growingElapsedTime += dt * soilQualityLevel * Tick.Tickspeed;
+            float boost = GrowthBooster.GetMultiplier(transform.position);
+            growingElapsedTime += dt * soilQualityLevel * Tick.Tickspeed * boost;
+            UpdateScale();
             waterLevel -= dt / soilQualityLevel;
             if (growingElapsedTime >= seedIn.GetTotalTimeToGrow()) FullyGrowSoil();
         }
@@ -70,8 +73,7 @@ public partial class FarmlandSquare : SaveableObject, IInteractable, ISavable
         seedInID = seedIn.name;
 
         childHolder.localScale = new(0.25f, 0.25f, 0.25f);
-        DOVirtual.Vector3(childHolder.localScale, new Vector3(1, 1, 1), seed.seedData.GetTotalTimeToGrow(),
-        value => childHolder.localScale = value);
+        _currentStageIndex = 0;
 
         source.pitch = Random.Range(0.9f, 1.1f);
         source.PlayOneShot(plantingSound);
@@ -141,6 +143,36 @@ public partial class FarmlandSquare : SaveableObject, IInteractable, ISavable
         }
     }
 
+    // Size comes straight from progress, so it's restored for free when the time is loaded
+    private void UpdateScale()
+    {
+        float t = Mathf.Clamp01(growingElapsedTime / seedIn.GetTotalTimeToGrow());
+        childHolder.localScale = Vector3.one * Mathf.Lerp(0.25f, 1f, t);
+    }
+
+    // Rebuilds the seed, model and size from the saved values
+    private void Restore()
+    {
+        DOTween.Kill(childHolder);
+        if (_currentGrowingStageModel != null)
+            Destroy(_currentGrowingStageModel.gameObject);
+        _currentStageIndex = -1;
+
+        seedIn = string.IsNullOrEmpty(seedInID) ? null : Resources.Load<SeedData>("Seeds/" + seedInID);
+        if (seedIn == null)
+            return;
+
+        if (isReadyToHarvest || growingElapsedTime >= seedIn.GetTotalTimeToGrow())
+        {
+            FullyGrowSoil();
+        }
+        else
+        {
+            UpdateScale();
+            UpdateGrowingStages();
+        }
+    }
+
     #endregion
 
     #region Taking care of soil
@@ -189,7 +221,7 @@ public partial class FarmlandSquare : SaveableObject, IInteractable, ISavable
 
     public void OnLoad()
     {
-        FullyGrowSoil();
+        Restore();
     }
 
     #endregion

@@ -136,6 +136,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uniqueID: 
   prefabName: Farmland_1x1
+  isStatic: 0
   soilQualityLevel: 4
   seedIn: {fileID: 0}
   waterLevel: 0

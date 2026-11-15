@@ -2,15 +2,18 @@ using UnityEngine;
 
 public class PlaceableItem : Item
 {
+    public string soundName = "Place";
     public GameObject placeableObject;
     public Material ghostMaterial;
 
     private GameObject preview;
     private Camera _camera;
     private Quaternion previewRotation = Quaternion.identity;
+    private bool canPlace;
 
     private PlayerInventory inventory;
     public LayerMask PlaceableLayers;
+    public LayerMask BlockingLayers; // layers of things you can't place inside of
 
     private void Start()
     {
@@ -46,25 +49,28 @@ public class PlaceableItem : Item
 
             preview.transform.position = SnapToGrid(hit.point);
             preview.transform.rotation = previewRotation;
+
+            Bounds b = GetBounds(preview);
+            canPlace = !Physics.CheckBox(b.center, b.extents * 0.9f, Quaternion.identity, BlockingLayers, QueryTriggerInteraction.Ignore);
         }
         else if (preview)
         {
-            Debug.Log("W");
             Destroy(preview);
             preview = null;
+            canPlace = false;
         }
     }
 
     public override void OnUse()
     {
-        if (preview == null) return;
+        if (preview == null || !canPlace) return;
 
         Instantiate(placeableObject, preview.transform.position, previewRotation);
 
         inventory.GetSelectedSlot().HeldQuantity--;
         inventory.GetSelectedSlot().UpdateSlot();
 
-        AudioManager.instance?.PlaySound("Place", 0.8f, 1.15f);
+        AudioManager.instance?.PlaySound(soundName, 0.8f, 1.15f);
     }
 
     public override void OnUseAlt()
@@ -79,7 +85,17 @@ public class PlaceableItem : Item
             Destroy(preview);
             preview = null;
         }
+        canPlace = false;
         previewRotation = Quaternion.identity;
+    }
+
+    private Bounds GetBounds(GameObject obj)
+    {
+        var renderers = obj.GetComponentsInChildren<Renderer>();
+        Bounds b = renderers[0].bounds;
+        foreach (var r in renderers)
+            b.Encapsulate(r.bounds);
+        return b;
     }
 
     private Vector3 SnapToGrid(Vector3 pos)

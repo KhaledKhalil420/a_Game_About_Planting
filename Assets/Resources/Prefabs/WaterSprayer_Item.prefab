@@ -64,6 +64,8 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -86,9 +88,11 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &8016316845907865399
 MonoBehaviour:
@@ -104,14 +108,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uniqueID: 
   prefabName: WaterSprayer_Item
+  isStatic: 0
   data: {fileID: 11400000, guid: b3cdafd5f4fb9c345b7acbd2d94c296b, type: 2}
   isSingleQuantityItem: 0
   HeldQuantity: 1
+  soundName: PlaceMetal
   placeableObject: {fileID: 4356532086576496979, guid: a9a2a29c4182951478b9b0e9e10ca148, type: 3}
   ghostMaterial: {fileID: 2100000, guid: c611588113626d0459e9ab412b6d4e82, type: 2}
   PlaceableLayers:
     serializedVersion: 2
     m_Bits: 1032
+  BlockingLayers:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!54 &8124262932364509792
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -8,12 +8,15 @@ public class Item : SaveableObject, IHighlightable
     public bool isSingleQuantityItem = false;
     [Savable] public int HeldQuantity;
 
-    internal bool isItemPickedUp;
-    
-    private void Start()
-    {
-        prefabName = data?.model?.name;
-    }
+    [Savable] internal bool isItemPickedUp;
+    [Savable] internal int savedSlot = -1; // which inventory slot it was in when saved
+
+    // Shelf items are saved by the ShelfSpot. Items in hand but not in a slot are leftovers, don't save them.
+    public override bool ShouldSave =>
+        GetComponentInParent<ShelfSpot>() == null && (!isItemPickedUp || savedSlot >= 0);
+
+    // Works even if a subclass has its own Start()
+    public override string PrefabName => data != null && data.model != null ? data.model.name : prefabName;
 
     public void UpdateHoldingItem(bool isHolding)
     {

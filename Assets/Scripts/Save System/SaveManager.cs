@@ -47,6 +47,9 @@ public class SaveManager : MonoBehaviour
 
     public void Save()
     {
+        if (PlayerInventory.instance != null)
+            PlayerInventory.instance.PrepareForSave();
+
         //Create new save file
         file = new();
         SaveObjects();
@@ -68,7 +71,7 @@ public class SaveManager : MonoBehaviour
 
         //Destroy all non-static saveable objects.. #justice for non statics ✊
         var oldObjects = FindObjectsByType<SaveableObject>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID)
-            .Where(x => !x.isStatic)
+            .Where(x => !x.IsSceneObject)
             .Select(x => x.gameObject)
             .ToArray();
 
@@ -89,10 +92,13 @@ public class SaveManager : MonoBehaviour
 
         foreach (var obj in all)
         {
+            if (!obj.ShouldSave)
+                continue;
+
             //Create data and set variables
             var data = new SaveableData();
             data.id = obj.uniqueID;
-            data.prefab = obj.prefabName;
+            data.prefab = obj.PrefabName;
             data.position = obj.transform.position;
             data.rotation = obj.transform.eulerAngles;
 
@@ -129,7 +135,7 @@ public class SaveManager : MonoBehaviour
         {
             //Try find static existing object with this ID
             SaveableObject existing = FindObjectsByType<SaveableObject>(FindObjectsInactive.Include, FindObjectsSortMode.None)
-                .FirstOrDefault(x => x.uniqueID == objData.id && x.isStatic);
+                .FirstOrDefault(x => x.uniqueID == objData.id && x.IsSceneObject);
 
             GameObject obj;
 
@@ -141,7 +147,10 @@ public class SaveManager : MonoBehaviour
             {
                 GameObject prefab = Resources.Load<GameObject>("Prefabs/" + objData.prefab);
                 if (prefab == null)
+                {
+                    Debug.LogWarning($"SaveManager: no prefab at Resources/Prefabs/{objData.prefab}, skipped object {objData.id}");
                     continue;
+                }
 
                 obj = Instantiate(prefab, objData.position, Quaternion.Euler(objData.rotation));
                 existing = obj.GetComponent<SaveableObject>();

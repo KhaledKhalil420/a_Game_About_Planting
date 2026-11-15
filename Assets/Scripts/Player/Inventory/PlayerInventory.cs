@@ -1,5 +1,7 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using TMPro;
 
@@ -38,6 +40,7 @@ public class PlayerInventory : MonoBehaviour
         _camera = PlayerLook.mainCamera.transform;
         interact = GetComponent<PlayerInteract>();
         InvokeRepeating(nameof(UpdateSlots), 0.0001f, 0.0001f);
+        StartCoroutine(RestoreSavedItems());
     }
 
     private void Update()
@@ -379,6 +382,53 @@ public class PlayerInventory : MonoBehaviour
 
         additionalSlots++;
         PlayerPrefs.SetInt("Slots", additionalSlots);
+    }
+
+    #endregion
+
+    #region Saving
+
+    // Called by SaveManager right before saving
+    public void PrepareForSave()
+    {
+        foreach (var item in hand.GetComponentsInChildren<Item>(true))
+            item.savedSlot = -1;
+
+        for (int i = 0; i < SlotHolders.Count; i++)
+        {
+            Item item = SlotHolders[i].HeldItem;
+            if (item == null) continue;
+
+            item.HeldQuantity = SlotHolders[i].HeldQuantity; // the slot holds the real quantity
+            item.savedSlot = i;
+        }
+    }
+
+    // Puts loaded items back into the slots they were saved in
+    private IEnumerator RestoreSavedItems()
+    {
+        yield return null; // let every Start() finish first
+
+        var items = FindObjectsByType<Item>(FindObjectsInactive.Include, FindObjectsSortMode.None)
+            .Where(x => x.isItemPickedUp && x.transform.parent != hand)
+            .OrderBy(x => x.savedSlot);
+
+        foreach (var item in items)
+        {
+            int i = item.savedSlot;
+            if (i >= 0 && i < SlotHolders.Count && SlotHolders[i].HeldItem == null)
+            {
+                SlotHolders[i].HeldItem = item;
+                SlotHolders[i].HeldQuantity = item.HeldQuantity;
+                item.SetItemParent(hand);
+                SlotHolders[i].UpdateSlot();
+            }
+            else
+            {
+                GiveItem(item, out bool given);
+                if (!given) item.UpdateHoldingItem(false); // inventory full, leave it in the world
+            }
+        }
     }
 
     #endregion

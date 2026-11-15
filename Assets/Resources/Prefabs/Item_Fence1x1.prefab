@@ -64,6 +64,8 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -85,9 +87,11 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!64 &4016345088375724035
 MeshCollider:
@@ -125,14 +129,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uniqueID: 
   prefabName: Item_Fence1x1
+  isStatic: 0
   data: {fileID: 11400000, guid: 68d0880ec2d53824f89a0391dd17cce2, type: 2}
   isSingleQuantityItem: 0
   HeldQuantity: 2
+  soundName: Place
   placeableObject: {fileID: 7865136323051080115, guid: 4c5f466b320ec4249bd3c7d217ef6c94, type: 3}
   ghostMaterial: {fileID: 2100000, guid: c611588113626d0459e9ab412b6d4e82, type: 2}
   PlaceableLayers:
     serializedVersion: 2
     m_Bits: 1024
+  BlockingLayers:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!54 &6197012256593410579
 Rigidbody:
   m_ObjectHideFlags: 0
