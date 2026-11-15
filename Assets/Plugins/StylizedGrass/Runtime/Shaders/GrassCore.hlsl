@@ -1,3 +1,4 @@
+
 #ifndef STYLIZED_GRASS_CORE_INCLUDED
 #define STYLIZED_GRASS_CORE_INCLUDED
 
@@ -26,6 +27,11 @@ float  _FadeStart;
 float  _FadeEnd;
 float  _Quality;      // 0..1 fraction of instances kept (graphics setting)
 float  _QualityWidth; // width compensation for lower quality
+
+// Areas hidden by GrassClearMask (farmland...): 1 byte per texel, top-down over world XZ
+TEXTURE2D(_GrassClearMask);
+float4 _GrassClearRect;  // xy = world min XZ, z = texels per meter, w = 1 when active
+float4 _GrassClearSize;  // xy = texture size in texels
 
 // Set globally by GrassRenderer
 float4 _GrassInteractors[MAX_GRASS_INTERACTORS];       // xyz = position, w = radius
@@ -73,13 +79,23 @@ TuftData UnpackTuft(uint instanceID)
     return t;
 }
 
+float GrassCleared(float3 p)
+{
+    [branch]
+    if (_GrassClearRect.w < 0.5) return 0.0;
+
+    int2 px = (int2)floor((p.xz - _GrassClearRect.xy) * _GrassClearRect.z);
+    if (any(px < 0) || any(px >= (int2)_GrassClearSize.xy)) return 0.0;
+    return LOAD_TEXTURE2D(_GrassClearMask, px).r;
+}
+
 // 1 if this instance should be drawn. Combines the quality setting and the distance fade
 // into a single rank test, so thinning is uniform and matches what the CPU skips.
 float TuftVisible(TuftData t, out float fade)
 {
     float dist = distance(_WorldSpaceCameraPos, t.root);
     fade = saturate((dist - _FadeStart) / max(_FadeEnd - _FadeStart, 0.001));
-    return step(t.rank, _Quality * (1.0 - fade));
+    return step(t.rank, _Quality * (1.0 - fade)) * (1.0 - GrassCleared(t.root));
 }
 
 // lay: 0..1 how much things fall over; layDir: direction they fall (away from interactor); push: soft sideways push (meters)

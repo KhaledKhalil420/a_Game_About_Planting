@@ -1,4 +1,6 @@
+using System.Collections;
 using DG.Tweening;
+using StylizedGrass;
 using UnityEngine;
 
 public partial class FarmlandSquare : SaveableObject, IInteractable, ISavable
@@ -17,10 +19,41 @@ public partial class FarmlandSquare : SaveableObject, IInteractable, ISavable
     private int _frameCounter = 0;
     private const int FRAME_INTERVAL = 100;
 
+    // Grass clearing: we remember the exact bounds we added so Remove() uses the SAME ones
+    private Bounds _grassClearBounds;
+    private bool _grassCleared;
+
     private void Start()
     {
-        if (seedIn == null)
-            Restore();
+        seedIn = Resources.Load<SeedData>("Seeds/" + seedInID);
+
+        // Start() never runs on the Hoe's disabled preview ghost, so only real squares clear grass.
+        StartCoroutine(ClearGrassUnderMe());
+    }
+
+    private void OnDestroy()
+    {
+        // Give the grass back when the square is removed (Hoe.Remove destroys the GameObject)
+        if (_grassCleared)
+        {
+            GrassClearMask.Remove(_grassClearBounds);
+            _grassCleared = false;
+        }
+    }
+
+    // Retries until a GrassRenderer exists in the scene (e.g. squares loaded before the grass field),
+    // so load order doesn't matter.
+    private IEnumerator ClearGrassUnderMe()
+    {
+        _grassClearBounds = renderr != null
+            ? renderr.bounds
+            : new Bounds(transform.position, new Vector3(2f, 0.5f, 2f));
+
+        var wait = new WaitForSeconds(0.5f);
+        while (!GrassClearMask.Add(_grassClearBounds))
+            yield return wait;
+
+        _grassCleared = true;
     }
 
     private void Update()
@@ -32,7 +65,6 @@ public partial class FarmlandSquare : SaveableObject, IInteractable, ISavable
         {
             float boost = GrowthBooster.GetMultiplier(transform.position);
             growingElapsedTime += dt * soilQualityLevel * Tick.Tickspeed * boost;
-            UpdateScale();
             waterLevel -= dt / soilQualityLevel;
             if (growingElapsedTime >= seedIn.GetTotalTimeToGrow()) FullyGrowSoil();
         }
@@ -73,7 +105,8 @@ public partial class FarmlandSquare : SaveableObject, IInteractable, ISavable
         seedInID = seedIn.name;
 
         childHolder.localScale = new(0.25f, 0.25f, 0.25f);
-        _currentStageIndex = 0;
+        DOVirtual.Vector3(childHolder.localScale, new Vector3(1, 1, 1), seed.seedData.GetTotalTimeToGrow(),
+        value => childHolder.localScale = value);
 
         source.pitch = Random.Range(0.9f, 1.1f);
         source.PlayOneShot(plantingSound);
@@ -143,36 +176,6 @@ public partial class FarmlandSquare : SaveableObject, IInteractable, ISavable
         }
     }
 
-    // Size comes straight from progress, so it's restored for free when the time is loaded
-    private void UpdateScale()
-    {
-        float t = Mathf.Clamp01(growingElapsedTime / seedIn.GetTotalTimeToGrow());
-        childHolder.localScale = Vector3.one * Mathf.Lerp(0.25f, 1f, t);
-    }
-
-    // Rebuilds the seed, model and size from the saved values
-    private void Restore()
-    {
-        DOTween.Kill(childHolder);
-        if (_currentGrowingStageModel != null)
-            Destroy(_currentGrowingStageModel.gameObject);
-        _currentStageIndex = -1;
-
-        seedIn = string.IsNullOrEmpty(seedInID) ? null : Resources.Load<SeedData>("Seeds/" + seedInID);
-        if (seedIn == null)
-            return;
-
-        if (isReadyToHarvest || growingElapsedTime >= seedIn.GetTotalTimeToGrow())
-        {
-            FullyGrowSoil();
-        }
-        else
-        {
-            UpdateScale();
-            UpdateGrowingStages();
-        }
-    }
-
     #endregion
 
     #region Taking care of soil
@@ -221,7 +224,7 @@ public partial class FarmlandSquare : SaveableObject, IInteractable, ISavable
 
     public void OnLoad()
     {
-        Restore();
+        FullyGrowSoil();
     }
 
     #endregion
